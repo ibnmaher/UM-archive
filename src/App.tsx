@@ -1,12 +1,14 @@
-import React from 'react';
+import React from "react";
 
-import './App.css';
-import { Index } from 'routes';
+import "./App.css";
+import { Index } from "routes";
+import { Navbar } from "components/nav/navbar";
 
 function App() {
   return (
-    <div className='bg-stone-100'>
-  <Index />
+    <div className="bg-quan min-h-screen relative">
+      <Navbar />
+      <Index />
     </div>
   );
 }
