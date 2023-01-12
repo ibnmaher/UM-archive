@@ -1,17 +1,27 @@
 import {
   DataGrid,
   GridColDef,
-  GridValueGetterParams,
+  GridEventListener,
   gridClasses,
 } from "@mui/x-data-grid";
 import { alpha, styled } from "@mui/material/styles";
-export const Table = () => {
-  const ODD_OPACITY = 0.2;
+import { useState } from "react";
+import { Modal } from "./modal";
 
+export const Table = () => {
+  const [modal, setModal] = useState<boolean>(false);
+
+  const ODD_OPACITY = 0.2;
   const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
+    [`& .${gridClasses.row}.even`]: {
+      "&:hover, &.Mui-hovered": {
+        cursor: "pointer",
+      },
+    },
     [`& .${gridClasses.row}.odd`]: {
       backgroundColor: theme.palette.grey[200],
       "&:hover, &.Mui-hovered": {
+        cursor: "pointer",
         backgroundColor: alpha(theme.palette.primary.main, ODD_OPACITY),
         "@media (hover: none)": {
           backgroundColor: "transparent",
@@ -40,6 +50,9 @@ export const Table = () => {
       },
     },
   }));
+  const handleRowClick: GridEventListener<"rowClick"> = (params) => {
+    setModal(true);
+  };
 
   const columns: GridColDef[] = [
     { field: "name", headerName: "الاسم", width: 300 },
@@ -73,12 +86,14 @@ export const Table = () => {
         columns={columns}
         pageSize={6}
         checkboxSelection={false}
+        onRowClick={handleRowClick}
         rowsPerPageOptions={[6]}
         getRowClassName={(params) =>
           params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
         }
         sx={{
           backgroundColor: "white",
+
           "& .MuiDataGrid-columnHeaders": {
             backgroundColor: "#ECE8DD",
             fontWeight: "heavy ",
@@ -86,6 +101,7 @@ export const Table = () => {
           },
         }}
       />
+      {modal && <Modal setModal={setModal} />}
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { IconButton, InputBase, Paper, TextField } from "@mui/material";
 import { GoSearch } from "react-icons/go";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import dayjs, { Dayjs } from "dayjs";
+import { Modal } from "./modal";
 
 export const SearchBar = () => {
   const [nameString, setNameString] = useState<string>("");
