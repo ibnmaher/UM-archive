@@ -10,6 +10,8 @@ import { prefixer } from "stylis";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
+import { Provider } from "react-redux";
+import { store } from "common/context/store";
 const cacheRtl = createCache({
   key: "muirtl",
   stylisPlugins: [prefixer, rtlPlugin],
@@ -24,14 +26,16 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <BrowserRouter>
-        <CacheProvider value={cacheRtl}>
-          <ThemeProvider theme={theme}>
-            <App />
-          </ThemeProvider>
-        </CacheProvider>
-      </BrowserRouter>
-    </LocalizationProvider>
+    <Provider store={store}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <BrowserRouter>
+          <CacheProvider value={cacheRtl}>
+            <ThemeProvider theme={theme}>
+              <App />
+            </ThemeProvider>
+          </CacheProvider>
+        </BrowserRouter>
+      </LocalizationProvider>
+    </Provider>
   </React.StrictMode>
 );

@@ -1,8 +1,11 @@
 import React from "react";
 import { HiLogin } from "react-icons/hi";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 export const Navbar = () => {
+  const { auth, isLoading } = useSelector((state: any) => state.authSlice);
+  console.log("aurg", auth);
   let activeLinkStyle = {
     color: "white",
     // backgroundColor: "#F8F4EA",

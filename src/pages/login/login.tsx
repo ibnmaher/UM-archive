@@ -1,11 +1,15 @@
 import { TextField, Button } from "@mui/material";
+import { setAuth } from "common/context/slices/authSlice";
 import React, { ChangeEvent, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { loginSchema } from "utils/loginSchema";
 import { validationFunction } from "utils/validationFunction";
 import { yupErrorHandler } from "utils/yupErrorHandler";
+import { useLogin } from "./api/useLogin";
 
 export const Login = () => {
+  const dispatch = useDispatch();
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     name: string
@@ -28,6 +32,7 @@ export const Login = () => {
       message: "",
     },
   });
+  const { response, loading, login } = useLogin();
   const handleSubmit = async (
     e: React.SyntheticEvent,
 
@@ -36,12 +41,17 @@ export const Login = () => {
     try {
       e.preventDefault();
       await validationFunction(loginSchema, values);
-      console.log({ ...values });
+      login(values);
+      dispatch(
+        setAuth({
+          values,
+        })
+      );
     } catch (err: any) {
       yupErrorHandler(err.inner, setErrors);
     }
   };
-  console.log(errors);
+
   return (
     <div className="w-full h-screen flex items-center justify-center">
       <form

@@ -1,11 +1,14 @@
 import { useHttp } from "common/hooks/useHttp";
 
-export const useLogine = (query? : any) => {
+export const useLogin = (query? : any) => {
     const { response, sendRequest, loading } = useHttp(query);
-    const login = (payload: any) => sendRequest({
-        url: 'login/',
-        method: 'POST'
-    })
+    const login = (payload: any) => {
+        console.log(payload)
+        sendRequest({
+        url: 'login',
+        method: 'POST',
+        data: payload
+    })}
     return {response,login,loading}
 }
 
