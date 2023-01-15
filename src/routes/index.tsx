@@ -1,15 +1,40 @@
 import { Home } from "pages/home/home";
 import { Login } from "pages/login/login";
+import { Profile } from "pages/profile/profile";
 import { Signup } from "pages/signup/signup";
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import { ProtectedRoute } from "utils/protectedRoute";
+import { UnProtecetedRoute } from "utils/unProtectedRoute";
 
-export const Index = () => {
+export const Index = ({ auth }: { auth: any }) => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
+      <Route
+        path="profile"
+        element={
+          <ProtectedRoute auth={auth}>
+            <Profile />
+          </ProtectedRoute>
+        }
+      ></Route>
+      <Route
+        path="/login"
+        element={
+          <UnProtecetedRoute auth={auth}>
+            <Login />
+          </UnProtecetedRoute>
+        }
+      />
+      <Route
+        path="/signup"
+        element={
+          <UnProtecetedRoute auth={auth}>
+            <Signup />
+          </UnProtecetedRoute>
+        }
+      />
     </Routes>
   );
 };

@@ -3,9 +3,7 @@ import { HiLogin } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
-export const Navbar = () => {
-  const { auth, isLoading } = useSelector((state: any) => state.authSlice);
-  console.log("aurg", auth);
+export const Navbar = ({ auth }: { auth: any }) => {
   let activeLinkStyle = {
     color: "white",
     // backgroundColor: "#F8F4EA",
@@ -19,13 +17,24 @@ export const Navbar = () => {
   return (
     <div className="absolute top-0 w-full h-20 bg-primary rounded-b-md flex items-center justify-between p-6">
       <ul className="flex items-center justify-center gap-3 text-secondary font-semibold">
-        <NavLink
-          to="login"
-          style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}
-          className="hover:text-white"
-        >
-          تسجيل دخول
-        </NavLink>
+        {!auth && (
+          <NavLink
+            to="login"
+            style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}
+            className="hover:text-white"
+          >
+            تسجيل دخول
+          </NavLink>
+        )}
+        {auth && (
+          <NavLink
+            to="profile"
+            style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}
+            className="hover:text-white"
+          >
+            الصفحة الشخصية
+          </NavLink>
+        )}
         <NavLink
           to="/"
           style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}

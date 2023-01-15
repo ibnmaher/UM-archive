@@ -44,7 +44,7 @@ export const Login = () => {
       login(values);
       dispatch(
         setAuth({
-          values,
+          auth: true,
         })
       );
     } catch (err: any) {
