@@ -6,7 +6,11 @@ import dayjs, { Dayjs } from "dayjs";
 import { IoAdd } from "react-icons/io5";
 import Fab from "@mui/material/Fab";
 
-export const SearchBar = () => {
+export const SearchBar = ({
+  setModal,
+}: {
+  setModal: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const [nameString, setNameString] = useState<string>("");
   let handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNameString(e.target.value);
@@ -77,8 +81,14 @@ export const SearchBar = () => {
       <Fab
         variant="extended"
         size="small"
-        sx={{ backgroundColor: "#F8F4EA", fontWeight: "500" }}
+        sx={{
+          backgroundColor: "#F8F4EA",
+          fontWeight: "500",
+          zIndex: "1",
+          fontSize: "16px",
+        }}
         aria-label="add"
+        onClick={() => setModal(true)}
       >
         <IoAdd className=" text-lg" />
         اضافة نشاط
