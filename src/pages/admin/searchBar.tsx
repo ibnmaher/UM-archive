@@ -1,5 +1,12 @@
 import React, { MouseEventHandler, useState } from "react";
-import { IconButton, InputBase, Paper, TextField } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  InputBase,
+  MenuItem,
+  Paper,
+  TextField,
+} from "@mui/material";
 import { GoSearch } from "react-icons/go";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import dayjs, { Dayjs } from "dayjs";
@@ -49,6 +56,17 @@ export const SearchBar = ({
           <GoSearch />
         </IconButton>
       </div>
+      <TextField
+        size="small"
+        id="activity-type"
+        label=" القسم"
+        sx={{ backgroundColor: "#F8F4EA", width: "240px" }}
+        select
+      >
+        <MenuItem value={10}>Ten</MenuItem>
+        <MenuItem value={20}>Twenty</MenuItem>
+        <MenuItem value={30}>Thirty</MenuItem>
+      </TextField>
       <div className="flex items-center justify-center gap-4">
         <MobileDatePicker
           label="التاريخ من"
@@ -81,24 +99,23 @@ export const SearchBar = ({
         />
       </div>
       <div className="flex gap-4">
-        <Fab
-          variant="extended"
+        <Button
           size="small"
           sx={{
             backgroundColor: "#F8F4EA",
             fontWeight: "500",
             zIndex: "1",
             fontSize: "16px",
+            boxShadow: "4",
           }}
           aria-label="add"
           onClick={() => setUserModal(true)}
         >
           <IoAdd className=" text-lg" />
           اضافة مستخدم
-        </Fab>
+        </Button>
 
-        <Fab
-          variant="extended"
+        <Button
           size="small"
           sx={{
             backgroundColor: "#579BB1",
@@ -106,6 +123,7 @@ export const SearchBar = ({
             zIndex: "1",
             fontSize: "16px",
             color: "white",
+            boxShadow: "4",
             "&:hover": { backgroundColor: "#74b0c4" },
           }}
           aria-label="add"
@@ -113,7 +131,7 @@ export const SearchBar = ({
         >
           <IoAdd className=" text-lg" />
           اضافة نشاط
-        </Fab>
+        </Button>
       </div>
     </Paper>
   );
