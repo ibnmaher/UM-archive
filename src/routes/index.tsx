@@ -1,3 +1,4 @@
+import { Admin } from "pages/admin/admin";
 import { Home } from "pages/home/home";
 import { Login } from "pages/login/login";
 import { Profile } from "pages/profile/profile";
@@ -18,7 +19,15 @@ export const Index = ({ auth }: { auth: any }) => {
             <Profile />
           </ProtectedRoute>
         }
-      ></Route>
+      />
+      <Route
+        path="admin"
+        element={
+          <ProtectedRoute auth={auth}>
+            <Admin />
+          </ProtectedRoute>
+        }
+      />
       <Route
         path="/login"
         element={

@@ -6,7 +6,13 @@ import dayjs, { Dayjs } from "dayjs";
 import { IoAdd } from "react-icons/io5";
 import Fab from "@mui/material/Fab";
 
-export const SearchBar = () => {
+export const SearchBar = ({
+  setActivityModal,
+  setUserModal,
+}: {
+  setActivityModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setUserModal: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const [nameString, setNameString] = useState<string>("");
   let handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNameString(e.target.value);
@@ -73,6 +79,41 @@ export const SearchBar = () => {
             />
           )}
         />
+      </div>
+      <div className="flex gap-4">
+        <Fab
+          variant="extended"
+          size="small"
+          sx={{
+            backgroundColor: "#F8F4EA",
+            fontWeight: "500",
+            zIndex: "1",
+            fontSize: "16px",
+          }}
+          aria-label="add"
+          onClick={() => setUserModal(true)}
+        >
+          <IoAdd className=" text-lg" />
+          اضافة مستخدم
+        </Fab>
+
+        <Fab
+          variant="extended"
+          size="small"
+          sx={{
+            backgroundColor: "#579BB1",
+            fontWeight: "500",
+            zIndex: "1",
+            fontSize: "16px",
+            color: "white",
+            "&:hover": { backgroundColor: "#74b0c4" },
+          }}
+          aria-label="add"
+          onClick={() => setActivityModal(true)}
+        >
+          <IoAdd className=" text-lg" />
+          اضافة نشاط
+        </Fab>
       </div>
     </Paper>
   );
