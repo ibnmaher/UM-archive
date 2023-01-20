@@ -10,7 +10,7 @@ import { Button } from "@mui/material";
 import { FiEdit } from "react-icons/fi";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 
-export const Table = () => {
+export const UsersTable = () => {
   const [modal, setModal] = useState<boolean>(false);
 
   const ODD_OPACITY = 0.2;
@@ -58,24 +58,7 @@ export const Table = () => {
 
   const columns: GridColDef[] = [
     { field: "name", headerName: "الاسم", width: 300 },
-    {
-      field: "title",
-      headerName: "العنوان",
 
-      minWidth: 200,
-    },
-    {
-      field: "dateFrom",
-      headerName: "التاريخ من",
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "dateTo",
-      headerName: "التاريخ الى",
-      headerAlign: "center",
-      align: "center",
-    },
     {
       field: "department",
       headerName: "القسم",
@@ -138,12 +121,13 @@ export const Table = () => {
   return (
     <div className="w-full flex-1">
       <StripedDataGrid
+        autoHeight
         rows={rows}
         columns={columns}
-        pageSize={6}
+        pageSize={20}
         checkboxSelection={false}
         onRowClick={handleRowClick}
-        rowsPerPageOptions={[6]}
+        rowsPerPageOptions={[20]}
         getRowClassName={(params) =>
           params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
         }

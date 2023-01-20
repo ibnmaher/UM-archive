@@ -16,9 +16,11 @@ import Fab from "@mui/material/Fab";
 export const SearchBar = ({
   setActivityModal,
   setUserModal,
+  action,
 }: {
   setActivityModal: React.Dispatch<React.SetStateAction<boolean>>;
   setUserModal: React.Dispatch<React.SetStateAction<boolean>>;
+  action: string;
 }) => {
   const [nameString, setNameString] = useState<string>("");
   let handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,37 +69,39 @@ export const SearchBar = ({
         <MenuItem value={20}>Twenty</MenuItem>
         <MenuItem value={30}>Thirty</MenuItem>
       </TextField>
-      <div className="flex items-center justify-center gap-4">
-        <MobileDatePicker
-          label="التاريخ من"
-          inputFormat="MM/DD/YYYY"
-          value={dateFrom}
-          disableFuture
-          onChange={(value) => handleChange(value, setDateFrom)}
-          renderInput={(params) => (
-            <TextField
-              sx={{ backgroundColor: "#F8F4EA" }}
-              size="small"
-              {...params}
-            />
-          )}
-        />
-        <MobileDatePicker
-          label="التاريخ الى"
-          inputFormat="MM/DD/YYYY"
-          value={dateTo}
-          disableFuture
-          minDate={dateFrom ? dateFrom : dayjs()}
-          onChange={(value) => handleChange(value, setDateTo)}
-          renderInput={(params) => (
-            <TextField
-              sx={{ backgroundColor: "#F8F4EA" }}
-              size="small"
-              {...params}
-            />
-          )}
-        />
-      </div>
+      {action !== "users" && (
+        <div className="flex items-center justify-center gap-4">
+          <MobileDatePicker
+            label="التاريخ من"
+            inputFormat="MM/DD/YYYY"
+            value={dateFrom}
+            disableFuture
+            onChange={(value) => handleChange(value, setDateFrom)}
+            renderInput={(params) => (
+              <TextField
+                sx={{ backgroundColor: "#F8F4EA" }}
+                size="small"
+                {...params}
+              />
+            )}
+          />
+          <MobileDatePicker
+            label="التاريخ الى"
+            inputFormat="MM/DD/YYYY"
+            value={dateTo}
+            disableFuture
+            minDate={dateFrom ? dateFrom : dayjs()}
+            onChange={(value) => handleChange(value, setDateTo)}
+            renderInput={(params) => (
+              <TextField
+                sx={{ backgroundColor: "#F8F4EA" }}
+                size="small"
+                {...params}
+              />
+            )}
+          />
+        </div>
+      )}
       <div className="flex gap-4">
         <Button
           size="small"

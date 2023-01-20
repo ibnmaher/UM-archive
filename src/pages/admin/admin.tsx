@@ -2,8 +2,9 @@ import { Chip } from "@mui/material";
 import React from "react";
 import { ActivityModal } from "./activityModal";
 import { SearchBar } from "./searchBar";
-import { Table } from "./table";
+import { ActivitiesTable } from "./activitiesTable";
 import { UserModal } from "./userModal";
+import { UsersTable } from "./usersTable";
 
 export const Admin = () => {
   const [activityModal, setActivityModal] = React.useState<boolean>(false);
@@ -12,8 +13,9 @@ export const Admin = () => {
     "activities"
   );
   return (
-    <div className="w-full h-screen pt-24 px-4 pb-4 flex flex-col gap-4 items-center">
+    <div className="w-full min-h-screen h-auto pt-24 px-4 pb-4 flex flex-col gap-4 items-center">
       <SearchBar
+        action={action}
         setActivityModal={setActivityModal}
         setUserModal={setUserModal}
       />
@@ -29,7 +31,9 @@ export const Admin = () => {
           color={action === "users" ? "primary" : "default"}
         />
       </div>
-      <Table />
+      {action === "users" && <UsersTable />}
+      {action === "activities" && <ActivitiesTable />}
+
       {activityModal && <ActivityModal setActivityModal={setActivityModal} />}
       {userModal && <UserModal setUserModal={setUserModal} />}
     </div>
