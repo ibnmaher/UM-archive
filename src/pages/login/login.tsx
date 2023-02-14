@@ -42,11 +42,6 @@ export const Login = () => {
       e.preventDefault();
       await validationFunction(loginSchema, values);
       login(values);
-      dispatch(
-        setAuth({
-          auth: true,
-        })
-      );
     } catch (err: any) {
       yupErrorHandler(err.inner, setErrors);
     }
