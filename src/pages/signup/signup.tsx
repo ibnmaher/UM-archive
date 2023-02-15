@@ -1,12 +1,26 @@
 import { TextField, Button } from "@mui/material";
 
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import React, { ChangeEvent, useState, useEffect } from "react";
 import { validationFunction } from "utils/validationFunction";
 import { yupErrorHandler } from "utils/yupErrorHandler";
 import { signupSchema } from "utils/signupSchema";
+import { boolean } from "yup";
+import { Message } from "common/components/message";
 
 export const Signup = () => {
+  const location = useLocation();
+  const [open, setOpen] = useState(false);
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     name: string
@@ -46,6 +60,12 @@ export const Signup = () => {
       yupErrorHandler(err.inner, setErrors);
     }
   };
+  useEffect(() => {
+    console.log(location);
+    if (location?.state?.redirect) {
+      setOpen(true);
+    }
+  }, [location.state]);
   return (
     <div className="w-full h-screen flex items-center justify-center">
       <form
@@ -98,6 +118,12 @@ export const Signup = () => {
         </Button>
         <Link to="/login">امتلك حساب!</Link>
       </form>
+      <Message
+        open={open}
+        setOpen={setOpen}
+        severity="info"
+        message="قم بانشاء رمز دخول"
+      />
     </div>
   );
 };

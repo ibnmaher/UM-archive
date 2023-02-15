@@ -26,7 +26,7 @@ interface IState {
 }
 
 const initialState: IState = {
-  auth: true,
+  auth: false,
   isLoading: true,
   hasError: false,
 };

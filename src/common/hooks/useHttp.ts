@@ -6,6 +6,7 @@ export const useHttp = (query?: any) => {
 
   const [response, setResponse] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<any>(null);
 
   const client = axios.create({
     baseURL: `${process.env.REACT_APP_URL}`,
@@ -17,13 +18,15 @@ export const useHttp = (query?: any) => {
 
   const sendRequest: (params: any) => Promise<any> = async ({ url, method, data }) => {
     setLoading(true);
+    setError(null);
     try {
       const res = await client.request({ url, method, data });
       setResponse(res.data);
-    } catch (err) {
-      setResponse(err);
+    } catch (err:any) {
+      console.log(err.response)
+     setError(err.response)
     }
     setLoading(false);
   };
-  return { loading, response, sendRequest };
+  return { loading, response, error,sendRequest };
 };

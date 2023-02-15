@@ -3,21 +3,16 @@ import {
   Checkbox,
   FormControl,
   FormControlLabel,
-  FormLabel,
-  InputLabel,
   MenuItem,
-  Radio,
-  RadioGroup,
-  Select,
-  SelectChangeEvent,
-  TextareaAutosize,
   TextField,
 } from "@mui/material";
-import { MobileDatePicker } from "@mui/x-date-pickers";
-import { useModal } from "common/hooks/useModal";
-import React, { useRef, useState } from "react";
+import { Message } from "common/components/message";
 import dayjs, { Dayjs } from "dayjs";
+import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import { addUserSchema } from "utils/addUserSchema";
+import { validationFunction } from "utils/validationFunction";
+import { yupErrorHandler } from "utils/yupErrorHandler";
 import { useAddtUser } from "./api/addUser";
 export const UserModal = ({
   setUserModal,
@@ -27,19 +22,84 @@ export const UserModal = ({
   const [dateFrom, setDateFrom] = React.useState<Dayjs | null>(dayjs());
   const [dateTo, setDateTo] = React.useState<Dayjs | null>(dayjs());
   const [values, setValues] = useState<any>({ superviser: false });
-  const { response, addUser, loading } = useAddtUser();
+  const [open, setOpen] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  const { response, addUser, loading, error } = useAddtUser();
+  const [errors, setErrors] = useState({
+    email: {
+      error: false,
+      message: "",
+    },
+    name: {
+      error: false,
+      message: "",
+    },
+    phone: {
+      error: false,
+      message: "",
+    },
+    department: {
+      error: false,
+      message: "",
+    },
+  });
+
   const handleChange = (e: any, name: string) => {
     setValues((values: any) => {
       return { ...values, [name]: e.target.value };
     });
   };
-  const handleSubmit = (e: React.SyntheticEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    addUser(values);
+    setErrors({
+      email: {
+        error: false,
+        message: "",
+      },
+      name: {
+        error: false,
+        message: "",
+      },
+      phone: {
+        error: false,
+        message: "",
+      },
+      department: {
+        error: false,
+        message: "",
+      },
+    });
+    try {
+      await validationFunction(addUserSchema, values);
+      await addUser(values);
+    } catch (err: any) {
+      console.log(err);
+      yupErrorHandler(err.inner, setErrors);
+    }
   };
+  useEffect(() => {
+    if (error?.status === 409) {
+      setErrors((state: any) => {
+        return {
+          ...state,
+          email: { error: true, message: error.data.message },
+        };
+      });
+    } else if (error?.status) {
+      setOpen(true);
+    }
+  }, [error]);
+  useEffect(() => {
+    if (response?.status === 201) {
+      setOpen(true);
+      setValues({ superviser: false });
+      formRef?.current?.reset();
+    }
+  }, [response]);
   return (
     <div className="fixed w-full h-full bg-black bg-opacity-40 top-0 bottom-0 left-0 right-0  z-50 flex items-center justify-center cursor-pointer ">
       <form
+        ref={formRef}
         onSubmit={handleSubmit}
         className=" h-4/5 w-4/5 bg-quan rounded-lg cursor-default flex items-center justify-center relative"
       >
@@ -56,10 +116,11 @@ export const UserModal = ({
           <TextField
             size="small"
             id="department"
-            value={values.activityType}
             label="القسم "
-            sx={{ backgroundColor: "white" }}
+            InputProps={{ sx: { backgroundColor: "white" } }}
             select
+            error={errors.department.error}
+            helperText={errors.department.message}
             onChange={(e) => handleChange(e, "department")}
           >
             <MenuItem value={10}>Ten</MenuItem>
@@ -69,24 +130,30 @@ export const UserModal = ({
           <TextField
             label="الاسم"
             id="name"
-            sx={{ backgroundColor: "white" }}
             size="small"
+            error={errors.name.error}
+            helperText={errors.name.message}
+            InputProps={{ sx: { backgroundColor: "white" } }}
             onChange={(e) => handleChange(e, "name")}
           />
 
           <TextField
             label="البريد الالكتروني"
             id="email"
-            sx={{ backgroundColor: "white" }}
+            InputProps={{ sx: { backgroundColor: "white" } }}
             size="small"
             onChange={(e) => handleChange(e, "email")}
+            error={errors.email.error}
+            helperText={errors.email.message}
           />
           <TextField
             label="رقم الهاتف "
-            id="phone-number"
-            sx={{ backgroundColor: "white" }}
+            id="phone"
+            InputProps={{ sx: { backgroundColor: "white" } }}
             size="small"
             onChange={(e) => handleChange(e, "phone")}
+            error={errors.phone.error}
+            helperText={errors.phone.message}
           />
 
           <FormControlLabel
@@ -119,6 +186,12 @@ export const UserModal = ({
           <AiOutlineClose />
         </Button>
       </form>
+      <Message
+        open={open}
+        setOpen={setOpen}
+        severity={error ? "error" : "success"}
+        message={error ? "حدث خطاء" : "تمت اضافة مستخدم"}
+      ></Message>
     </div>
   );
 };

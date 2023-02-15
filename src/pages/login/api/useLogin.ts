@@ -1,7 +1,7 @@
 import { useHttp } from "common/hooks/useHttp";
 
 export const useLogin = (query? : any) => {
-    const { response, sendRequest, loading } = useHttp(query);
+    const { response, sendRequest, error, loading } = useHttp(query);
     const login = (payload: any) => {
         console.log(payload)
         sendRequest({
@@ -9,6 +9,6 @@ export const useLogin = (query? : any) => {
         method: 'POST',
         data: payload
     })}
-    return {response,login,loading}
+    return {response,login,error,loading}
 }
 
