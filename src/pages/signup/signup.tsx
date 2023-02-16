@@ -7,20 +7,15 @@ import { yupErrorHandler } from "utils/yupErrorHandler";
 import { signupSchema } from "utils/signupSchema";
 import { boolean } from "yup";
 import { Message } from "common/components/message";
+import { useSignup } from "./api/useSignup";
+import { useDispatch } from "react-redux";
+import { setAuth } from "common/context/slices/authSlice";
 
 export const Signup = () => {
+  const dispatch = useDispatch();
   const location = useLocation();
   const [open, setOpen] = useState(false);
-  const handleClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
-  };
+  const { response, signup, error, loading } = useSignup();
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     name: string
@@ -54,18 +49,42 @@ export const Signup = () => {
   ) => {
     try {
       e.preventDefault();
+      setErrors({
+        email: {
+          error: false,
+          message: "",
+        },
+        password: {
+          error: false,
+          message: "",
+        },
+        confirmPassword: {
+          error: false,
+          message: "",
+        },
+      });
       await validationFunction(signupSchema, values);
-      console.log({ ...values });
+      await signup(values);
     } catch (err: any) {
       yupErrorHandler(err.inner, setErrors);
     }
   };
   useEffect(() => {
-    console.log(location);
     if (location?.state?.redirect) {
       setOpen(true);
     }
   }, [location.state]);
+  useEffect(() => {
+    if (error?.status !== 500) {
+      setOpen(true);
+    }
+  }, [error]);
+  useEffect(() => {
+    if (response?.status === 201) {
+      localStorage.setItem("token", response.token);
+      dispatch(setAuth(response));
+    }
+  }, [response]);
   return (
     <div className="w-full h-screen flex items-center justify-center">
       <form
@@ -121,8 +140,8 @@ export const Signup = () => {
       <Message
         open={open}
         setOpen={setOpen}
-        severity="info"
-        message="قم بانشاء رمز دخول"
+        severity={error ? "error" : "info"}
+        message={error ? error.data.message : "قم بانشاء رمز دخول"}
       />
     </div>
   );

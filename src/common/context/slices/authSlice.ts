@@ -11,13 +11,13 @@ interface IAction<T> extends Action<string> {
   meta?: any;
 }
 interface Auth {
-  info: { [key: string]: string };
+  id: number;
+  type: string;
   token: string;
-  message: string;
 }
 
 // @ts-ignore
-let oldToken: string = JSON.parse(localStorage.getItem('token')) || JSON.parse(sessionStorage.getItem('token'));
+let oldToken: string = localStorage.getItem('token')
 
 interface IState {
   auth: Auth | boolean | string;
