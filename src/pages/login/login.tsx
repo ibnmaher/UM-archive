@@ -52,6 +52,11 @@ export const Login = () => {
       navigate("/signup", { state: { redirect: true } });
     }
   }, [error]);
+  useEffect(() => {
+    if (response?.status === 200) {
+      dispatch(setAuth(response));
+    }
+  }, [response]);
   return (
     <div className="w-full h-screen flex items-center justify-center">
       <form
