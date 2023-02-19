@@ -1,9 +1,10 @@
 import React from "react";
 import { HiLogin } from "react-icons/hi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-
+import { setAuth } from "common/context/slices/authSlice";
 export const Navbar = ({ auth }: { auth: any }) => {
+  const dispatch = useDispatch();
   let activeLinkStyle = {
     color: "white",
     // backgroundColor: "#F8F4EA",
@@ -25,6 +26,9 @@ export const Navbar = ({ auth }: { auth: any }) => {
           >
             تسجيل دخول
           </NavLink>
+        )}
+        {auth && (
+          <button onClick={() => dispatch(setAuth(false))}>تسجيل خروج</button>
         )}
         {auth && (
           <NavLink

@@ -50,11 +50,7 @@ export const SearchBar = ({
           placeholder="بحث"
           onChange={handleNameChange}
         ></InputBase>
-        <IconButton
-          onClick={handleSearch}
-          size="small"
-          aria-aria-label="search"
-        >
+        <IconButton onClick={handleSearch} size="small">
           <GoSearch />
         </IconButton>
       </div>
@@ -112,7 +108,6 @@ export const SearchBar = ({
             fontSize: "16px",
             boxShadow: "4",
           }}
-          aria-label="add"
           onClick={() => setUserModal(true)}
         >
           <IoAdd className=" text-lg" />
@@ -130,7 +125,6 @@ export const SearchBar = ({
             boxShadow: "4",
             "&:hover": { backgroundColor: "#74b0c4" },
           }}
-          aria-label="add"
           onClick={() => setActivityModal(true)}
         >
           <IoAdd className=" text-lg" />

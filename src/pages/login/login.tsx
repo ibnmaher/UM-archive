@@ -41,6 +41,16 @@ export const Login = () => {
   ) => {
     try {
       e.preventDefault();
+      setErrors({
+        email: {
+          error: false,
+          message: "",
+        },
+        password: {
+          error: false,
+          message: "",
+        },
+      });
       await validationFunction(loginSchema, values);
       await login(values);
     } catch (err: any) {
@@ -50,10 +60,27 @@ export const Login = () => {
   useEffect(() => {
     if (error?.status === 307) {
       navigate("/signup", { state: { redirect: true } });
+    } else if (error?.status === 404) {
+      setErrors((state: any) => {
+        return {
+          ...state,
+          email: { error: true, message: error.data.message },
+        };
+      });
+    } else if (error?.status === 401) {
+      setErrors((state: any) => {
+        return {
+          ...state,
+          password: { error: true, message: error.data.message },
+        };
+      });
+    } else {
+      console.log(error);
     }
   }, [error]);
   useEffect(() => {
     if (response?.status === 200) {
+      localStorage.setItem("token", response.token);
       dispatch(setAuth(response));
     }
   }, [response]);

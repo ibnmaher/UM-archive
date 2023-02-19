@@ -9,8 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "common/context/store";
 let timeOut: any;
 function App() {
-  const { auth } = useSelector((state: any) => state.authSlice);
-
+  const { auth, isLoading } = useSelector((state: any) => state.authSlice);
+  console.log("dwdw", isLoading);
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     dispatch(getAuth());
@@ -25,8 +25,14 @@ function App() {
   }, [auth]);
   return (
     <div className="bg-quan min-h-screen relative">
-      <Navbar auth={auth} />
-      <Index auth={auth} />
+      {!isLoading ? (
+        <>
+          <Navbar auth={auth} />
+          <Index auth={auth} />
+        </>
+      ) : (
+        <>LOADING</>
+      )}
     </div>
   );
 }

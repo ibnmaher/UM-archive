@@ -35,11 +35,7 @@ export const SearchBar = () => {
           placeholder="بحث"
           onChange={handleNameChange}
         ></InputBase>
-        <IconButton
-          onClick={handleSearch}
-          size="small"
-          aria-aria-label="search"
-        >
+        <IconButton onClick={handleSearch} size="small">
           <GoSearch />
         </IconButton>
       </div>

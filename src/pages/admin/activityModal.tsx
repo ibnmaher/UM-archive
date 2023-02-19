@@ -3,21 +3,18 @@ import {
   Checkbox,
   FormControl,
   FormControlLabel,
-  FormLabel,
-  InputLabel,
+  IconButton,
   MenuItem,
   Radio,
   RadioGroup,
-  Select,
-  SelectChangeEvent,
-  TextareaAutosize,
   TextField,
 } from "@mui/material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
-import { useModal } from "common/hooks/useModal";
-import React, { useRef, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
+import React, { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import { FileInput } from "./components/fileInput";
+import { TiDelete } from "react-icons/ti";
 export const ActivityModal = ({
   setActivityModal,
 }: {
@@ -33,9 +30,26 @@ export const ActivityModal = ({
       return { ...values, [name]: e.target.value };
     });
   };
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    console.log(values);
+  };
+  const handleRemoveImage = (index: number) => {
+    setFiles((state: any) => {
+      let newState = [...state];
+      newState.splice(index, 1);
+
+      return newState;
+    });
+  };
+  const [files, setFiles] = useState<any[]>([]);
+  console.log("uuu", files);
   return (
     <div className="fixed w-full h-full bg-black bg-opacity-40 top-0 bottom-0 left-0 right-0  z-50 flex items-center justify-center cursor-pointer ">
-      <div className=" h-[90%] w-4/5 bg-quan rounded-lg cursor-default flex items-center justify-center relative">
+      <form
+        onSubmit={handleSubmit}
+        className=" h-full  w-full bg-quan rounded-lg cursor-default flex items-center justify-center relative"
+      >
         <FormControl
           fullWidth
           sx={{
@@ -71,14 +85,15 @@ export const ActivityModal = ({
               inputFormat="MM/DD/YYYY"
               value={dateFrom}
               disableFuture
-              onChange={(value) =>
+              onChange={(value) => {
+                setDateFrom(value);
                 setValues((values: any) => {
                   return {
                     ...values,
-                    dateFrom: value,
+                    dateFrom: dayjs(value).format("DD/MM/YYYY"),
                   };
-                })
-              }
+                });
+              }}
               renderInput={(params) => (
                 <TextField
                   sx={{ backgroundColor: "white", width: "100%" }}
@@ -93,14 +108,15 @@ export const ActivityModal = ({
               value={dateTo}
               disableFuture
               minDate={dateFrom ? dateFrom : dayjs()}
-              onChange={(value) =>
+              onChange={(value) => {
+                setDateTo(value);
                 setValues((values: any) => {
                   return {
                     ...values,
-                    dateTo: value,
+                    dateTo: dayjs(value).format("DD/MM/YYYY"),
                   };
-                })
-              }
+                });
+              }}
               renderInput={(params) => (
                 <TextField
                   sx={{ backgroundColor: "white", width: "100%" }}
@@ -113,39 +129,63 @@ export const ActivityModal = ({
 
           <TextField
             label="القسم"
-            id="activity-title"
+            id="department"
             sx={{ backgroundColor: "white" }}
             size="small"
             select
-          />
+            onChange={(e) => handleChange(e, "department")}
+          >
+            <MenuItem value="hi">hi</MenuItem>
+          </TextField>
           <textarea
+            onChange={(e) => handleChange(e, "summary")}
             placeholder="نبذة عن النشاط"
             className=" resize-none rounded-[3px] h-20 w-full py-2 px-3 border-[1.8px] border-gray-300 hover:border-black focus:border-none"
           />
           <TextField
             label="رابط المرفقات"
-            id="activity-title"
+            id="links"
             sx={{ backgroundColor: "white" }}
             size="small"
+            onChange={(e) => handleChange(e, "links")}
           />
-          <div className="flex w-full gap-4">
+          {/* <div className="flex w-full gap-4">
             <TextField
               label="رفع صورة"
-              id="activity-title"
+              id="image"
               type="file"
               sx={{ backgroundColor: "white", width: "100%" }}
               InputLabelProps={{ shrink: true }}
               size="small"
+              onChange={(e: any) => console.log(e.currentTarget.files)}
             />
             <FormControlLabel
               control={<Checkbox defaultChecked />}
               label="خاص"
             />
+          </div> */}
+          <FileInput setFiles={setFiles} />
+          <div className="flex gap-1 w-full">
+            {files.map((image, index) => {
+              return (
+                <div className="w-10 h-10 relative">
+                  <IconButton
+                    size="small"
+                    sx={{ position: "absolute", top: "-10px", left: "-10px" }}
+                    onClick={() => handleRemoveImage(index)}
+                  >
+                    <TiDelete className="text-red-700" />
+                  </IconButton>
+                  <img src={image.url} alt="" />
+                </div>
+              );
+            })}
           </div>
           <RadioGroup
             row
             aria-labelledby="activity-type"
             name="row-radio-buttons-group"
+            onChange={(e) => handleChange(e, "location")}
           >
             <FormControlLabel
               value="نشاط خارجي"
@@ -161,6 +201,7 @@ export const ActivityModal = ({
           <Button
             variant="contained"
             sx={{ width: "16rem", marginX: "auto", fontSize: "16px" }}
+            type="submit"
           >
             رفـــــع
           </Button>
@@ -173,7 +214,7 @@ export const ActivityModal = ({
         >
           <AiOutlineClose />
         </Button>
-      </div>
+      </form>
     </div>
   );
 };
