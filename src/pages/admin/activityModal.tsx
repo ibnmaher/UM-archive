@@ -15,15 +15,20 @@ import React, { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { FileInput } from "./components/fileInput";
 import { TiDelete } from "react-icons/ti";
+import { useAddActivity } from "./api/addActivity";
+import { UsersInput } from "./components/usersInput";
 export const ActivityModal = ({
   setActivityModal,
 }: {
   setActivityModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const { error, response, addActivity, loading } = useAddActivity();
   const [dateFrom, setDateFrom] = React.useState<Dayjs | null>(dayjs());
   const [dateTo, setDateTo] = React.useState<Dayjs | null>(dayjs());
+  const [files, setFiles] = useState<any[]>([]);
   const [values, setValues] = useState<any>({
     activityType: "محاضرة",
+    images: [],
   });
   const handleChange = (e: any, name: string) => {
     setValues((values: any) => {
@@ -32,7 +37,17 @@ export const ActivityModal = ({
   };
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    console.log(values);
+    let data = new FormData();
+    Object.keys(values).map((key: string) => {
+      data.append(`${key}`, values[key]);
+    });
+
+    files.map((file) => {
+      data.append("images", file.image);
+      data.append("privateOptin", file.private);
+    });
+
+    addActivity(data);
   };
   const handleRemoveImage = (index: number) => {
     setFiles((state: any) => {
@@ -42,10 +57,9 @@ export const ActivityModal = ({
       return newState;
     });
   };
-  const [files, setFiles] = useState<any[]>([]);
-  console.log("uuu", files);
+
   return (
-    <div className="fixed w-full h-full bg-black bg-opacity-40 top-0 bottom-0 left-0 right-0  z-50 flex items-center justify-center cursor-pointer ">
+    <div className="fixed w-full h-auto bg-black bg-opacity-40 top-0 bottom-0 left-0 right-0  z-50 flex items-center justify-center cursor-pointer ">
       <form
         onSubmit={handleSubmit}
         className=" h-full  w-full bg-quan rounded-lg cursor-default flex items-center justify-center relative"
@@ -69,9 +83,21 @@ export const ActivityModal = ({
             select
             onChange={(e) => handleChange(e, "activityType")}
           >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            <MenuItem value="مناقشات طلبة الدراسات العليا">
+              مناقشات طلبة الدراسات العليا
+            </MenuItem>
+            <MenuItem value="المحاضرات(السيمينرات)">
+              المحاضرات(السيمينرات)
+            </MenuItem>
+            <MenuItem value="">""</MenuItem>
+            <MenuItem value="">""</MenuItem>
+            <MenuItem value="">""</MenuItem>
+            <MenuItem value="">""</MenuItem>
+            <MenuItem value="">""</MenuItem>
+            <MenuItem value="">""</MenuItem>
+            <MenuItem value="">""</MenuItem>
+            <MenuItem value="">""</MenuItem>
+            <MenuItem value="">""</MenuItem>
           </TextField>
           <TextField
             label="العنوان"
@@ -135,8 +161,9 @@ export const ActivityModal = ({
             select
             onChange={(e) => handleChange(e, "department")}
           >
-            <MenuItem value="hi">hi</MenuItem>
+            <MenuItem value="علوم الحاسبات">علوم الحاسبات</MenuItem>
           </TextField>
+          <UsersInput />
           <textarea
             onChange={(e) => handleChange(e, "summary")}
             placeholder="نبذة عن النشاط"
@@ -149,21 +176,7 @@ export const ActivityModal = ({
             size="small"
             onChange={(e) => handleChange(e, "links")}
           />
-          {/* <div className="flex w-full gap-4">
-            <TextField
-              label="رفع صورة"
-              id="image"
-              type="file"
-              sx={{ backgroundColor: "white", width: "100%" }}
-              InputLabelProps={{ shrink: true }}
-              size="small"
-              onChange={(e: any) => console.log(e.currentTarget.files)}
-            />
-            <FormControlLabel
-              control={<Checkbox defaultChecked />}
-              label="خاص"
-            />
-          </div> */}
+
           <FileInput setFiles={setFiles} />
           <div className="flex gap-1 w-full">
             {files.map((image, index) => {
