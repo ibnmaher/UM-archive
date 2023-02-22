@@ -80,7 +80,11 @@ export const ActivityModal = ({
     try {
       let data = new FormData();
       Object.keys(values).map((key: string) => {
-        data.append(`${key}`, values[key]);
+        if (key === "participants") {
+          data.append(`${key}`, JSON.stringify(values[key]));
+        } else {
+          data.append(`${key}`, values[key]);
+        }
       });
 
       files.map((file) => {
@@ -122,7 +126,7 @@ export const ActivityModal = ({
           <TextField
             size="small"
             id="type"
-            value={values.activityType}
+            value={values.type}
             error={errors.type.error}
             helperText={errors.type.message}
             label="نوع النشاط"
@@ -231,6 +235,7 @@ export const ActivityModal = ({
           <TextField
             label="القسم"
             id="department"
+            value={values.department}
             error={errors.department.error}
             helperText={errors.department.message}
             InputProps={{ sx: { backgroundColor: "white" } }}

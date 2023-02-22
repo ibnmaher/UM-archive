@@ -11,6 +11,7 @@ export const FileInput = ({
     private: true,
     url: "",
   });
+
   const handleAdd = () => {
     setFiles((state: any) => {
       return [...state, file];
@@ -49,7 +50,7 @@ export const FileInput = ({
       <FormControlLabel
         control={
           <Checkbox
-            defaultChecked
+            checked={file.private}
             onChange={() =>
               setFile((state: any) => {
                 return { ...state, private: !state.private };

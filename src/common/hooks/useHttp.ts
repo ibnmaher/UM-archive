@@ -2,7 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 
 
-export const useHttp = (query?: any) => {
+export const useHttp = (query?: any, headers?: any) => {
 
   const [response, setResponse] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -11,7 +11,7 @@ export const useHttp = (query?: any) => {
   const client = axios.create({
     baseURL: `${process.env.REACT_APP_URL}`,
     headers: {
-    //   Authorization: `Bearer ${auth?.token}`,
+    ...headers
     },
     params: query,
   });
