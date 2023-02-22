@@ -13,7 +13,14 @@ export const Admin = () => {
     "activities"
   );
   return (
-    <div className="w-full min-h-screen h-auto pt-24 px-4 pb-4 flex flex-col gap-4 items-center">
+    <div
+      style={
+        activityModal || userModal
+          ? { overflow: "hidden", height: "100vh" }
+          : { height: "auto" }
+      }
+      className="w-full min-h-screen pt-24 px-4 pb-4 flex flex-col gap-4 items-center"
+    >
       <SearchBar
         action={action}
         setActivityModal={setActivityModal}
