@@ -9,10 +9,11 @@ import { useState } from "react";
 import { Button } from "@mui/material";
 import { FiEdit } from "react-icons/fi";
 import { MdOutlineDeleteOutline } from "react-icons/md";
-
-export const ActivitiesTable = () => {
+import { useEffect } from "react";
+import { useGetActivities } from "./api/getActivities";
+export const ActivitiesTable = ({ query }: { query: any }) => {
   const [modal, setModal] = useState<boolean>(false);
-
+  const { response, getActivities, error, loading } = useGetActivities(query);
   const ODD_OPACITY = 0.2;
   const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
     [`& .${gridClasses.row}.even`]: {
@@ -128,7 +129,9 @@ export const ActivitiesTable = () => {
     { id: 8, name: "uk", department: "Jon", activities: 35 },
     { id: 9, name: ",ol", department: "Jon", activities: 35 },
   ];
-
+  useEffect(() => {
+    getActivities();
+  }, [query]);
   return (
     <div className="w-full flex-1">
       <StripedDataGrid

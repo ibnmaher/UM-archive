@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { FileInput } from "./components/fileInput";
 import { TiDelete } from "react-icons/ti";
@@ -20,63 +20,40 @@ import { UsersInput } from "./components/usersInput";
 import { addActivitySchema } from "utils/addActivitySchema";
 import { validationFunction } from "utils/validationFunction";
 import { yupErrorHandler } from "utils/yupErrorHandler";
+import activityModalErrors from "./objects/activityModalErrors";
+import { BeatLoader } from "react-spinners";
+import { Message } from "common/components/message";
 export const ActivityModal = ({
   setActivityModal,
+  setOpen,
 }: {
   setActivityModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { error, response, addActivity, loading } = useAddActivity();
+
   const [dateFrom, setDateFrom] = React.useState<Dayjs | null>(dayjs());
   const [dateTo, setDateTo] = React.useState<Dayjs | null>(dayjs());
   const [orderDate, setOrderDate] = React.useState<Dayjs | null>(dayjs());
   const [files, setFiles] = useState<any[]>([]);
-  const [errors, setErrors] = useState({
-    title: {
-      error: false,
-      message: "",
-    },
-    type: {
-      error: false,
-      message: "",
-    },
-    department: {
-      error: false,
-      message: "",
-    },
-    orderDate: {
-      error: false,
-      message: "",
-    },
-  });
+  const [errors, setErrors] = useState(activityModalErrors);
   const [values, setValues] = useState<any>({
-    activityType: "محاضرة",
-    images: [],
+    type: "",
+    department: "",
+    link: "",
+    barcode: "",
+    location: "نشاط خارجي",
   });
+
   const handleChange = (e: any, name: string) => {
     setValues((values: any) => {
       return { ...values, [name]: e.target.value };
     });
   };
+
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    setErrors({
-      title: {
-        error: false,
-        message: "",
-      },
-      type: {
-        error: false,
-        message: "",
-      },
-      department: {
-        error: false,
-        message: "",
-      },
-      orderDate: {
-        error: false,
-        message: "",
-      },
-    });
+    setErrors(activityModalErrors);
     try {
       let data = new FormData();
       Object.keys(values).map((key: string) => {
@@ -97,6 +74,7 @@ export const ActivityModal = ({
       yupErrorHandler(err.inner, setErrors);
     }
   };
+
   const handleRemoveImage = (index: number) => {
     setFiles((state: any) => {
       let newState = [...state];
@@ -105,7 +83,16 @@ export const ActivityModal = ({
       return newState;
     });
   };
-  console.log(values);
+  useEffect(() => {
+    if (response?.status) {
+      setOpen(true);
+      setActivityModal(false);
+    }
+    if (error) {
+      alert("حدث خطاء");
+    }
+  }, [response, error]);
+
   return (
     <div className="fixed w-full h-full  bg-black bg-opacity-40 top-0 bottom-0 left-0 right-0  z-50 flex items-center justify-center cursor-pointer ">
       <form
@@ -117,6 +104,7 @@ export const ActivityModal = ({
           sx={{
             width: "60%",
             display: "flex",
+
             flexDirection: "column",
             height: "100%",
             gap: "16px",
@@ -152,9 +140,10 @@ export const ActivityModal = ({
           </TextField>
           <TextField
             label="العنوان"
-            id="activity-title"
+            id="title"
             InputProps={{ sx: { backgroundColor: "white" } }}
             size="small"
+            value={values.title}
             error={errors.title.error}
             helperText={errors.title.message}
             onChange={(e) => handleChange(e, "title")}
@@ -245,7 +234,7 @@ export const ActivityModal = ({
           >
             <MenuItem value="علوم الحاسبات">علوم الحاسبات</MenuItem>
           </TextField>
-          <UsersInput setValues={setValues} />
+          <UsersInput setValues={setValues} errors={errors} />
           <textarea
             onChange={(e) => handleChange(e, "summary")}
             placeholder="نبذة عن النشاط"
@@ -253,17 +242,18 @@ export const ActivityModal = ({
           />
           <TextField
             label="رابط المرفقات"
-            id="links"
+            id="link"
+            value={values.link}
             InputProps={{ sx: { backgroundColor: "white" } }}
             size="small"
-            onChange={(e) => handleChange(e, "links")}
+            onChange={(e) => handleChange(e, "link")}
           />
 
           <FileInput setFiles={setFiles} />
           <div className="flex gap-1 w-full">
             {files.map((image, index) => {
               return (
-                <div className="w-10 h-10 relative">
+                <div className="w-10 h-10 relative" key={index}>
                   <IconButton
                     size="small"
                     sx={{ position: "absolute", top: "-10px", left: "-10px" }}
@@ -300,16 +290,23 @@ export const ActivityModal = ({
               id="barcode"
               sx={{ backgroundColor: "white", width: "50%" }}
               size="small"
+              value={values.barcode}
               onChange={(e) => handleChange(e, "barcode")}
             />
           </div>
-          <Button
-            variant="contained"
-            sx={{ width: "16rem", marginX: "auto", fontSize: "16px" }}
-            type="submit"
-          >
-            رفـــــع
-          </Button>
+          {loading ? (
+            <div className="w-full flex justify-center p-3">
+              <BeatLoader color="#757ce8" />
+            </div>
+          ) : (
+            <Button
+              variant="contained"
+              sx={{ width: "16rem", marginX: "auto", fontSize: "16px" }}
+              type="submit"
+            >
+              رفـــــع
+            </Button>
+          )}
         </FormControl>
         <Button
           color="error"

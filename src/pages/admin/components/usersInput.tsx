@@ -5,8 +5,10 @@ import { useGetNames } from "../api/getNames";
 
 export const UsersInput = ({
   setValues,
+  errors,
 }: {
   setValues: React.Dispatch<React.SetStateAction<any>>;
+  errors: any;
 }) => {
   const [name, setName] = React.useState<string>("");
   const { response, error, getNames, loading } = useGetNames({ string: name });
@@ -34,9 +36,15 @@ export const UsersInput = ({
         renderInput={(params) => (
           <TextField
             {...params}
-            sx={{ backgroundColor: "white", width: "100%" }}
+            sx={{ width: "100%" }}
+            InputProps={{
+              ...params.InputProps,
+              sx: { backgroundColor: "white" },
+            }}
             label="اسماء المشاركين"
             placeholder="الاسماء"
+            error={errors.participants.error}
+            helperText={errors.participants.message}
             onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
               setName(e.target.value)
             }

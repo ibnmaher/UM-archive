@@ -1,14 +1,22 @@
 import { Chip } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { ActivityModal } from "./activityModal";
 import { SearchBar } from "./searchBar";
 import { ActivitiesTable } from "./activitiesTable";
 import { UserModal } from "./userModal";
 import { UsersTable } from "./usersTable";
-
+import { Message } from "common/components/message";
+import dayjs, { Dayjs } from "dayjs";
 export const Admin = () => {
-  const [activityModal, setActivityModal] = React.useState<boolean>(false);
-  const [userModal, setUserModal] = React.useState<boolean>(false);
+  const [activityModal, setActivityModal] = useState<boolean>(false);
+  const [userModal, setUserModal] = useState<boolean>(false);
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState({
+    string: "",
+    department: "",
+    dateFrom: null,
+    dateTo: null,
+  });
   const [action, setAction] = React.useState<"activities" | "users">(
     "activities"
   );
@@ -22,6 +30,8 @@ export const Admin = () => {
       className="w-full min-h-screen pt-24 px-4 pb-4 flex flex-col gap-4 items-center"
     >
       <SearchBar
+        query={query}
+        setQuery={setQuery}
         action={action}
         setActivityModal={setActivityModal}
         setUserModal={setUserModal}
@@ -39,10 +49,18 @@ export const Admin = () => {
         />
       </div>
       {action === "users" && <UsersTable />}
-      {action === "activities" && <ActivitiesTable />}
+      {action === "activities" && <ActivitiesTable query={query} />}
 
-      {activityModal && <ActivityModal setActivityModal={setActivityModal} />}
+      {activityModal && (
+        <ActivityModal setActivityModal={setActivityModal} setOpen={setOpen} />
+      )}
       {userModal && <UserModal setUserModal={setUserModal} />}
+      <Message
+        open={open}
+        setOpen={setOpen}
+        severity={"success"}
+        message={"تمت اضافة كورس"}
+      />
     </div>
   );
 };

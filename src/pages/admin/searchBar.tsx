@@ -17,27 +17,24 @@ export const SearchBar = ({
   setActivityModal,
   setUserModal,
   action,
+  query,
+  setQuery,
 }: {
   setActivityModal: React.Dispatch<React.SetStateAction<boolean>>;
   setUserModal: React.Dispatch<React.SetStateAction<boolean>>;
   action: string;
+  query: any;
+  setQuery: React.Dispatch<React.SetStateAction<any>>;
 }) => {
-  const [nameString, setNameString] = useState<string>("");
   let handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNameString(e.target.value);
+    setQuery((state: any) => {
+      return { ...state, string: e.target.value };
+    });
   };
   const handleSearch = () => {
-    console.log(nameString);
+    console.log(query);
   };
-  const [dateFrom, setDateFrom] = React.useState<Dayjs | null>(dayjs());
-  const [dateTo, setDateTo] = React.useState<Dayjs | null>(dayjs());
 
-  const handleChange = (
-    newValue: Dayjs | null,
-    cb: React.Dispatch<React.SetStateAction<Dayjs | null>>
-  ) => {
-    cb(newValue);
-  };
   return (
     <Paper
       className="w-full h-16 flex items-center justify-between p-4"
@@ -56,10 +53,16 @@ export const SearchBar = ({
       </div>
       <TextField
         size="small"
-        id="activity-type"
+        id="department"
         label=" القسم"
         sx={{ backgroundColor: "#F8F4EA", width: "240px" }}
         select
+        value={query.department}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setQuery((state: any) => {
+            return { ...state, dpartment: e.target.value };
+          })
+        }
       >
         <MenuItem value={10}>Ten</MenuItem>
         <MenuItem value={20}>Twenty</MenuItem>
@@ -70,9 +73,16 @@ export const SearchBar = ({
           <MobileDatePicker
             label="التاريخ من"
             inputFormat="MM/DD/YYYY"
-            value={dateFrom}
+            value={query.dateFrom}
             disableFuture
-            onChange={(value) => handleChange(value, setDateFrom)}
+            onChange={(value) =>
+              setQuery((state: any) => {
+                return {
+                  ...state,
+                  dateFrom: dayjs(value).format("YYYY/MM/DD"),
+                };
+              })
+            }
             renderInput={(params) => (
               <TextField
                 sx={{ backgroundColor: "#F8F4EA" }}
@@ -84,10 +94,14 @@ export const SearchBar = ({
           <MobileDatePicker
             label="التاريخ الى"
             inputFormat="MM/DD/YYYY"
-            value={dateTo}
+            value={query.dateTo}
             disableFuture
-            minDate={dateFrom ? dateFrom : dayjs()}
-            onChange={(value) => handleChange(value, setDateTo)}
+            minDate={query.dateFrom ? query.dateFrom : dayjs()}
+            onChange={(value) =>
+              setQuery((state: any) => {
+                return { ...state, dateTo: dayjs(value).format("YYYY/MM/DD") };
+              })
+            }
             renderInput={(params) => (
               <TextField
                 sx={{ backgroundColor: "#F8F4EA" }}
