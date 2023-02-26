@@ -6,12 +6,17 @@ import { useGetNames } from "../api/getNames";
 export const UsersInput = ({
   setValues,
   errors,
+  auth,
 }: {
   setValues: React.Dispatch<React.SetStateAction<any>>;
   errors: any;
+  auth: any;
 }) => {
   const [name, setName] = React.useState<string>("");
-  const { response, error, getNames, loading } = useGetNames({ string: name });
+  const { response, error, getNames, loading } = useGetNames(
+    { string: name },
+    { Authorization: `Bearer ${auth.token}` }
+  );
 
   React.useEffect(() => {
     getNames();

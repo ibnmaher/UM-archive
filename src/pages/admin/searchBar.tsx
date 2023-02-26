@@ -19,11 +19,13 @@ export const SearchBar = ({
   action,
   query,
   setQuery,
+  auth,
 }: {
   setActivityModal: React.Dispatch<React.SetStateAction<boolean>>;
   setUserModal: React.Dispatch<React.SetStateAction<boolean>>;
   action: string;
   query: any;
+  auth: any;
   setQuery: React.Dispatch<React.SetStateAction<any>>;
 }) => {
   let handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,29 +53,47 @@ export const SearchBar = ({
           <GoSearch />
         </IconButton>
       </div>
-      <TextField
-        size="small"
-        id="department"
-        label=" القسم"
-        sx={{ backgroundColor: "#F8F4EA", width: "240px" }}
-        select
-        value={query.department}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setQuery((state: any) => {
-            return { ...state, dpartment: e.target.value };
-          })
-        }
-      >
-        <MenuItem value={10}>Ten</MenuItem>
-        <MenuItem value={20}>Twenty</MenuItem>
-        <MenuItem value={30}>Thirty</MenuItem>
-      </TextField>
-      {action !== "users" && (
+      {auth.type === "admin" && (
+        <TextField
+          size="small"
+          id="department"
+          label=" القسم"
+          sx={{ backgroundColor: "#F8F4EA", width: "240px" }}
+          select
+          value={query.department}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setQuery((state: any) => {
+              return { ...state, department: e.target.value };
+            })
+          }
+        >
+          <MenuItem value={""}>الكل</MenuItem>
+          <MenuItem value={"علوم حاسبات"}>علوم حاسبات</MenuItem>
+          <MenuItem value={"هندسة"}>هندسة</MenuItem>
+          <MenuItem value={"تربية"}>تربية</MenuItem>
+        </TextField>
+      )}
+      {action !== "users" && auth.type !== "user" && (
         <div className="flex items-center justify-center gap-4">
           <MobileDatePicker
             label="التاريخ من"
             inputFormat="MM/DD/YYYY"
             value={query.dateFrom}
+            componentsProps={{
+              actionBar: {
+                actions: ["clear", "accept"],
+              },
+            }}
+            onAccept={(newDate) => {
+              setQuery((state: any) => {
+                return {
+                  ...state,
+                  dateFrom: newDate
+                    ? dayjs(newDate).format("YYYY/MM/DD")
+                    : null,
+                };
+              });
+            }}
             disableFuture
             onChange={(value) =>
               setQuery((state: any) => {
@@ -94,6 +114,19 @@ export const SearchBar = ({
           <MobileDatePicker
             label="التاريخ الى"
             inputFormat="MM/DD/YYYY"
+            componentsProps={{
+              actionBar: {
+                actions: ["clear", "accept"],
+              },
+            }}
+            onAccept={(newDate) => {
+              setQuery((state: any) => {
+                return {
+                  ...state,
+                  dateTo: newDate ? dayjs(newDate).format("YYYY/MM/DD") : null,
+                };
+              });
+            }}
             value={query.dateTo}
             disableFuture
             minDate={query.dateFrom ? query.dateFrom : dayjs()}
@@ -112,39 +145,41 @@ export const SearchBar = ({
           />
         </div>
       )}
-      <div className="flex gap-4">
-        <Button
-          size="small"
-          sx={{
-            backgroundColor: "#F8F4EA",
-            fontWeight: "500",
-            zIndex: "1",
-            fontSize: "16px",
-            boxShadow: "4",
-          }}
-          onClick={() => setUserModal(true)}
-        >
-          <IoAdd className=" text-lg" />
-          اضافة مستخدم
-        </Button>
+      {auth.type === "admin" && (
+        <div className="flex gap-4">
+          <Button
+            size="small"
+            sx={{
+              backgroundColor: "#F8F4EA",
+              fontWeight: "500",
+              zIndex: "1",
+              fontSize: "16px",
+              boxShadow: "4",
+            }}
+            onClick={() => setUserModal(true)}
+          >
+            <IoAdd className=" text-lg" />
+            اضافة مستخدم
+          </Button>
 
-        <Button
-          size="small"
-          sx={{
-            backgroundColor: "#579BB1",
-            fontWeight: "500",
-            zIndex: "1",
-            fontSize: "16px",
-            color: "white",
-            boxShadow: "4",
-            "&:hover": { backgroundColor: "#74b0c4" },
-          }}
-          onClick={() => setActivityModal(true)}
-        >
-          <IoAdd className=" text-lg" />
-          اضافة نشاط
-        </Button>
-      </div>
+          <Button
+            size="small"
+            sx={{
+              backgroundColor: "#579BB1",
+              fontWeight: "500",
+              zIndex: "1",
+              fontSize: "16px",
+              color: "white",
+              boxShadow: "4",
+              "&:hover": { backgroundColor: "#74b0c4" },
+            }}
+            onClick={() => setActivityModal(true)}
+          >
+            <IoAdd className=" text-lg" />
+            اضافة نشاط
+          </Button>
+        </div>
+      )}
     </Paper>
   );
 };

@@ -1,7 +1,7 @@
 import { useHttp } from "common/hooks/useHttp";
 
-export const useAddtUser = (query? : any) => {
-    const { response, sendRequest, error, loading } = useHttp(query);
+export const useAddUser = (query? : any,headers?: any) => {
+    const { response, sendRequest, error, loading } = useHttp(query,headers);
     const addUser = (payload: any) => {
         console.log(payload)
         sendRequest({

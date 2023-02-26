@@ -12,19 +12,12 @@ export const Index = ({ auth }: { auth: any }) => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route
-        path="profile"
-        element={
-          <ProtectedRoute auth={auth}>
-            <Profile />
-          </ProtectedRoute>
-        }
-      />
+
       <Route
         path="admin"
         element={
           <ProtectedRoute auth={auth}>
-            <Admin />
+            <Admin auth={auth} />
           </ProtectedRoute>
         }
       />

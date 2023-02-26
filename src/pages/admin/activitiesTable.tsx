@@ -11,9 +11,23 @@ import { FiEdit } from "react-icons/fi";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { useEffect } from "react";
 import { useGetActivities } from "./api/getActivities";
-export const ActivitiesTable = ({ query }: { query: any }) => {
-  const [modal, setModal] = useState<boolean>(false);
-  const { response, getActivities, error, loading } = useGetActivities(query);
+import Barcode from "react-barcode";
+import { Modal } from "./components/modal";
+export const ActivitiesTable = ({
+  query,
+  auth,
+  activityModal,
+}: {
+  query: any;
+  auth: any;
+  activityModal: boolean;
+}) => {
+  const [modalActivity, setModalActivity] = useState<any>(false);
+
+  const { response, getActivities, error, loading } = useGetActivities(query, {
+    Authorization: `Bearer ${auth.token}`,
+  });
+
   const ODD_OPACITY = 0.2;
   const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
     [`& .${gridClasses.row}.even`]: {
@@ -54,11 +68,32 @@ export const ActivitiesTable = ({ query }: { query: any }) => {
     },
   }));
   const handleRowClick: GridEventListener<"rowClick"> = (params) => {
-    setModal(true);
+    let selectedActivity = response.filter(
+      (activity: any) => activity.id == params.id
+    );
+
+    setModalActivity(selectedActivity);
   };
 
   const columns: GridColDef[] = [
-    { field: "name", headerName: "الاسم", width: 300 },
+    {
+      field: "barcode_id",
+      headerName: "الرمز الشريطي",
+      width: 300,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params: any) => {
+        return (
+          <Barcode
+            height={20}
+            background={"transparent"}
+            fontSize={11}
+            width={1.5}
+            value={params.row.barcode_id}
+          />
+        );
+      },
+    },
     {
       field: "title",
       headerName: "العنوان",
@@ -66,13 +101,13 @@ export const ActivitiesTable = ({ query }: { query: any }) => {
       minWidth: 200,
     },
     {
-      field: "dateFrom",
+      field: "start_date",
       headerName: "التاريخ من",
       headerAlign: "center",
       align: "center",
     },
     {
-      field: "dateTo",
+      field: "end_date",
       headerName: "التاريخ الى",
       headerAlign: "center",
       align: "center",
@@ -80,6 +115,13 @@ export const ActivitiesTable = ({ query }: { query: any }) => {
     {
       field: "department",
       headerName: "القسم",
+      headerAlign: "center",
+      align: "center",
+      width: 200,
+    },
+    {
+      field: "participants_count",
+      headerName: "المشاركين",
       headerAlign: "center",
       align: "center",
       width: 200,
@@ -115,23 +157,11 @@ export const ActivitiesTable = ({ query }: { query: any }) => {
     },
   ];
 
-  const rows = [
-    {
-      id: 0,
-      name: "hf",
-      department: "Jon",
-      activities: 35,
-    },
-    { id: 2, name: "Shfnow", department: "Jon", activities: 35 },
-    { id: 5, name: "yhi", department: "Jon", activities: 35 },
-    { id: 6, name: "etb", department: "Jon", activities: 35 },
-    { id: 7, name: "arr", department: "Jon", activities: 35 },
-    { id: 8, name: "uk", department: "Jon", activities: 35 },
-    { id: 9, name: ",ol", department: "Jon", activities: 35 },
-  ];
+  const rows = response || [];
   useEffect(() => {
     getActivities();
-  }, [query]);
+  }, [query, activityModal]);
+
   return (
     <div className="w-full flex-1">
       <StripedDataGrid
@@ -155,6 +185,12 @@ export const ActivitiesTable = ({ query }: { query: any }) => {
           },
         }}
       />
+      {modalActivity && (
+        <Modal
+          modalActivity={modalActivity}
+          setModalActivity={setModalActivity}
+        />
+      )}
     </div>
   );
 };

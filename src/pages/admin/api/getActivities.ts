@@ -1,7 +1,8 @@
 import { useHttp } from "common/hooks/useHttp";
 
-export const useGetActivities = (query? : any) => {
-    const { response, sendRequest, error, loading } = useHttp(query);
+export const useGetActivities = (query? : any,headers?:any) => {
+
+    const { response, sendRequest, error, loading } = useHttp(query,headers);
     const getActivities = () => {
      
         sendRequest({

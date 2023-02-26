@@ -28,24 +28,33 @@ export const Navbar = ({ auth }: { auth: any }) => {
           </NavLink>
         )}
         {auth && (
-          <button onClick={() => dispatch(setAuth(false))}>تسجيل خروج</button>
+          <button
+            onClick={() => {
+              localStorage.clear();
+              dispatch(setAuth(false));
+            }}
+          >
+            تسجيل خروج
+          </button>
         )}
         {auth && (
           <NavLink
-            to="profile"
+            to="admin"
             style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}
             className="hover:text-white"
           >
             الصفحة الشخصية
           </NavLink>
         )}
-        <NavLink
-          to="/"
-          style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}
-          className="hover:text-white"
-        >
-          الصفحة الرئيسية
-        </NavLink>
+        {!auth && (
+          <NavLink
+            to="/"
+            style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}
+            className="hover:text-white"
+          >
+            الصفحة الرئيسية
+          </NavLink>
+        )}
       </ul>
     </div>
   );

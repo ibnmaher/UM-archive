@@ -13,18 +13,23 @@ import { AiOutlineClose } from "react-icons/ai";
 import { addUserSchema } from "utils/addUserSchema";
 import { validationFunction } from "utils/validationFunction";
 import { yupErrorHandler } from "utils/yupErrorHandler";
-import { useAddtUser } from "./api/addUser";
+import { useAddUser } from "./api/addUser";
 export const UserModal = ({
   setUserModal,
+  auth,
 }: {
   setUserModal: React.Dispatch<React.SetStateAction<boolean>>;
+  auth: any;
 }) => {
   const [dateFrom, setDateFrom] = React.useState<Dayjs | null>(dayjs());
   const [dateTo, setDateTo] = React.useState<Dayjs | null>(dayjs());
   const [values, setValues] = useState<any>({ superviser: false });
   const [open, setOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
-  const { response, addUser, loading, error } = useAddtUser();
+  const { response, addUser, loading, error } = useAddUser(
+    {},
+    { Authorization: `Bearer ${auth.token}` }
+  );
   const [errors, setErrors] = useState({
     email: {
       error: false,
@@ -123,9 +128,9 @@ export const UserModal = ({
             helperText={errors.department.message}
             onChange={(e) => handleChange(e, "department")}
           >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            <MenuItem value={"علوم حاسبات"}>علوم حاسبات</MenuItem>
+            <MenuItem value={"هندسة"}>هندسة</MenuItem>
+            <MenuItem value={"تربية"}>تربية</MenuItem>
           </TextField>
           <TextField
             label="الاسم"
@@ -159,6 +164,7 @@ export const UserModal = ({
           <FormControlLabel
             control={
               <Checkbox
+                defaultChecked={values.superviser}
                 onChange={() =>
                   setValues((values: any) => {
                     return { ...values, superviser: !values.superviser };

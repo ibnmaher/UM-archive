@@ -23,20 +23,28 @@ import { yupErrorHandler } from "utils/yupErrorHandler";
 import activityModalErrors from "./objects/activityModalErrors";
 import { BeatLoader } from "react-spinners";
 import { Message } from "common/components/message";
+import { Modal } from "./components/modal";
 export const ActivityModal = ({
   setActivityModal,
   setOpen,
+  auth,
 }: {
   setActivityModal: React.Dispatch<React.SetStateAction<boolean>>;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  auth: any;
 }) => {
-  const { error, response, addActivity, loading } = useAddActivity();
+  console.log("dwdwdww", auth.token);
+  const { error, response, addActivity, loading } = useAddActivity(
+    {},
+    { Authorization: `Bearer ${auth.token}` }
+  );
 
   const [dateFrom, setDateFrom] = React.useState<Dayjs | null>(dayjs());
   const [dateTo, setDateTo] = React.useState<Dayjs | null>(dayjs());
   const [orderDate, setOrderDate] = React.useState<Dayjs | null>(dayjs());
   const [files, setFiles] = useState<any[]>([]);
   const [errors, setErrors] = useState(activityModalErrors);
+
   const [values, setValues] = useState<any>({
     type: "",
     department: "",
@@ -232,9 +240,11 @@ export const ActivityModal = ({
             select
             onChange={(e) => handleChange(e, "department")}
           >
-            <MenuItem value="علوم الحاسبات">علوم الحاسبات</MenuItem>
+            <MenuItem value={"علوم حاسبات"}>علوم حاسبات</MenuItem>
+            <MenuItem value={"هندسة"}>هندسة</MenuItem>
+            <MenuItem value={"تربية"}>تربية</MenuItem>
           </TextField>
-          <UsersInput setValues={setValues} errors={errors} />
+          <UsersInput setValues={setValues} errors={errors} auth={auth} />
           <textarea
             onChange={(e) => handleChange(e, "summary")}
             placeholder="نبذة عن النشاط"

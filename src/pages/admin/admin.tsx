@@ -7,7 +7,7 @@ import { UserModal } from "./userModal";
 import { UsersTable } from "./usersTable";
 import { Message } from "common/components/message";
 import dayjs, { Dayjs } from "dayjs";
-export const Admin = () => {
+export const Admin = ({ auth }: any) => {
   const [activityModal, setActivityModal] = useState<boolean>(false);
   const [userModal, setUserModal] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
@@ -35,26 +35,40 @@ export const Admin = () => {
         action={action}
         setActivityModal={setActivityModal}
         setUserModal={setUserModal}
+        auth={auth}
       />
-      <div className="flex gap-4 self-start">
-        <Chip
-          label="الانشطة"
-          onClick={() => setAction("activities")}
-          color={action === "activities" ? "primary" : "default"}
-        />
-        <Chip
-          label="المستخدمين"
-          onClick={() => setAction("users")}
-          color={action === "users" ? "primary" : "default"}
-        />
-      </div>
+
+      {auth.type !== "user" && (
+        <div className="flex gap-4 self-start">
+          <Chip
+            label="الانشطة"
+            onClick={() => setAction("activities")}
+            color={action === "activities" ? "primary" : "default"}
+          />
+          <Chip
+            label="المستخدمين"
+            onClick={() => setAction("users")}
+            color={action === "users" ? "primary" : "default"}
+          />
+        </div>
+      )}
       {action === "users" && <UsersTable />}
-      {action === "activities" && <ActivitiesTable query={query} />}
+      {action === "activities" && (
+        <ActivitiesTable
+          query={query}
+          auth={auth}
+          activityModal={activityModal}
+        />
+      )}
 
       {activityModal && (
-        <ActivityModal setActivityModal={setActivityModal} setOpen={setOpen} />
+        <ActivityModal
+          setActivityModal={setActivityModal}
+          setOpen={setOpen}
+          auth={auth}
+        />
       )}
-      {userModal && <UserModal setUserModal={setUserModal} />}
+      {userModal && <UserModal setUserModal={setUserModal} auth={auth} />}
       <Message
         open={open}
         setOpen={setOpen}
