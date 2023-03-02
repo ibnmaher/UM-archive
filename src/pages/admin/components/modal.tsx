@@ -3,7 +3,7 @@ import React, { useRef } from "react";
 import QRCode from "react-qr-code";
 import { QRCodeSVG } from "qrcode.react";
 import Barcode from "react-barcode";
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, Link, TextField } from "@mui/material";
 
 export const Modal = ({
   setModalActivity,
@@ -12,7 +12,7 @@ export const Modal = ({
   setModalActivity: React.Dispatch<React.SetStateAction<any>>;
   modalActivity: any;
 }) => {
-  console.log(modalActivity[0].participants);
+  console.log(modalActivity[0]);
   const mainRef = useRef(null);
   useModal(mainRef, () => setModalActivity(false));
   return (
@@ -132,6 +132,42 @@ export const Modal = ({
           placeholder="نبذة عن النشاط"
           className=" resize-none rounded-[3px] h-20 w-full py-2 px-3 border-[1.8px] border-gray-300 hover:border-black focus:border-none"
         />
+        <div className="flex items-center gap-2">
+          <TextField
+            label="نوع النشاط"
+            value={modalActivity[0].location}
+            size="small"
+            inputProps={{ sx: { color: "blue" } }}
+            sx={{
+              width: "200px",
+              backgroundColor: "white",
+              "& .MuiInputBase-input.Mui-disabled": {
+                WebkitTextFillColor: "black",
+                fontWeight: "semibold",
+              },
+            }}
+            disabled
+          />
+          {modalActivity[0].link && (
+            <Link href={modalActivity[0].link} target="_blank" underline="none">
+              الرابط
+            </Link>
+          )}
+        </div>
+        <div className="flex gap-2">
+          {modalActivity[0].images[0].url &&
+            modalActivity[0].images.map((image: any, i: number) => {
+              return (
+                <a
+                  href={`http://localhost:5000/${image.url}`}
+                  target="_blank"
+                  className="w-10 h-10"
+                >
+                  <img src={`http://localhost:5000/${image.url}`} key={i} />
+                </a>
+              );
+            })}
+        </div>
         <div className="absolute bottom-2 left-2 ">
           <Barcode
             font="10px"

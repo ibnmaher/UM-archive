@@ -69,12 +69,12 @@ export const ActivitiesTable = ({
   }));
   const handleRowClick: GridEventListener<"rowClick"> = (params) => {
     let selectedActivity = response.filter(
-      (activity: any) => activity.id == params.id
+      (activity: any) => activity.activity_id == params.id
     );
 
     setModalActivity(selectedActivity);
   };
-
+  console.log("rss", response);
   const columns: GridColDef[] = [
     {
       field: "barcode_id",

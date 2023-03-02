@@ -10,7 +10,7 @@ import { AppDispatch } from "common/context/store";
 let timeOut: any;
 function App() {
   const { auth, isLoading } = useSelector((state: any) => state.authSlice);
-  console.log("dwdw", isLoading);
+
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     dispatch(getAuth());

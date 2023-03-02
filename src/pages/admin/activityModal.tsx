@@ -38,7 +38,7 @@ export const ActivityModal = ({
     {},
     { Authorization: `Bearer ${auth.token}` }
   );
-
+  console.log("rss", response);
   const [dateFrom, setDateFrom] = React.useState<Dayjs | null>(dayjs());
   const [dateTo, setDateTo] = React.useState<Dayjs | null>(dayjs());
   const [orderDate, setOrderDate] = React.useState<Dayjs | null>(dayjs());
@@ -251,7 +251,7 @@ export const ActivityModal = ({
             className=" resize-none rounded-[3px] h-20 w-full py-2 px-3 border-[1.8px] border-gray-300 hover:border-black focus:border-none"
           />
           <TextField
-            label="رابط المرفقات"
+            label="الروابط "
             id="link"
             value={values.link}
             InputProps={{ sx: { backgroundColor: "white" } }}
