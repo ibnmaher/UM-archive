@@ -13,16 +13,33 @@ import { useEffect } from "react";
 import { useGetActivities } from "./api/getActivities";
 import Barcode from "react-barcode";
 import { Modal } from "./components/modal";
+import { DeleteModal } from "./components/deleteModal";
+interface PROPS {
+  query: any;
+  auth: any;
+  refetch: boolean;
+  setRefetch: React.Dispatch<React.SetStateAction<boolean>>;
+
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
+  setSeverity: React.Dispatch<
+    React.SetStateAction<"success" | "info" | "warning" | "error">
+  >;
+}
 export const ActivitiesTable = ({
   query,
   auth,
-  activityModal,
-}: {
-  query: any;
-  auth: any;
-  activityModal: boolean;
-}) => {
+  refetch,
+  setRefetch,
+  setMessage,
+  setOpen,
+  setSeverity,
+}: PROPS) => {
   const [modalActivity, setModalActivity] = useState<any>(false);
+
+  const [deleteModal, setDeleteModal] = useState<boolean | string | number>(
+    false
+  );
 
   const { response, getActivities, error, loading } = useGetActivities(query, {
     Authorization: `Bearer ${auth.token}`,
@@ -74,7 +91,7 @@ export const ActivitiesTable = ({
 
     setModalActivity(selectedActivity);
   };
-  console.log("rss", response);
+
   const columns: GridColDef[] = [
     {
       field: "barcode_id",
@@ -135,7 +152,11 @@ export const ActivitiesTable = ({
       align: "center",
       renderCell: (params: any) => {
         return (
-          <Button onClick={() => console.log(params.id)}>
+          <Button
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
             <FiEdit className="text-lg" />
           </Button>
         );
@@ -149,7 +170,13 @@ export const ActivitiesTable = ({
       align: "center",
       renderCell: (params: any) => {
         return (
-          <Button color="warning" onClick={() => console.log(params.id)}>
+          <Button
+            color="warning"
+            onClick={(e) => {
+              e.stopPropagation();
+              setDeleteModal(params.id);
+            }}
+          >
             <MdOutlineDeleteOutline className="text-lg" />
           </Button>
         );
@@ -160,7 +187,7 @@ export const ActivitiesTable = ({
   const rows = response || [];
   useEffect(() => {
     getActivities();
-  }, [query, activityModal]);
+  }, [query, refetch]);
 
   return (
     <div className="w-full flex-1">
@@ -189,6 +216,19 @@ export const ActivitiesTable = ({
         <Modal
           modalActivity={modalActivity}
           setModalActivity={setModalActivity}
+        />
+      )}
+      {deleteModal && (
+        <DeleteModal
+          refetch={refetch}
+          setRefetch={setRefetch}
+          auth={auth}
+          deleteModal={deleteModal}
+          setDeleteModal={setDeleteModal}
+          setMessage={setMessage}
+          setOpen={setOpen}
+          setSeverity={setSeverity}
+          text="هل تريد مسح النشاط؟"
         />
       )}
     </div>

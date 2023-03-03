@@ -11,6 +11,7 @@ export const Admin = ({ auth }: any) => {
   const [activityModal, setActivityModal] = useState<boolean>(false);
   const [userModal, setUserModal] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
+  const [refetch, setRefetch] = useState<boolean>(false);
   const [query, setQuery] = useState({
     string: "",
     department: "",
@@ -20,6 +21,10 @@ export const Admin = ({ auth }: any) => {
   const [action, setAction] = React.useState<"activities" | "users">(
     "activities"
   );
+  const [message, setMessage] = useState<string>("");
+  const [severity, setSeverity] = useState<
+    "success" | "info" | "warning" | "error"
+  >("success");
   return (
     <div
       style={
@@ -57,14 +62,22 @@ export const Admin = ({ auth }: any) => {
         <ActivitiesTable
           query={query}
           auth={auth}
-          activityModal={activityModal}
+          refetch={refetch}
+          setRefetch={setRefetch}
+          setOpen={setOpen}
+          setMessage={setMessage}
+          setSeverity={setSeverity}
         />
       )}
 
       {activityModal && (
         <ActivityModal
+          refetch={refetch}
+          setRefetch={setRefetch}
           setActivityModal={setActivityModal}
           setOpen={setOpen}
+          setMessage={setMessage}
+          setSeverity={setSeverity}
           auth={auth}
         />
       )}
@@ -72,8 +85,8 @@ export const Admin = ({ auth }: any) => {
       <Message
         open={open}
         setOpen={setOpen}
-        severity={"success"}
-        message={"تمت اضافة كورس"}
+        severity={severity}
+        message={message}
       />
     </div>
   );

@@ -20,6 +20,9 @@ const cacheRtl = createCache({
 
 const theme = createTheme({
   direction: "rtl",
+  typography: {
+    fontFamily: ["Cairo"].join(","),
+  },
 });
 
 const root = ReactDOM.createRoot(

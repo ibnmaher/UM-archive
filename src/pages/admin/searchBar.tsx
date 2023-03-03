@@ -58,7 +58,7 @@ export const SearchBar = ({
           size="small"
           id="department"
           label=" القسم"
-          sx={{ backgroundColor: "#F8F4EA", width: "240px" }}
+          sx={{ backgroundColor: "#F8F4EA", width: "200px" }}
           select
           value={query.department}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -105,7 +105,7 @@ export const SearchBar = ({
             }
             renderInput={(params) => (
               <TextField
-                sx={{ backgroundColor: "#F8F4EA" }}
+                sx={{ backgroundColor: "#F8F4EA", width: "200px" }}
                 size="small"
                 {...params}
               />
@@ -137,7 +137,7 @@ export const SearchBar = ({
             }
             renderInput={(params) => (
               <TextField
-                sx={{ backgroundColor: "#F8F4EA" }}
+                sx={{ backgroundColor: "#F8F4EA", width: "200px" }}
                 size="small"
                 {...params}
               />

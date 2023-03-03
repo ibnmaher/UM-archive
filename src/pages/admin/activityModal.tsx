@@ -24,15 +24,26 @@ import activityModalErrors from "./objects/activityModalErrors";
 import { BeatLoader } from "react-spinners";
 import { Message } from "common/components/message";
 import { Modal } from "./components/modal";
+interface PROPS {
+  setActivityModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
+  refetch: boolean;
+  setRefetch: React.Dispatch<React.SetStateAction<boolean>>;
+  setSeverity: React.Dispatch<
+    React.SetStateAction<"success" | "info" | "warning" | "error">
+  >;
+  auth: any;
+}
 export const ActivityModal = ({
   setActivityModal,
   setOpen,
+  setMessage,
+  setSeverity,
+  refetch,
+  setRefetch,
   auth,
-}: {
-  setActivityModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  auth: any;
-}) => {
+}: PROPS) => {
   console.log("dwdwdww", auth.token);
   const { error, response, addActivity, loading } = useAddActivity(
     {},
@@ -94,10 +105,15 @@ export const ActivityModal = ({
   useEffect(() => {
     if (response?.status) {
       setOpen(true);
+      setMessage("تم اضافة كورس");
+      setSeverity("success");
       setActivityModal(false);
+      setRefetch((state: boolean) => !state);
     }
     if (error) {
-      alert("حدث خطاء");
+      setOpen(true);
+      setMessage("حدث خطأ");
+      setSeverity("error");
     }
   }, [response, error]);
 
