@@ -14,6 +14,7 @@ import { useGetActivities } from "./api/getActivities";
 import Barcode from "react-barcode";
 import { Modal } from "./components/modal";
 import { DeleteModal } from "./components/deleteModal";
+import { UpdateActivityModal } from "./components/updateActivityModal";
 interface PROPS {
   query: any;
   auth: any;
@@ -36,6 +37,7 @@ export const ActivitiesTable = ({
   setSeverity,
 }: PROPS) => {
   const [modalActivity, setModalActivity] = useState<any>(false);
+  const [updateActivityModal, setUpdateActivityModal] = useState<any>(false);
 
   const [deleteModal, setDeleteModal] = useState<boolean | string | number>(
     false
@@ -155,6 +157,11 @@ export const ActivitiesTable = ({
           <Button
             onClick={(e) => {
               e.stopPropagation();
+              let selectedActivity = response.filter(
+                (activity: any) => activity.activity_id == params.id
+              );
+
+              setUpdateActivityModal(selectedActivity);
             }}
           >
             <FiEdit className="text-lg" />
@@ -229,6 +236,18 @@ export const ActivitiesTable = ({
           setOpen={setOpen}
           setSeverity={setSeverity}
           text="هل تريد مسح النشاط؟"
+        />
+      )}
+      {updateActivityModal && (
+        <UpdateActivityModal
+          setUpdateActivityModal={setUpdateActivityModal}
+          activityInfo={updateActivityModal}
+          setRefetch={setRefetch}
+          setOpen={setOpen}
+          refetch={refetch}
+          setMessage={setMessage}
+          setSeverity={setSeverity}
+          auth={auth}
         />
       )}
     </div>

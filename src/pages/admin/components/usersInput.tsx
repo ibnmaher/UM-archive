@@ -7,10 +7,12 @@ export const UsersInput = ({
   setValues,
   errors,
   auth,
+  defalutValues,
 }: {
   setValues: React.Dispatch<React.SetStateAction<any>>;
   errors: any;
   auth: any;
+  defalutValues?: any;
 }) => {
   const [name, setName] = React.useState<string>("");
   const { response, error, getNames, loading } = useGetNames(
@@ -21,7 +23,7 @@ export const UsersInput = ({
   React.useEffect(() => {
     getNames();
   }, [name]);
-
+  console.log("here", defalutValues);
   return (
     <>
       <Autocomplete
@@ -38,6 +40,7 @@ export const UsersInput = ({
         getOptionLabel={(option: { name: string; email: string; id: number }) =>
           `${option.name} (${option.email})`
         }
+        defaultValue={defalutValues}
         renderInput={(params) => (
           <TextField
             {...params}

@@ -1,9 +1,9 @@
 import { Chip } from "@mui/material";
 import React, { useState } from "react";
-import { ActivityModal } from "./activityModal";
+import { ActivityModal } from "./components/activityModal";
 import { SearchBar } from "./searchBar";
 import { ActivitiesTable } from "./activitiesTable";
-import { UserModal } from "./userModal";
+import { UserModal } from "./components/userModal";
 import { UsersTable } from "./usersTable";
 import { Message } from "common/components/message";
 import dayjs, { Dayjs } from "dayjs";

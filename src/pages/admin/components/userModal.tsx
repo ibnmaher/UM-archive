@@ -13,7 +13,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { addUserSchema } from "utils/addUserSchema";
 import { validationFunction } from "utils/validationFunction";
 import { yupErrorHandler } from "utils/yupErrorHandler";
-import { useAddUser } from "./api/addUser";
+import { useAddUser } from "../api/addUser";
 export const UserModal = ({
   setUserModal,
   auth,
