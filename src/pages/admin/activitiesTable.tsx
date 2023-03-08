@@ -46,7 +46,7 @@ export const ActivitiesTable = ({
   const { response, getActivities, error, loading } = useGetActivities(query, {
     Authorization: `Bearer ${auth.token}`,
   });
-
+  console.log("res", response);
   const ODD_OPACITY = 0.2;
   const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
     [`& .${gridClasses.row}.even`]: {

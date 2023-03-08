@@ -155,7 +155,7 @@ export const Modal = ({
           )}
         </div>
         <div className="flex gap-2">
-          {modalActivity[0].images[0].url &&
+          {modalActivity[0].images &&
             modalActivity[0].images.map((image: any, i: number) => {
               return (
                 <a

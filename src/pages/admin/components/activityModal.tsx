@@ -62,6 +62,7 @@ export const ActivityModal = ({
     link: "",
     barcode: "",
     location: "نشاط خارجي",
+    participants: [],
   });
 
   const handleChange = (e: any, name: string) => {
@@ -260,7 +261,12 @@ export const ActivityModal = ({
             <MenuItem value={"هندسة"}>هندسة</MenuItem>
             <MenuItem value={"تربية"}>تربية</MenuItem>
           </TextField>
-          <UsersInput setValues={setValues} errors={errors} auth={auth} />
+          <UsersInput
+            values={values}
+            setValues={setValues}
+            errors={errors}
+            auth={auth}
+          />
           <textarea
             onChange={(e) => handleChange(e, "summary")}
             placeholder="نبذة عن النشاط"

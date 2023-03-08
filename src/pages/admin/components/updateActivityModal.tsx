@@ -74,10 +74,13 @@ export const UpdateActivityModal = ({
     barcode: activityInfo[0].barcode_id || "",
     location: activityInfo[0].location || "نشاط خارجي",
     summary: activityInfo[0].summary || "",
+    participants: activityInfo[0].participants,
+    orderDate: activityInfo[0].order_date,
+    orderFrom: activityInfo[0].start_date,
+    orderTo: activityInfo[0].end_date,
     deleteImages: false,
   });
-  console.log(activityInfo);
-  console.log(values);
+
   const handleChange = (e: any, name: string) => {
     setValues((values: any) => {
       return { ...values, [name]: e.target.value };
@@ -117,12 +120,13 @@ export const UpdateActivityModal = ({
     });
   };
   useEffect(() => {
+    console.log("jjj", response);
     if (response?.status) {
       setOpen(true);
       setMessage("تم تعديل النشاط");
       setSeverity("success");
-
       setRefetch((state: boolean) => !state);
+      setUpdateActivityModal(false);
     }
     if (error) {
       setOpen(true);
@@ -275,6 +279,7 @@ export const UpdateActivityModal = ({
             <MenuItem value={"تربية"}>تربية</MenuItem>
           </TextField>
           <UsersInput
+            values={values}
             defalutValues={activityInfo[0].participants}
             setValues={setValues}
             errors={errors}
@@ -359,6 +364,7 @@ export const UpdateActivityModal = ({
             </div>
           ) : (
             <Button
+              disabled={loading}
               variant="contained"
               sx={{ width: "16rem", marginX: "auto", fontSize: "16px" }}
               type="submit"

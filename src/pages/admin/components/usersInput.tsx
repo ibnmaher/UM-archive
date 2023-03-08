@@ -5,6 +5,7 @@ import { useGetNames } from "../api/getNames";
 
 export const UsersInput = ({
   setValues,
+  values,
   errors,
   auth,
   defalutValues,
@@ -12,6 +13,7 @@ export const UsersInput = ({
   setValues: React.Dispatch<React.SetStateAction<any>>;
   errors: any;
   auth: any;
+  values: any;
   defalutValues?: any;
 }) => {
   const [name, setName] = React.useState<string>("");
@@ -23,7 +25,7 @@ export const UsersInput = ({
   React.useEffect(() => {
     getNames();
   }, [name]);
-  console.log("here", defalutValues);
+  console.log(response);
   return (
     <>
       <Autocomplete
@@ -40,7 +42,10 @@ export const UsersInput = ({
         getOptionLabel={(option: { name: string; email: string; id: number }) =>
           `${option.name} (${option.email})`
         }
-        defaultValue={defalutValues}
+        value={values.participants}
+        isOptionEqualToValue={(option: any, value: any) =>
+          option.id === value.id
+        }
         renderInput={(params) => (
           <TextField
             {...params}
