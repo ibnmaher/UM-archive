@@ -73,7 +73,7 @@ export const SearchBar = ({
           <MenuItem value={"تربية"}>تربية</MenuItem>
         </TextField>
       )}
-      {
+      {action !== "users" && (
         <div className="flex items-center justify-center gap-4">
           <MobileDatePicker
             label="التاريخ من"
@@ -144,7 +144,7 @@ export const SearchBar = ({
             )}
           />
         </div>
-      }
+      )}
       {auth.type === "admin" && (
         <div className="flex gap-4">
           <Button

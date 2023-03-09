@@ -5,14 +5,47 @@ import {
   gridClasses,
 } from "@mui/x-data-grid";
 import { alpha, styled } from "@mui/material/styles";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import { FiEdit } from "react-icons/fi";
 import { MdOutlineDeleteOutline } from "react-icons/md";
+import { DeleteModal } from "./components/deleteModal";
+import { useGetUsers } from "./api/getUsers";
+import { UpdateUserModal } from "./components/updateUserModal";
+interface PROPS {
+  query: any;
+  auth: any;
+  refetch: boolean;
+  setRefetch: React.Dispatch<React.SetStateAction<boolean>>;
 
-export const UsersTable = () => {
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
+  setSeverity: React.Dispatch<
+    React.SetStateAction<"success" | "info" | "warning" | "error">
+  >;
+}
+export const UsersTable = ({
+  auth,
+  query,
+  refetch,
+  setMessage,
+  setRefetch,
+  setSeverity,
+  setOpen,
+}: PROPS) => {
   const [modal, setModal] = useState<boolean>(false);
+  const [updateUserModal, setUpdateUserModal] = useState<any>(false);
+  const [deleteModal, setDeleteModal] = useState<boolean | string | number>(
+    false
+  );
 
+  const { response, getUsers, error, loading } = useGetUsers(query, {
+    Authorization: `Bearer ${auth.token}`,
+  });
+  useEffect(() => {
+    getUsers();
+  }, [query, refetch]);
+  console.log(response);
   const ODD_OPACITY = 0.2;
   const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
     [`& .${gridClasses.row}.even`]: {
@@ -58,6 +91,13 @@ export const UsersTable = () => {
 
   const columns: GridColDef[] = [
     { field: "name", headerName: "الاسم", width: 300 },
+    {
+      field: "email",
+      headerName: "البريد الألكتروني",
+      width: 300,
+      headerAlign: "center",
+      align: "center",
+    },
 
     {
       field: "department",
@@ -67,7 +107,7 @@ export const UsersTable = () => {
       width: 200,
     },
     {
-      field: "activities",
+      field: "activities_count",
 
       headerName: "النشاطات",
       headerAlign: "center",
@@ -81,7 +121,15 @@ export const UsersTable = () => {
       align: "center",
       renderCell: (params: any) => {
         return (
-          <Button onClick={() => console.log(params.id)}>
+          <Button
+            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+              e.stopPropagation();
+              let userInfo = response.filter(
+                (user: any) => user.id === params.id
+              );
+              setUpdateUserModal(userInfo);
+            }}
+          >
             <FiEdit className="text-lg" />
           </Button>
         );
@@ -95,7 +143,13 @@ export const UsersTable = () => {
       align: "center",
       renderCell: (params: any) => {
         return (
-          <Button color="warning" onClick={() => console.log(params.id)}>
+          <Button
+            color="warning"
+            onClick={(e: any) => {
+              e.stopPropagation();
+              setDeleteModal(params.id);
+            }}
+          >
             <MdOutlineDeleteOutline className="text-lg" />
           </Button>
         );
@@ -103,26 +157,11 @@ export const UsersTable = () => {
     },
   ];
 
-  const rows = [
-    {
-      id: 0,
-      name: "hf",
-      department: "Jon",
-      activities: 35,
-    },
-    { id: 2, name: "Shfnow", department: "Jon", activities: 35 },
-    { id: 5, name: "yhi", department: "Jon", activities: 35 },
-    { id: 6, name: "etb", department: "Jon", activities: 35 },
-    { id: 7, name: "arr", department: "Jon", activities: 35 },
-    { id: 8, name: "uk", department: "Jon", activities: 35 },
-    { id: 9, name: ",ol", department: "Jon", activities: 35 },
-  ];
-
   return (
     <div className="w-full flex-1">
       <StripedDataGrid
         autoHeight
-        rows={rows}
+        rows={response || []}
         columns={columns}
         pageSize={20}
         checkboxSelection={false}
@@ -141,6 +180,27 @@ export const UsersTable = () => {
           },
         }}
       />
+      {deleteModal && (
+        <DeleteModal
+          refetch={refetch}
+          setRefetch={setRefetch}
+          auth={auth}
+          deleteModal={deleteModal}
+          setDeleteModal={setDeleteModal}
+          setMessage={setMessage}
+          setOpen={setOpen}
+          setSeverity={setSeverity}
+          text="هل تريد مسح المستخدم؟"
+          user
+        />
+      )}
+      {updateUserModal && (
+        <UpdateUserModal
+          auth={auth}
+          setUpdateUserModal={setUpdateUserModal}
+          userInfo={updateUserModal}
+        />
+      )}
     </div>
   );
 };

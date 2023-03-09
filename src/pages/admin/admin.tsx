@@ -57,7 +57,17 @@ export const Admin = ({ auth }: any) => {
           />
         </div>
       )}
-      {action === "users" && <UsersTable />}
+      {action === "users" && (
+        <UsersTable
+          query={query}
+          auth={auth}
+          refetch={refetch}
+          setRefetch={setRefetch}
+          setOpen={setOpen}
+          setMessage={setMessage}
+          setSeverity={setSeverity}
+        />
+      )}
       {action === "activities" && (
         <ActivitiesTable
           query={query}

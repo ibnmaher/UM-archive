@@ -1,6 +1,7 @@
 import { Button, Modal } from "@mui/material";
 import { useEffect } from "react";
 import { useDeleteActivity } from "../api/deleteActivity";
+import { useDeleteUser } from "../api/deleteUser";
 
 interface PARAMS {
   text: string;
@@ -17,6 +18,7 @@ interface PARAMS {
   setSeverity: React.Dispatch<
     React.SetStateAction<"success" | "info" | "warning" | "error">
   >;
+  user?: boolean;
 }
 export const DeleteModal = ({
   text,
@@ -28,16 +30,23 @@ export const DeleteModal = ({
   setMessage,
   refetch,
   setRefetch,
+  user,
 }: PARAMS) => {
   const { deleteActivity, loading, error, response } = useDeleteActivity(
     {},
     { Authorization: `Bearer ${auth.token}` }
   );
+  const {
+    deleteUser,
+    loading: uLoading,
+    error: uError,
+    response: uResponse,
+  } = useDeleteUser({}, { Authorization: `Bearer ${auth.token}` });
   useEffect(() => {
-    if (response?.status) {
-      if (response.status === 201) {
+    if (response || uResponse) {
+      if (response?.status === 200 || uResponse?.status === 200) {
         setOpen(true);
-        setMessage("تم خذف النشاط");
+        setMessage(user ? "تم حذف المستخدم" : "تم حذف النشاط");
         setSeverity("success");
         setRefetch((state: boolean) => !state);
         setDeleteModal(false);
@@ -47,7 +56,7 @@ export const DeleteModal = ({
         setSeverity("error");
       }
     }
-  }, [response]);
+  }, [response, uResponse]);
 
   return (
     <Modal
@@ -73,7 +82,11 @@ export const DeleteModal = ({
             color="warning"
             variant="contained"
             onClick={() => {
-              deleteActivity({ activityId: deleteModal });
+              if (user) {
+                deleteUser({ userId: deleteModal });
+              } else {
+                deleteActivity({ activityId: deleteModal });
+              }
             }}
           >
             حذف
