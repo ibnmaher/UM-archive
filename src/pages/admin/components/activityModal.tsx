@@ -1,6 +1,5 @@
 import {
   Button,
-  Checkbox,
   FormControl,
   FormControlLabel,
   IconButton,
@@ -13,17 +12,15 @@ import { MobileDatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import { FileInput } from "./fileInput";
 import { TiDelete } from "react-icons/ti";
-import { useAddActivity } from "../api/addActivity";
-import { UsersInput } from "./usersInput";
+import { BeatLoader } from "react-spinners";
 import { addActivitySchema } from "utils/addActivitySchema";
 import { validationFunction } from "utils/validationFunction";
 import { yupErrorHandler } from "utils/yupErrorHandler";
+import { useAddActivity } from "../api/addActivity";
 import activityModalErrors from "../objects/activityModalErrors";
-import { BeatLoader } from "react-spinners";
-import { Message } from "common/components/message";
-import { Modal } from "./modal";
+import { FileInput } from "./fileInput";
+import { UsersInput } from "./usersInput";
 interface PROPS {
   setActivityModal: React.Dispatch<React.SetStateAction<boolean>>;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;

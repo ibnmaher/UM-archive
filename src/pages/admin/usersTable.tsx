@@ -196,6 +196,10 @@ export const UsersTable = ({
       )}
       {updateUserModal && (
         <UpdateUserModal
+          setMessage={setMessage}
+          setRefetch={setRefetch}
+          setSeverity={setSeverity}
+          setOpen={setOpen}
           auth={auth}
           setUpdateUserModal={setUpdateUserModal}
           userInfo={updateUserModal}

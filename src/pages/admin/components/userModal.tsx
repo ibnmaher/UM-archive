@@ -23,7 +23,7 @@ export const UserModal = ({
 }) => {
   const [dateFrom, setDateFrom] = React.useState<Dayjs | null>(dayjs());
   const [dateTo, setDateTo] = React.useState<Dayjs | null>(dayjs());
-  const [values, setValues] = useState<any>({ superviser: false });
+  const [values, setValues] = useState<any>({ supervisor: false });
   const [open, setOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const { response, addUser, loading, error } = useAddUser(
@@ -97,7 +97,7 @@ export const UserModal = ({
   useEffect(() => {
     if (response?.status === 201) {
       setOpen(true);
-      setValues({ superviser: false });
+      setValues({ supervisor: false });
       formRef?.current?.reset();
     }
   }, [response]);
@@ -164,10 +164,10 @@ export const UserModal = ({
           <FormControlLabel
             control={
               <Checkbox
-                defaultChecked={values.superviser}
+                defaultChecked={values.supervisor}
                 onChange={() =>
                   setValues((values: any) => {
-                    return { ...values, superviser: !values.superviser };
+                    return { ...values, supervisor: !values.supervisor };
                   })
                 }
               />

@@ -13,29 +13,41 @@ import { AiOutlineClose } from "react-icons/ai";
 import { addUserSchema } from "utils/addUserSchema";
 import { validationFunction } from "utils/validationFunction";
 import { yupErrorHandler } from "utils/yupErrorHandler";
+import { boolean } from "yup";
 import { useAddUser } from "../api/addUser";
+import { useUpdateUser } from "../api/updateUser";
 export const UpdateUserModal = ({
   setUpdateUserModal,
   userInfo,
   auth,
+  setMessage,
+  setRefetch,
+  setSeverity,
+  setOpen,
 }: {
   setUpdateUserModal: React.Dispatch<React.SetStateAction<boolean>>;
   auth: any;
   userInfo: any;
+  setRefetch: React.Dispatch<React.SetStateAction<boolean>>;
+
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
+  setSeverity: React.Dispatch<
+    React.SetStateAction<"success" | "info" | "warning" | "error">
+  >;
 }) => {
-  const [dateFrom, setDateFrom] = React.useState<Dayjs | null>(dayjs());
-  const [dateTo, setDateTo] = React.useState<Dayjs | null>(dayjs());
   const [values, setValues] = useState<any>({
+    id: userInfo[0].id,
     name: userInfo[0].name,
     department: userInfo[0].department,
     email: userInfo[0].email,
     phone: userInfo[0].phone_number,
 
-    superviser: userInfo[0].type === "superviser",
+    supervisor: userInfo[0].type === "supervisor",
   });
-  const [open, setOpen] = useState(false);
+
   const formRef = useRef<HTMLFormElement>(null);
-  const { response, addUser, loading, error } = useAddUser(
+  const { response, updateUser, loading, error } = useUpdateUser(
     {},
     { Authorization: `Bearer ${auth.token}` }
   );
@@ -85,7 +97,7 @@ export const UpdateUserModal = ({
     });
     try {
       await validationFunction(addUserSchema, values);
-      await addUser(values);
+      await updateUser(values);
     } catch (err: any) {
       console.log(err);
       yupErrorHandler(err.inner, setErrors);
@@ -105,8 +117,12 @@ export const UpdateUserModal = ({
   }, [error]);
   useEffect(() => {
     if (response?.status === 201) {
+      setMessage("تم تحديث معلومات المستخدم");
+      setSeverity("success");
       setOpen(true);
-      setValues({ superviser: false });
+      setRefetch((state: boolean) => !state);
+      setUpdateUserModal(false);
+      setValues({ supervisor: false });
       formRef?.current?.reset();
     }
   }, [response]);
@@ -177,10 +193,10 @@ export const UpdateUserModal = ({
           <FormControlLabel
             control={
               <Checkbox
-                checked={values.superviser}
+                checked={values.supervisor}
                 onChange={() =>
                   setValues((values: any) => {
-                    return { ...values, superviser: !values.superviser };
+                    return { ...values, supervisor: !values.supervisor };
                   })
                 }
               />
@@ -205,12 +221,6 @@ export const UpdateUserModal = ({
           <AiOutlineClose />
         </Button>
       </form>
-      <Message
-        open={open}
-        setOpen={setOpen}
-        severity={error ? "error" : "success"}
-        message={error ? "حدث خطاء" : "تمت اضافة مستخدم"}
-      ></Message>
     </div>
   );
 };
