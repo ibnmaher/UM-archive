@@ -7,7 +7,7 @@ import { useSelect } from "@mui/base";
 import authSlice, { getAuth } from "common/context/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "common/context/store";
-let timeOut: any;
+let timeOut: ReturnType<typeof setTimeout>;
 function App() {
   const { auth, isLoading } = useSelector((state: any) => state.authSlice);
 

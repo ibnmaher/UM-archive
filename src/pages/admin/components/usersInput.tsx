@@ -2,6 +2,7 @@ import * as React from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { useGetNames } from "../api/getNames";
+import { AUTH } from "types";
 
 export const UsersInput = ({
   setValues,
@@ -12,7 +13,7 @@ export const UsersInput = ({
 }: {
   setValues: React.Dispatch<React.SetStateAction<any>>;
   errors: any;
-  auth: any;
+  auth: AUTH;
   values: any;
   defalutValues?: any;
 }) => {

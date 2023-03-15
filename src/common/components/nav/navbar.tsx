@@ -3,7 +3,8 @@ import { HiLogin } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { setAuth } from "common/context/slices/authSlice";
-export const Navbar = ({ auth }: { auth: any }) => {
+import { AUTH } from "types";
+export const Navbar = ({ auth }: { auth: AUTH }) => {
   const dispatch = useDispatch();
   let activeLinkStyle = {
     color: "white",

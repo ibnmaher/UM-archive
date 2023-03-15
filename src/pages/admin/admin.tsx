@@ -7,12 +7,13 @@ import { UserModal } from "./components/userModal";
 import { UsersTable } from "./usersTable";
 import { Message } from "common/components/message";
 import dayjs, { Dayjs } from "dayjs";
+import { QUERY } from "types";
 export const Admin = ({ auth }: any) => {
   const [activityModal, setActivityModal] = useState<boolean>(false);
   const [userModal, setUserModal] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
   const [refetch, setRefetch] = useState<boolean>(false);
-  const [query, setQuery] = useState({
+  const [query, setQuery] = useState<QUERY>({
     string: "",
     department: "",
     dateFrom: null,

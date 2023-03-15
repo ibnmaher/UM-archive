@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { Action } from 'redux';
 import { getRefreshToken } from 'common/context/api/getRefreshToken';
+import { AUTH } from 'types';
 
 interface IAction<T> extends Action<string> {
   type: string;
@@ -10,17 +11,13 @@ interface IAction<T> extends Action<string> {
   error?: boolean;
   meta?: any;
 }
-interface Auth {
-  id: number;
-  type: string;
-  token: string;
-}
+
 
 // @ts-ignore
 let oldToken: string = localStorage.getItem('token')
 
 interface IState {
-  auth: Auth | boolean | string;
+  auth: AUTH | boolean | string;
   isLoading: boolean;
   hasError: boolean;
 }
@@ -38,7 +35,7 @@ export const getAuth = createAsyncThunk('auth/getAuth', async (arg, thunkAPI) =>
   }
 });
 
-export const setAuth = (auth: any) => {
+export const setAuth = (auth: AUTH | boolean) => {
   return {
     type: 'auth/setAuth',
     payload: auth,
@@ -68,7 +65,7 @@ const options = {
       newState.isLoading = true;
       return newState;
     });
-    builder.addCase(getAuth.fulfilled, (state: IState, action: IAction<Auth | boolean>) => {
+    builder.addCase(getAuth.fulfilled, (state: IState, action: IAction<AUTH | boolean>) => {
       const newState = { ...state };
 
       newState.auth = action.payload;

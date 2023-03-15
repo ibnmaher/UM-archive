@@ -5,10 +5,11 @@ import { Profile } from "pages/profile/profile";
 import { Signup } from "pages/signup/signup";
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import { AUTH } from "types";
 import { ProtectedRoute } from "utils/protectedRoute";
 import { UnProtecetedRoute } from "utils/unProtectedRoute";
 
-export const Index = ({ auth }: { auth: any }) => {
+export const Index = ({ auth }: { auth: AUTH }) => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />

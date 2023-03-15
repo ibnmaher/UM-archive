@@ -1,12 +1,13 @@
 import { useSelector } from "react-redux";
 import { useLocation, Navigate } from "react-router-dom";
+import { AUTH } from "types";
 
 export const ProtectedRoute = ({
   children,
   auth,
 }: {
   children: JSX.Element;
-  auth: any;
+  auth: AUTH;
 }) => {
   let location = useLocation();
 

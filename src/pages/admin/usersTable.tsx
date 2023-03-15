@@ -12,9 +12,10 @@ import { MdOutlineDeleteOutline } from "react-icons/md";
 import { DeleteModal } from "./components/deleteModal";
 import { useGetUsers } from "./api/getUsers";
 import { UpdateUserModal } from "./components/updateUserModal";
+import { AUTH, QUERY } from "types";
 interface PROPS {
-  query: any;
-  auth: any;
+  query: QUERY;
+  auth: AUTH;
   refetch: boolean;
   setRefetch: React.Dispatch<React.SetStateAction<boolean>>;
 

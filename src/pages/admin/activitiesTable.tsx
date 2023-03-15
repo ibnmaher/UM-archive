@@ -15,9 +15,10 @@ import Barcode from "react-barcode";
 import { Modal } from "./components/modal";
 import { DeleteModal } from "./components/deleteModal";
 import { UpdateActivityModal } from "./components/updateActivityModal";
+import { AUTH, QUERY } from "types";
 interface PROPS {
-  query: any;
-  auth: any;
+  query: QUERY;
+  auth: AUTH;
   refetch: boolean;
   setRefetch: React.Dispatch<React.SetStateAction<boolean>>;
 
@@ -216,6 +217,14 @@ export const ActivitiesTable = ({
             backgroundColor: "#ECE8DD",
             fontWeight: "heavy ",
             "& .odd": { backgroundColor: "red" },
+          },
+        }}
+        initialState={{
+          columns: {
+            columnVisibilityModel: {
+              editButton: auth.type === "admin" ? true : false,
+              deleteButton: auth.type === "admin" ? true : false,
+            },
           },
         }}
       />

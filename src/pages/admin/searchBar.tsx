@@ -12,6 +12,7 @@ import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import dayjs, { Dayjs } from "dayjs";
 import { IoAdd } from "react-icons/io5";
 import Fab from "@mui/material/Fab";
+import { AUTH, QUERY } from "types";
 
 export const SearchBar = ({
   setActivityModal,
@@ -24,9 +25,9 @@ export const SearchBar = ({
   setActivityModal: React.Dispatch<React.SetStateAction<boolean>>;
   setUserModal: React.Dispatch<React.SetStateAction<boolean>>;
   action: string;
-  query: any;
-  auth: any;
-  setQuery: React.Dispatch<React.SetStateAction<any>>;
+  query: QUERY;
+  auth: AUTH;
+  setQuery: React.Dispatch<React.SetStateAction<QUERY>>;
 }) => {
   let handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery((state: any) => {
@@ -95,7 +96,7 @@ export const SearchBar = ({
               });
             }}
             disableFuture
-            onChange={(value) =>
+            onChange={(value: string | null) =>
               setQuery((state: any) => {
                 return {
                   ...state,
@@ -130,7 +131,7 @@ export const SearchBar = ({
             value={query.dateTo}
             disableFuture
             minDate={query.dateFrom ? query.dateFrom : dayjs()}
-            onChange={(value) =>
+            onChange={(value: string | null | number) =>
               setQuery((state: any) => {
                 return { ...state, dateTo: dayjs(value).format("YYYY/MM/DD") };
               })

@@ -10,12 +10,14 @@ import { Message } from "common/components/message";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import { AUTH } from "types";
 import { addUserSchema } from "utils/addUserSchema";
 import { validationFunction } from "utils/validationFunction";
 import { yupErrorHandler } from "utils/yupErrorHandler";
 import { boolean } from "yup";
 import { useAddUser } from "../api/addUser";
 import { useUpdateUser } from "../api/updateUser";
+import FocusLock from "react-focus-lock";
 export const UpdateUserModal = ({
   setUpdateUserModal,
   userInfo,
@@ -26,7 +28,7 @@ export const UpdateUserModal = ({
   setOpen,
 }: {
   setUpdateUserModal: React.Dispatch<React.SetStateAction<boolean>>;
-  auth: any;
+  auth: AUTH;
   userInfo: any;
   setRefetch: React.Dispatch<React.SetStateAction<boolean>>;
 
@@ -127,100 +129,106 @@ export const UpdateUserModal = ({
     }
   }, [response]);
   return (
-    <div className="fixed w-full h-full bg-black bg-opacity-40 top-0 bottom-0 left-0 right-0  z-50 flex items-center justify-center cursor-pointer ">
-      <form
-        ref={formRef}
-        onSubmit={handleSubmit}
-        className=" h-4/5 w-4/5 bg-quan rounded-lg cursor-default flex items-center justify-center relative"
-      >
-        <FormControl
-          fullWidth
-          sx={{
-            width: "60%",
-            display: "flex",
-            flexDirection: "column",
-            position: "relative",
-            gap: "16px",
-          }}
+    <FocusLock>
+      <div className="fixed w-full h-full bg-black bg-opacity-40 top-0 bottom-0 left-0 right-0  z-50 flex items-center justify-center cursor-pointer ">
+        <form
+          ref={formRef}
+          onSubmit={handleSubmit}
+          className=" h-4/5 w-4/5 bg-quan rounded-lg cursor-default flex items-center justify-center relative"
         >
-          <TextField
-            size="small"
-            id="department"
-            label="القسم "
-            InputProps={{ sx: { backgroundColor: "white" } }}
-            select
-            error={errors.department.error}
-            helperText={errors.department.message}
-            onChange={(e) => handleChange(e, "department")}
-            value={values.department}
+          <FormControl
+            fullWidth
+            sx={{
+              width: "60%",
+              display: "flex",
+              flexDirection: "column",
+              position: "relative",
+              gap: "16px",
+            }}
           >
-            <MenuItem value={"علوم حاسبات"}>علوم حاسبات</MenuItem>
-            <MenuItem value={"هندسة"}>هندسة</MenuItem>
-            <MenuItem value={"تربية"}>تربية</MenuItem>
-          </TextField>
-          <TextField
-            label="الاسم"
-            id="name"
-            size="small"
-            value={values.name}
-            error={errors.name.error}
-            helperText={errors.name.message}
-            InputProps={{ sx: { backgroundColor: "white" } }}
-            onChange={(e) => handleChange(e, "name")}
-          />
+            <TextField
+              size="small"
+              id="department"
+              label="القسم "
+              InputProps={{ sx: { backgroundColor: "white" } }}
+              select
+              error={errors.department.error}
+              helperText={errors.department.message}
+              onChange={(e) => handleChange(e, "department")}
+              value={values.department}
+            >
+              <MenuItem value={"علوم حاسبات"}>علوم حاسبات</MenuItem>
+              <MenuItem value={"هندسة"}>هندسة</MenuItem>
+              <MenuItem value={"تربية"}>تربية</MenuItem>
+            </TextField>
+            <TextField
+              label="الاسم"
+              id="name"
+              size="small"
+              value={values.name}
+              error={errors.name.error}
+              helperText={errors.name.message}
+              InputProps={{ sx: { backgroundColor: "white" } }}
+              onChange={(e) => handleChange(e, "name")}
+            />
 
-          <TextField
-            label="البريد الالكتروني"
-            id="email"
-            value={values.email}
-            InputProps={{ sx: { backgroundColor: "white" } }}
-            size="small"
-            onChange={(e) => handleChange(e, "email")}
-            error={errors.email.error}
-            helperText={errors.email.message}
-          />
-          <TextField
-            label="رقم الهاتف "
-            id="phone"
-            value={values.phone}
-            InputProps={{ sx: { backgroundColor: "white" } }}
-            size="small"
-            onChange={(e) => handleChange(e, "phone")}
-            error={errors.phone.error}
-            helperText={errors.phone.message}
-          />
+            <TextField
+              label="البريد الالكتروني"
+              id="email"
+              value={values.email}
+              InputProps={{ sx: { backgroundColor: "white" } }}
+              size="small"
+              onChange={(e) => handleChange(e, "email")}
+              error={errors.email.error}
+              helperText={errors.email.message}
+            />
+            <TextField
+              label="رقم الهاتف "
+              id="phone"
+              value={values.phone}
+              InputProps={{ sx: { backgroundColor: "white" } }}
+              size="small"
+              onChange={(e) => handleChange(e, "phone")}
+              error={errors.phone.error}
+              helperText={errors.phone.message}
+            />
 
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={values.supervisor}
-                onChange={() =>
-                  setValues((values: any) => {
-                    return { ...values, supervisor: !values.supervisor };
-                  })
-                }
-              />
-            }
-            label="مشرف"
-          />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={values.supervisor}
+                  onChange={() =>
+                    setValues((values: any) => {
+                      return { ...values, supervisor: !values.supervisor };
+                    })
+                  }
+                />
+              }
+              label="مشرف"
+            />
 
+            <Button
+              variant="contained"
+              sx={{ width: "16rem", marginX: "auto", fontSize: "16px" }}
+              type="submit"
+            >
+              اضافة
+            </Button>
+          </FormControl>
           <Button
-            variant="contained"
-            sx={{ width: "16rem", marginX: "auto", fontSize: "16px" }}
-            type="submit"
+            color="error"
+            sx={{
+              position: "absolute",
+              backgroundColor: "white",
+              boxShadow: 1,
+            }}
+            className="top-4 right-4"
+            onClick={() => setUpdateUserModal(false)}
           >
-            اضافة
+            <AiOutlineClose />
           </Button>
-        </FormControl>
-        <Button
-          color="error"
-          sx={{ position: "absolute", backgroundColor: "white", boxShadow: 1 }}
-          className="top-4 right-4"
-          onClick={() => setUpdateUserModal(false)}
-        >
-          <AiOutlineClose />
-        </Button>
-      </form>
-    </div>
+        </form>
+      </div>
+    </FocusLock>
   );
 };

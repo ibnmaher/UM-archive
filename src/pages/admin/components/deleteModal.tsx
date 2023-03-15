@@ -1,11 +1,12 @@
 import { Button, Modal } from "@mui/material";
 import { useEffect } from "react";
+import { AUTH } from "types";
 import { useDeleteActivity } from "../api/deleteActivity";
 import { useDeleteUser } from "../api/deleteUser";
 
 interface PARAMS {
   text: string;
-  auth: any;
+  auth: AUTH;
   deleteModal: boolean | string | number;
   setDeleteModal: React.Dispatch<
     React.SetStateAction<boolean | string | number>

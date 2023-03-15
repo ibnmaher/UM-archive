@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { QUERY } from 'types';
 
 
-export const useHttp = (query?: any, headers?: any) => {
+export const useHttp = (query?: QUERY, headers?: any) => {
 
   const [response, setResponse] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
