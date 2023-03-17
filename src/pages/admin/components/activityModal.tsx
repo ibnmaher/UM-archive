@@ -105,7 +105,7 @@ export const ActivityModal = ({
   useEffect(() => {
     if (response?.status) {
       setOpen(true);
-      setMessage("تم اضافة كورس");
+      setMessage("تم اضافة نشاط");
       setSeverity("success");
       setActivityModal(false);
       setRefetch((state: boolean) => !state);

@@ -20,8 +20,10 @@ import FocusLock from "react-focus-lock";
 export const UserModal = ({
   setUserModal,
   auth,
+  setRefetch,
 }: {
   setUserModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setRefetch: React.Dispatch<React.SetStateAction<boolean>>;
   auth: AUTH;
 }) => {
   const [dateFrom, setDateFrom] = React.useState<Dayjs | null>(dayjs());
@@ -100,8 +102,11 @@ export const UserModal = ({
   useEffect(() => {
     if (response?.status === 201) {
       setOpen(true);
-      setValues({ supervisor: false });
+      setValues((state: any) => {
+        return { supervisor: false, department: state.department };
+      });
       formRef?.current?.reset();
+      setRefetch((state: boolean) => !state);
     }
   }, [response]);
   return (
@@ -125,7 +130,8 @@ export const UserModal = ({
             <TextField
               size="small"
               id="department"
-              label="القسم "
+              label="القسم"
+              value={values.department}
               InputProps={{ sx: { backgroundColor: "white" } }}
               select
               error={errors.department.error}
@@ -135,6 +141,7 @@ export const UserModal = ({
               <MenuItem value={"علوم حاسبات"}>علوم حاسبات</MenuItem>
               <MenuItem value={"هندسة"}>هندسة</MenuItem>
               <MenuItem value={"تربية"}>تربية</MenuItem>
+              <MenuItem value={"تربية"}>dwdw</MenuItem>
             </TextField>
             <TextField
               label="الاسم"
