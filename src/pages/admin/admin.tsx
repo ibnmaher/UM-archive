@@ -1,5 +1,5 @@
 import { Chip, IconButton } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ActivityModal } from "./components/activityModal";
 import { SearchBar } from "./searchBar";
 import { ActivitiesTable } from "./activitiesTable";
@@ -7,9 +7,13 @@ import { UserModal } from "./components/userModal";
 import { UsersTable } from "./usersTable";
 import { Message } from "common/components/message";
 import { TfiEmail } from "react-icons/tfi";
+import { FcDataBackup } from "react-icons/fc";
+import download from "downloadjs";
+
 import dayjs, { Dayjs } from "dayjs";
 import { QUERY } from "types";
 import { ContactModal } from "./components/contactModal";
+import { useGetBackup } from "./api/getBackup";
 export const Admin = ({ auth }: any) => {
   const [activityModal, setActivityModal] = useState<boolean>(false);
   const [userModal, setUserModal] = useState<boolean>(false);
@@ -29,6 +33,18 @@ export const Admin = ({ auth }: any) => {
   const [severity, setSeverity] = useState<
     "success" | "info" | "warning" | "error"
   >("success");
+  const { response, loading, error, getBackup } = useGetBackup(
+    {},
+    { Authorization: `Bearer ${auth.token}` }
+  );
+  const downloadFile = async () => {
+    download(response, "backup.sql", "text/plain");
+  };
+  useEffect(() => {
+    if (response) {
+      downloadFile();
+    }
+  }, [response]);
   return (
     <div
       style={
@@ -46,27 +62,38 @@ export const Admin = ({ auth }: any) => {
         setUserModal={setUserModal}
         auth={auth}
       />
+      <div className="w-full relative h-10">
+        {auth.type !== "user" && (
+          <div className="flex gap-4 self-start">
+            <Chip
+              label="الانشطة"
+              onClick={() => setAction("activities")}
+              color={action === "activities" ? "primary" : "default"}
+            />
+            <Chip
+              label="المستخدمين"
+              onClick={() => setAction("users")}
+              color={action === "users" ? "primary" : "default"}
+            />
+          </div>
+        )}
 
-      {auth.type !== "user" && (
-        <div className="flex gap-4 self-start">
-          <Chip
-            label="الانشطة"
-            onClick={() => setAction("activities")}
-            color={action === "activities" ? "primary" : "default"}
-          />
-          <Chip
-            label="المستخدمين"
-            onClick={() => setAction("users")}
-            color={action === "users" ? "primary" : "default"}
-          />
-        </div>
-      )}
-      <div className="absolute left-10 top-44">
-        <IconButton onClick={() => setContactModal(true)}>
-          <TfiEmail />
-        </IconButton>
+        {auth.type !== "admin" && (
+          <div className="absolute left-3 top-0">
+            <IconButton onClick={() => setContactModal(true)}>
+              <TfiEmail />
+            </IconButton>
+          </div>
+        )}
+
+        {/* {auth.type === "admin" && (
+          <div className="absolute left-3 top-0">
+            <IconButton disabled={loading} onClick={() => getBackup()}>
+              <FcDataBackup />
+            </IconButton>
+          </div>
+        )} */}
       </div>
-
       {action === "users" && (
         <UsersTable
           query={query}

@@ -17,7 +17,7 @@ export const Navbar = ({ auth }: { auth: AUTH }) => {
     aliginText: "center",
   };
   return (
-    <div className="absolute top-0 w-full h-20 bg-primary rounded-b-md flex items-center justify-between p-6">
+    <div className="absolute top-0 w-full h-20 bg-primary rounded-b-md flex items-center justify-between z-50 p-6">
       <ul className="flex items-center justify-center gap-3 text-secondary font-semibold">
         {!auth && (
           <NavLink
