@@ -144,21 +144,16 @@ export const ActivityModal = ({
             select
             onChange={(e) => handleChange(e, "type")}
           >
-            <MenuItem value="مناقشات طلبة الدراسات العليا">
-              مناقشات طلبة الدراسات العليا
-            </MenuItem>
-            <MenuItem value="المحاضرات(السيمينرات)">
-              المحاضرات(السيمينرات)
-            </MenuItem>
-            <MenuItem value="">""</MenuItem>
-            <MenuItem value="">""</MenuItem>
-            <MenuItem value="">""</MenuItem>
-            <MenuItem value="">""</MenuItem>
-            <MenuItem value="">""</MenuItem>
-            <MenuItem value="">""</MenuItem>
-            <MenuItem value="">""</MenuItem>
-            <MenuItem value="">""</MenuItem>
-            <MenuItem value="">""</MenuItem>
+            <MenuItem value="مناقشات طلبة الدراسات العليا">مناقشات طلبة الدراسات العليا</MenuItem>
+            <MenuItem value="المحاضرات (السيمينارات)">المحاضرات (السيمينارات)</MenuItem>
+            <MenuItem value="الاجتماعات واللقاءات">الاجتماعات واللقاءات</MenuItem>
+            <MenuItem value="الدورات التدريبية">الدورات التدريبية</MenuItem>
+            <MenuItem value="الحلقات الدراسية">الحلقات الدراسية</MenuItem>
+            <MenuItem value="ورش العمل">ورش العمل</MenuItem>
+            <MenuItem value="فعاليات التكريم">فعاليات التكريم</MenuItem>
+            <MenuItem value="الندوات العلمية">الندوات العلمية</MenuItem>
+            <MenuItem value="النشاطات اللاصفية">النشاطات اللاصفية</MenuItem>
+            <MenuItem value="الجامعة وخدمة المجتمع">الجامعة وخدمة المجتمع</MenuItem>
           </TextField>
           <TextField
             label="العنوان"
@@ -254,9 +249,14 @@ export const ActivityModal = ({
             select
             onChange={(e) => handleChange(e, "department")}
           >
-            <MenuItem value={"علوم حاسبات"}>علوم حاسبات</MenuItem>
-            <MenuItem value={"هندسة"}>هندسة</MenuItem>
-            <MenuItem value={"تربية"}>تربية</MenuItem>
+            <MenuItem value={"الكل"}>الكل</MenuItem>
+            <MenuItem value={"علوم الحاسوب"}>علوم الحاسوب</MenuItem>
+            <MenuItem value={"الأمن السيبراني"}>الأمن السيبراني</MenuItem>
+            <MenuItem value={"الشبكات"}>الشبكات</MenuItem>
+            <MenuItem value={"البرمجيات"}>البرمجيات</MenuItem>
+            <MenuItem value={"الرياضيات"}>الرياضيات</MenuItem>
+            <MenuItem value={"الإحصاء والمعلوماتية"}>الإحصاء والمعلوماتية</MenuItem>
+            <MenuItem value={"بحوث العمليات والتقنيات الذكائية"}>بحوث العمليات والتقنيات الذكائية</MenuItem>
           </TextField>
           <UsersInput
             values={values}

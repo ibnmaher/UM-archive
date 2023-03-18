@@ -128,9 +128,14 @@ export const UserModal = ({
             helperText={errors.department.message}
             onChange={(e) => handleChange(e, "department")}
           >
-            <MenuItem value={"علوم حاسبات"}>علوم حاسبات</MenuItem>
-            <MenuItem value={"هندسة"}>هندسة</MenuItem>
-            <MenuItem value={"تربية"}>تربية</MenuItem>
+            <MenuItem value={"الكل"}>الكل</MenuItem>
+            <MenuItem value={"علوم الحاسوب"}>علوم الحاسوب</MenuItem>
+            <MenuItem value={"الأمن السيبراني"}>الأمن السيبراني</MenuItem>
+            <MenuItem value={"الشبكات"}>الشبكات</MenuItem>
+            <MenuItem value={"البرمجيات"}>البرمجيات</MenuItem>
+            <MenuItem value={"الرياضيات"}>الرياضيات</MenuItem>
+            <MenuItem value={"الإحصاء والمعلوماتية"}>الإحصاء والمعلوماتية</MenuItem>
+            <MenuItem value={"بحوث العمليات والتقنيات الذكائية"}>بحوث العمليات والتقنيات الذكائية</MenuItem>
           </TextField>
           <TextField
             label="الاسم"
