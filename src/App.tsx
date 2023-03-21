@@ -7,6 +7,7 @@ import { useSelect } from "@mui/base";
 import authSlice, { getAuth } from "common/context/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "common/context/store";
+import { MoonLoader } from "react-spinners";
 let timeOut: ReturnType<typeof setTimeout>;
 function App() {
   const { auth, isLoading } = useSelector((state: any) => state.authSlice);
@@ -31,7 +32,9 @@ function App() {
           <Index auth={auth} />
         </>
       ) : (
-        <>LOADING</>
+        <div className="w-full h-screen flex items-center justify-center">
+          <MoonLoader color="#36d7b7" />
+        </div>
       )}
     </div>
   );

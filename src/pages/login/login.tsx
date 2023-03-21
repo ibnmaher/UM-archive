@@ -126,7 +126,7 @@ export const Login = () => {
         </Button>
 
         <div className="w-full flex items-center justify-between">
-          <Link to="">هل نسيت الرمز؟</Link>
+          <Link to="/reset">هل نسيت الرمز؟</Link>
           <Link to="/signup">تسجيل للمرة الاولى؟</Link>
         </div>
       </form>

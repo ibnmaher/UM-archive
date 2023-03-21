@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import { setAuth } from "common/context/slices/authSlice";
 import { AUTH } from "types";
 export const Navbar = ({ auth }: { auth: AUTH }) => {
+  console.log(auth);
   const dispatch = useDispatch();
   let activeLinkStyle = {
     color: "white",
@@ -57,6 +58,7 @@ export const Navbar = ({ auth }: { auth: AUTH }) => {
           </NavLink>
         )}
       </ul>
+      <h1 className="text-white text-xl">{auth?.name}</h1>
     </div>
   );
 };

@@ -1,6 +1,8 @@
 import { Admin } from "pages/admin/admin";
 import { Home } from "pages/home/home";
 import { Login } from "pages/login/login";
+import { Reset } from "pages/login/sub/reset";
+import { ResetPassword } from "pages/login/sub/resetPassword";
 import { Profile } from "pages/profile/profile";
 import { Signup } from "pages/signup/signup";
 import React from "react";
@@ -35,6 +37,22 @@ export const Index = ({ auth }: { auth: AUTH }) => {
         element={
           <UnProtecetedRoute auth={auth}>
             <Signup />
+          </UnProtecetedRoute>
+        }
+      />
+      <Route
+        path="/reset"
+        element={
+          <UnProtecetedRoute auth={auth}>
+            <Reset />
+          </UnProtecetedRoute>
+        }
+      />
+      <Route
+        path="/reset-password/:token"
+        element={
+          <UnProtecetedRoute auth={auth}>
+            <ResetPassword />
           </UnProtecetedRoute>
         }
       />
