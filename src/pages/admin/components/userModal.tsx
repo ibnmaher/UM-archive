@@ -18,6 +18,7 @@ import { validationFunction } from "utils/validationFunction";
 import { yupErrorHandler } from "utils/yupErrorHandler";
 import { useAddUser } from "../api/addUser";
 import FocusLock from "react-focus-lock";
+import { MoonLoader } from "react-spinners";
 
 export const UserModal = ({
   setUserModal,
@@ -217,13 +218,17 @@ export const UserModal = ({
               />
             </RadioGroup>
 
-            <Button
-              variant="contained"
-              sx={{ width: "16rem", marginX: "auto", fontSize: "16px" }}
-              type="submit"
-            >
-              اضافة
-            </Button>
+            {!loading ? (
+              <Button
+                variant="contained"
+                sx={{ width: "16rem", marginX: "auto", fontSize: "16px" }}
+                type="submit"
+              >
+                اضافة
+              </Button>
+            ) : (
+              <MoonLoader color="blue" size={30} className="mx-auto" />
+            )}
           </FormControl>
           <Button
             color="error"

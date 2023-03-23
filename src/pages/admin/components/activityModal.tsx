@@ -13,7 +13,7 @@ import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { TiDelete } from "react-icons/ti";
-import { BeatLoader } from "react-spinners";
+import { BeatLoader, MoonLoader } from "react-spinners";
 import { AUTH } from "types";
 import { addActivitySchema } from "utils/addActivitySchema";
 import { validationFunction } from "utils/validationFunction";
@@ -338,9 +338,7 @@ export const ActivityModal = ({
               />
             </div>
             {loading ? (
-              <div className="w-full flex justify-center p-3">
-                <BeatLoader color="#757ce8" />
-              </div>
+              <MoonLoader color="blue" size={30} className="mx-auto" />
             ) : (
               <Button
                 variant="contained"

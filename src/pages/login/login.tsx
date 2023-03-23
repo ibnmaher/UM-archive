@@ -3,6 +3,7 @@ import { setAuth } from "common/context/slices/authSlice";
 import React, { ChangeEvent, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Link, redirect, useNavigate } from "react-router-dom";
+import { MoonLoader } from "react-spinners";
 import { loginSchema } from "utils/loginSchema";
 import { validationFunction } from "utils/validationFunction";
 import { yupErrorHandler } from "utils/yupErrorHandler";
@@ -121,9 +122,13 @@ export const Login = () => {
             handleChange(e, "password");
           }}
         />
-        <Button variant="contained" className="mx-auto" type="submit">
-          تسجيل دخول
-        </Button>
+        {!loading ? (
+          <Button variant="contained" className="mx-auto" type="submit">
+            تسجيل دخول
+          </Button>
+        ) : (
+          <MoonLoader color="blue" size={30} className="mx-auto" />
+        )}
 
         <div className="w-full flex items-center justify-between">
           <Link to="/reset">هل نسيت الرمز؟</Link>

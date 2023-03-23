@@ -21,7 +21,7 @@ import { addActivitySchema } from "utils/addActivitySchema";
 import { validationFunction } from "utils/validationFunction";
 import { yupErrorHandler } from "utils/yupErrorHandler";
 import activityModalErrors from "../objects/activityModalErrors";
-import { BeatLoader } from "react-spinners";
+import { BeatLoader, MoonLoader } from "react-spinners";
 import { Message } from "common/components/message";
 import { Modal } from "./modal";
 import { useUpdateActivity } from "../api/updateActivity";
@@ -373,9 +373,7 @@ export const UpdateActivityModal = ({
               />
             </div>
             {loading ? (
-              <div className="w-full flex justify-center p-3">
-                <BeatLoader color="#757ce8" />
-              </div>
+              <MoonLoader color="blue" size={30} className="mx-auto" />
             ) : (
               <Button
                 disabled={loading}

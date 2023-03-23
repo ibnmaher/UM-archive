@@ -20,6 +20,7 @@ import { boolean } from "yup";
 import { useAddUser } from "../api/addUser";
 import { useUpdateUser } from "../api/updateUser";
 import FocusLock from "react-focus-lock";
+import { MoonLoader } from "react-spinners";
 export const UpdateUserModal = ({
   setUpdateUserModal,
   userInfo,
@@ -238,13 +239,17 @@ export const UpdateUserModal = ({
               />
             </RadioGroup>
 
-            <Button
-              variant="contained"
-              sx={{ width: "16rem", marginX: "auto", fontSize: "16px" }}
-              type="submit"
-            >
-              اضافة
-            </Button>
+            {!loading ? (
+              <Button
+                variant="contained"
+                sx={{ width: "16rem", marginX: "auto", fontSize: "16px" }}
+                type="submit"
+              >
+                اضافة
+              </Button>
+            ) : (
+              <MoonLoader color="blue" size={30} className="mx-auto" />
+            )}
           </FormControl>
           <Button
             color="error"
