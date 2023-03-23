@@ -53,6 +53,21 @@ export const Modal = ({
             disabled
           />
         </div>
+        <TextField
+          label="النوع"
+          value={modalActivity[0].type}
+          size="small"
+          inputProps={{ sx: { color: "blue" } }}
+          sx={{
+            width: "100%",
+            backgroundColor: "white",
+            "& .MuiInputBase-input.Mui-disabled": {
+              WebkitTextFillColor: "black",
+              fontWeight: "semibold",
+            },
+          }}
+          disabled
+        />
         <Autocomplete
           size="small"
           multiple

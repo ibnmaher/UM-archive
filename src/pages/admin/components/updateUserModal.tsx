@@ -4,6 +4,8 @@ import {
   FormControl,
   FormControlLabel,
   MenuItem,
+  Radio,
+  RadioGroup,
   TextField,
 } from "@mui/material";
 import { Message } from "common/components/message";
@@ -45,7 +47,7 @@ export const UpdateUserModal = ({
     email: userInfo[0].email,
     phone: userInfo[0].phone_number,
 
-    supervisor: userInfo[0].type === "supervisor",
+    type: userInfo[0].type,
   });
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -157,9 +159,17 @@ export const UpdateUserModal = ({
               onChange={(e) => handleChange(e, "department")}
               value={values.department}
             >
-              <MenuItem value={"علوم حاسبات"}>علوم حاسبات</MenuItem>
-              <MenuItem value={"هندسة"}>هندسة</MenuItem>
-              <MenuItem value={"تربية"}>تربية</MenuItem>
+              <MenuItem value={"علوم الحاسوب"}>علوم الحاسوب</MenuItem>
+              <MenuItem value={"الأمن السيبراني"}>الأمن السيبراني</MenuItem>
+              <MenuItem value={"الشبكات"}>الشبكات</MenuItem>
+              <MenuItem value={"البرمجيات"}>البرمجيات</MenuItem>
+              <MenuItem value={"الرياضيات"}>الرياضيات</MenuItem>
+              <MenuItem value={"الإحصاء والمعلوماتية"}>
+                الإحصاء والمعلوماتية
+              </MenuItem>
+              <MenuItem value={"بحوث العمليات والتقنيات الذكائية"}>
+                بحوث العمليات والتقنيات الذكائية
+              </MenuItem>
             </TextField>
             <TextField
               label="الاسم"
@@ -193,19 +203,40 @@ export const UpdateUserModal = ({
               helperText={errors.phone.message}
             />
 
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={values.supervisor}
-                  onChange={() =>
-                    setValues((values: any) => {
-                      return { ...values, supervisor: !values.supervisor };
-                    })
-                  }
-                />
+            <RadioGroup
+              defaultValue={values.type}
+              name="radio-buttons-group"
+              row
+              onChange={(e: any) =>
+                setValues((state: any) => {
+                  return { ...state, type: e.target.value };
+                })
               }
-              label="مشرف"
-            />
+            >
+              <FormControlLabel
+                value="user"
+                control={<Radio />}
+                label="مستخدم"
+              />
+              <FormControlLabel
+                value="supervisor"
+                control={<Radio />}
+                label="مشرف"
+              />
+              <FormControlLabel
+                value="deen"
+                control={
+                  <Radio
+                    sx={{
+                      " &.Mui-checked": {
+                        color: "red",
+                      },
+                    }}
+                  />
+                }
+                label="عميد"
+              />
+            </RadioGroup>
 
             <Button
               variant="contained"

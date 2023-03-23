@@ -1,10 +1,12 @@
 import { Button, TextField } from "@mui/material";
-import React, { ChangeEvent, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Message } from "common/components/message";
+import React, { ChangeEvent, useState, useEffect } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { resetPasswordSchema } from "utils/resetPasswordSchema";
 import { validationFunction } from "utils/validationFunction";
 import { yupErrorHandler } from "utils/yupErrorHandler";
 import { useResetPassword } from "../api/useResetPassword";
+import { MoonLoader } from "react-spinners";
 
 export const ResetPassword = () => {
   const params = useParams();
@@ -57,6 +59,16 @@ export const ResetPassword = () => {
       yupErrorHandler(err.inner, setErrors);
     }
   };
+  let navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (response?.status) {
+      setOpen(true);
+      navigate("/login");
+    }
+
+    error && setOpen(true);
+  }, [response, error]);
   return (
     <form
       onSubmit={(e) => handleSubmit(e, values)}
@@ -88,9 +100,23 @@ export const ResetPassword = () => {
           handleChange(e, "confirmPassword");
         }}
       />
-      <Button variant="contained" className="mx-auto" type="submit">
-        تأكيد
-      </Button>
+      {!loading && (
+        <Button
+          variant="contained"
+          className="mx-auto"
+          disabled={loading}
+          type="submit"
+        >
+          تأكيد{" "}
+        </Button>
+      )}
+      {loading && <MoonLoader size={30} color="blue" />}
+      <Message
+        open={open}
+        setOpen={setOpen}
+        severity={error ? "error" : "info"}
+        message={error ? error.data.message : "قم بالتحقق من بريدك الالكتروني"}
+      />
     </form>
   );
 };

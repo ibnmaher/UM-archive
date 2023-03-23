@@ -13,6 +13,7 @@ import { DeleteModal } from "./components/deleteModal";
 import { useGetUsers } from "./api/getUsers";
 import { UpdateUserModal } from "./components/updateUserModal";
 import { AUTH, QUERY } from "types";
+import { MoonLoader } from "react-spinners";
 interface PROPS {
   query: QUERY;
   auth: AUTH;
@@ -115,6 +116,13 @@ export const UsersTable = ({
       align: "center",
     },
     {
+      field: "type",
+
+      headerName: "النوع",
+      headerAlign: "center",
+      align: "center",
+    },
+    {
       field: "editButton",
 
       headerName: "تعديل",
@@ -159,28 +167,40 @@ export const UsersTable = ({
   ];
 
   return (
-    <div className="w-full flex-1">
-      <StripedDataGrid
-        autoHeight
-        rows={response || []}
-        columns={columns}
-        pageSize={20}
-        checkboxSelection={false}
-        onRowClick={handleRowClick}
-        rowsPerPageOptions={[20]}
-        getRowClassName={(params) =>
-          params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-        }
-        sx={{
-          backgroundColor: "white",
+    <div className="w-full flex items-center justify-center flex-1">
+      {!loading ? (
+        <StripedDataGrid
+          autoHeight
+          rows={response || []}
+          columns={columns}
+          pageSize={20}
+          checkboxSelection={false}
+          onRowClick={handleRowClick}
+          rowsPerPageOptions={[20]}
+          getRowClassName={(params) =>
+            params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+          }
+          initialState={{
+            columns: {
+              columnVisibilityModel: {
+                editButton: auth.type === "admin" ? true : false,
+                deleteButton: auth.type === "admin" ? true : false,
+              },
+            },
+          }}
+          sx={{
+            backgroundColor: "white",
 
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: "#ECE8DD",
-            fontWeight: "heavy ",
-            "& .odd": { backgroundColor: "red" },
-          },
-        }}
-      />
+            "& .MuiDataGrid-columnHeaders": {
+              backgroundColor: "#ECE8DD",
+              fontWeight: "heavy ",
+              "& .odd": { backgroundColor: "red" },
+            },
+          }}
+        />
+      ) : (
+        <MoonLoader color="blue" size="50" />
+      )}
       {deleteModal && (
         <DeleteModal
           refetch={refetch}

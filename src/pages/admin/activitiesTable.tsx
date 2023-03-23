@@ -16,6 +16,7 @@ import { Modal } from "./components/modal";
 import { DeleteModal } from "./components/deleteModal";
 import { UpdateActivityModal } from "./components/updateActivityModal";
 import { AUTH, QUERY } from "types";
+import { MoonLoader } from "react-spinners";
 interface PROPS {
   query: QUERY;
   auth: AUTH;
@@ -121,6 +122,12 @@ export const ActivitiesTable = ({
       minWidth: 200,
     },
     {
+      field: "type",
+      headerName: "النوع",
+
+      minWidth: 200,
+    },
+    {
       field: "start_date",
       headerName: "التاريخ من",
       headerAlign: "center",
@@ -137,14 +144,13 @@ export const ActivitiesTable = ({
       headerName: "القسم",
       headerAlign: "center",
       align: "center",
-      width: 200,
     },
     {
       field: "participants_count",
       headerName: "المشاركين",
       headerAlign: "center",
       align: "center",
-      width: 200,
+      width: 20,
     },
 
     {
@@ -198,36 +204,40 @@ export const ActivitiesTable = ({
   }, [query, refetch]);
 
   return (
-    <div className="w-full flex-1">
-      <StripedDataGrid
-        autoHeight
-        rows={rows}
-        columns={columns}
-        pageSize={20}
-        checkboxSelection={false}
-        onRowClick={handleRowClick}
-        rowsPerPageOptions={[20]}
-        getRowClassName={(params) =>
-          params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-        }
-        sx={{
-          backgroundColor: "white",
+    <div className="w-full flex justify-center flex-1">
+      {!loading ? (
+        <StripedDataGrid
+          autoHeight
+          rows={rows}
+          columns={columns}
+          pageSize={20}
+          checkboxSelection={false}
+          onRowClick={handleRowClick}
+          rowsPerPageOptions={[20]}
+          getRowClassName={(params) =>
+            params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+          }
+          sx={{
+            backgroundColor: "white",
 
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: "#ECE8DD",
-            fontWeight: "heavy ",
-            "& .odd": { backgroundColor: "red" },
-          },
-        }}
-        initialState={{
-          columns: {
-            columnVisibilityModel: {
-              editButton: auth.type === "admin" ? true : false,
-              deleteButton: auth.type === "admin" ? true : false,
+            "& .MuiDataGrid-columnHeaders": {
+              backgroundColor: "#ECE8DD",
+              fontWeight: "heavy ",
+              "& .odd": { backgroundColor: "red" },
             },
-          },
-        }}
-      />
+          }}
+          initialState={{
+            columns: {
+              columnVisibilityModel: {
+                editButton: auth.type === "admin" ? true : false,
+                deleteButton: auth.type === "admin" ? true : false,
+              },
+            },
+          }}
+        />
+      ) : (
+        <MoonLoader color="blue" size={50} className="my-auto" />
+      )}
       {modalActivity && (
         <Modal
           modalActivity={modalActivity}

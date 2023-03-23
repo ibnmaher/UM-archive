@@ -14,6 +14,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { QUERY } from "types";
 import { ContactModal } from "./components/contactModal";
 import { useGetBackup } from "./api/getBackup";
+import { MoonLoader } from "react-spinners";
 export const Admin = ({ auth }: any) => {
   const [activityModal, setActivityModal] = useState<boolean>(false);
   const [userModal, setUserModal] = useState<boolean>(false);
@@ -86,13 +87,16 @@ export const Admin = ({ auth }: any) => {
           </div>
         )}
 
-        {/* {auth.type === "admin" && (
+        {auth.type === "admin" && (
           <div className="absolute left-3 top-0">
-            <IconButton disabled={loading} onClick={() => getBackup()}>
-              <FcDataBackup />
-            </IconButton>
+            {!loading && (
+              <IconButton disabled={loading} onClick={() => getBackup()}>
+                <FcDataBackup />
+              </IconButton>
+            )}
+            {loading && <MoonLoader color="blue" size={30} />}
           </div>
-        )} */}
+        )}
       </div>
       {action === "users" && (
         <UsersTable

@@ -8,7 +8,7 @@ export const FileInput = ({
 }) => {
   const [file, setFile] = React.useState<any>({
     image: null,
-    private: true,
+    private: false,
     url: "",
   });
 
@@ -47,7 +47,7 @@ export const FileInput = ({
           })
         }
       />
-      <FormControlLabel
+      {/* <FormControlLabel
         control={
           <Checkbox
             checked={file.private}
@@ -59,7 +59,7 @@ export const FileInput = ({
           />
         }
         label="خاص"
-      />
+      /> */}
       <Button onClick={handleAdd} disabled={!file.image} variant="text">
         اضافة
       </Button>

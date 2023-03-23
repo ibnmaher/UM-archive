@@ -4,6 +4,7 @@ import { setAuth } from "common/context/slices/authSlice";
 import React, { ChangeEvent, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Link, redirect, useNavigate } from "react-router-dom";
+import { MoonLoader } from "react-spinners";
 import { loginSchema } from "utils/loginSchema";
 import { validationFunction } from "utils/validationFunction";
 import { yupErrorHandler } from "utils/yupErrorHandler";
@@ -23,6 +24,7 @@ export const Reset = () => {
   };
   useEffect(() => {
     response?.status && setOpen(true);
+    error && setOpen(true);
   }, [response, error]);
   return (
     <div className="w-full h-screen flex items-center justify-center">
@@ -51,9 +53,17 @@ export const Reset = () => {
           }}
         />
 
-        <Button variant="contained" className="mx-auto" type="submit">
-          تأكيد{" "}
-        </Button>
+        {!loading && (
+          <Button
+            variant="contained"
+            className="mx-auto"
+            disabled={loading}
+            type="submit"
+          >
+            تأكيد{" "}
+          </Button>
+        )}
+        {loading && <MoonLoader size={30} color="blue" />}
 
         <div className="w-full flex items-center justify-between">
           <Link to="/login">تسجيل دخول</Link>

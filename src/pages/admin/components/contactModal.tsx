@@ -37,7 +37,7 @@ export const ContactModal = ({
   const fileRef = useRef<HTMLInputElement>(null);
   const [values, setValues] = useState<VALUES>({
     subject: "",
-    email: "",
+    email: auth.email,
     file: "",
     image: "",
     file_name: "",
@@ -117,9 +117,11 @@ export const ContactModal = ({
           sx={{ width: "100%" }}
           InputProps={{ sx: { backgroundColor: "white" } }}
           size="small"
+          InputLabelProps={{ shrink: true }}
           error={errors.email.error}
           helperText={errors.email.message}
-          onChange={(e) => handleChange(e, "email")}
+          disabled
+          value={auth?.email}
           required
         />
 

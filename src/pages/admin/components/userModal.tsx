@@ -4,6 +4,8 @@ import {
   FormControl,
   FormControlLabel,
   MenuItem,
+  Radio,
+  RadioGroup,
   TextField,
 } from "@mui/material";
 import { Message } from "common/components/message";
@@ -28,7 +30,7 @@ export const UserModal = ({
 }) => {
   const [dateFrom, setDateFrom] = React.useState<Dayjs | null>(dayjs());
   const [dateTo, setDateTo] = React.useState<Dayjs | null>(dayjs());
-  const [values, setValues] = useState<any>({ supervisor: false });
+  const [values, setValues] = useState<any>({ type: "مستخدم" });
   const [open, setOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const { response, addUser, loading, error } = useAddUser(
@@ -138,10 +140,17 @@ export const UserModal = ({
               helperText={errors.department.message}
               onChange={(e) => handleChange(e, "department")}
             >
-              <MenuItem value={"علوم حاسبات"}>علوم حاسبات</MenuItem>
-              <MenuItem value={"هندسة"}>هندسة</MenuItem>
-              <MenuItem value={"تربية"}>تربية</MenuItem>
-              <MenuItem value={"تربية"}>dwdw</MenuItem>
+              <MenuItem value={"علوم الحاسوب"}>علوم الحاسوب</MenuItem>
+              <MenuItem value={"الأمن السيبراني"}>الأمن السيبراني</MenuItem>
+              <MenuItem value={"الشبكات"}>الشبكات</MenuItem>
+              <MenuItem value={"البرمجيات"}>البرمجيات</MenuItem>
+              <MenuItem value={"الرياضيات"}>الرياضيات</MenuItem>
+              <MenuItem value={"الإحصاء والمعلوماتية"}>
+                الإحصاء والمعلوماتية
+              </MenuItem>
+              <MenuItem value={"بحوث العمليات والتقنيات الذكائية"}>
+                بحوث العمليات والتقنيات الذكائية
+              </MenuItem>
             </TextField>
             <TextField
               label="الاسم"
@@ -172,19 +181,41 @@ export const UserModal = ({
               helperText={errors.phone.message}
             />
 
-            <FormControlLabel
-              control={
-                <Checkbox
-                  defaultChecked={values.supervisor}
-                  onChange={() =>
-                    setValues((values: any) => {
-                      return { ...values, supervisor: !values.supervisor };
-                    })
-                  }
-                />
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
+              defaultValue="مستخدم"
+              name="radio-buttons-group"
+              row
+              onChange={(e: any) =>
+                setValues((state: any) => {
+                  return { ...state, type: e.target.value };
+                })
               }
-              label="مشرف"
-            />
+            >
+              <FormControlLabel
+                value="user"
+                control={<Radio />}
+                label="مستخدم"
+              />
+              <FormControlLabel
+                value="supervisor"
+                control={<Radio />}
+                label="مشرف"
+              />
+              <FormControlLabel
+                value="deen"
+                control={
+                  <Radio
+                    sx={{
+                      " &.Mui-checked": {
+                        color: "red",
+                      },
+                    }}
+                  />
+                }
+                label="عميد"
+              />
+            </RadioGroup>
 
             <Button
               variant="contained"
