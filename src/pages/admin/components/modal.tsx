@@ -240,12 +240,15 @@ export const Modal = ({
             data.images.map((image: any, i: number) => {
               return (
                 <a
-                  href={`http://localhost:5000/${image.url}`}
+                  href={`${process.env.REACT_APP_URL + image.url}`}
                   target="_blank"
                   className="w-10 h-10"
                   rel="noreferrer"
                 >
-                  <img src={`http://localhost:5000/${image.url}`} key={i} />
+                  <img
+                    src={`${process.env.REACT_APP_URL + image.url}`}
+                    key={i}
+                  />
                 </a>
               );
             })}
@@ -255,7 +258,7 @@ export const Modal = ({
             data.files.map((file: any, i: number) => {
               return (
                 <a
-                  href={`http://localhost:5000/${file.url}`}
+                  href={`${process.env.REACT_APP_URL + file.url}`}
                   target="_blank"
                   className=" flex gap-2"
                   rel="noreferrer"
