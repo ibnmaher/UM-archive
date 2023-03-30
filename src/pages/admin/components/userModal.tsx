@@ -112,6 +112,16 @@ export const UserModal = ({
       setRefetch((state: boolean) => !state);
     }
   }, [response]);
+  const handleEscape = (e: KeyboardEvent) => {
+    if (e.code === "Escape") {
+      setUserModal(false);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, []);
+
   return (
     <FocusLock>
       <div className="fixed w-full h-full bg-black bg-opacity-40 top-0 bottom-0 left-0 right-0  z-50 flex items-center justify-center cursor-pointer ">

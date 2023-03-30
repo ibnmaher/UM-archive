@@ -102,6 +102,16 @@ export const ContactModal = ({
       yupErrorHandler(err.inner, setErrors);
     }
   };
+  const handleEscape = (e: KeyboardEvent) => {
+    if (e.code === "Escape") {
+      setContactModal(false);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, []);
+
   return (
     <Modal
       open={true}

@@ -49,7 +49,7 @@ export const Admin = ({ auth }: any) => {
   return (
     <div
       style={
-        activityModal || userModal
+        activityModal || userModal || contactModal
           ? { overflow: "hidden", height: "100vh" }
           : { height: "auto" }
       }

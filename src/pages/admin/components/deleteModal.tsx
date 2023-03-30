@@ -59,6 +59,16 @@ export const DeleteModal = ({
     }
   }, [response, uResponse]);
 
+  const handleEscape = (e: KeyboardEvent) => {
+    if (e.code === "Escape") {
+      setDeleteModal(false);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, []);
+
   return (
     <Modal
       open={deleteModal ? true : false}

@@ -23,6 +23,8 @@ import activityModalErrors from "../objects/activityModalErrors";
 import { FileInput } from "./fileInput";
 import { UsersInput } from "./usersInput";
 import FocusLock from "react-focus-lock";
+import { PdfInput } from "./pdfInput";
+import { BsFileEarmarkPdf } from "react-icons/bs";
 interface PROPS {
   setActivityModal: React.Dispatch<React.SetStateAction<boolean>>;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -48,11 +50,18 @@ export const ActivityModal = ({
     {},
     { Authorization: `Bearer ${auth.token}` }
   );
-  console.log("rss", response);
-  const [dateFrom, setDateFrom] = React.useState<Dayjs | null>(dayjs());
-  const [dateTo, setDateTo] = React.useState<Dayjs | null>(dayjs());
-  const [orderDate, setOrderDate] = React.useState<Dayjs | null>(dayjs());
+
+  const [dateFrom, setDateFrom] = React.useState<Dayjs | string | null>(
+    dayjs().format("YYYY/MM/DD")
+  );
+  const [dateTo, setDateTo] = React.useState<Dayjs | string | null>(
+    dayjs().format("YYYY/MM/DD")
+  );
+  const [orderDate, setOrderDate] = React.useState<Dayjs | string | null>(
+    dayjs().format("YYYY/MM/DD")
+  );
   const [files, setFiles] = useState<any[]>([]);
+  const [pdf, setPdf] = useState<any[]>([]);
   const [errors, setErrors] = useState(activityModalErrors);
 
   const [values, setValues] = useState<any>({
@@ -62,6 +71,9 @@ export const ActivityModal = ({
     barcode: "",
     location: "نشاط خارجي",
     participants: [],
+    dateFrom,
+    dateTo,
+    orderDate,
   });
 
   const handleChange = (e: any, name: string) => {
@@ -87,6 +99,9 @@ export const ActivityModal = ({
         data.append("images", file.image);
         data.append("privateOptin", file.private);
       });
+      pdf.map((pdf) => {
+        data.append("pdf", pdf.file);
+      });
       await validationFunction(addActivitySchema, values);
       addActivity(data);
     } catch (err: any) {
@@ -94,13 +109,22 @@ export const ActivityModal = ({
     }
   };
 
-  const handleRemoveImage = (index: number) => {
-    setFiles((state: any) => {
-      let newState = [...state];
-      newState.splice(index, 1);
+  const handleRemoveImage = (index: number, type: string) => {
+    if (type === "file") {
+      setFiles((state: any) => {
+        let newState = [...state];
+        newState.splice(index, 1);
 
-      return newState;
-    });
+        return newState;
+      });
+    } else {
+      setPdf((state: any) => {
+        let newState = [...state];
+        newState.splice(index, 1);
+
+        return newState;
+      });
+    }
   };
   useEffect(() => {
     if (response?.status) {
@@ -117,6 +141,15 @@ export const ActivityModal = ({
     }
   }, [response, error]);
 
+  const handleEscape = (e: KeyboardEvent) => {
+    if (e.code === "Escape") {
+      setActivityModal(false);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, []);
   return (
     <FocusLock>
       <div className="fixed w-full h-full  bg-black bg-opacity-40 top-0 bottom-0 left-0 right-0  z-50 flex items-center justify-center cursor-pointer ">
@@ -182,7 +215,12 @@ export const ActivityModal = ({
                 inputFormat="MM/DD/YYYY"
                 value={orderDate}
                 disableFuture
-                InputProps={{ sx: { backgroundColor: "white" } }}
+                InputProps={{
+                  sx: {
+                    backgroundColor: "white",
+                    ".MuiFormHelperText-root": { color: "red" },
+                  },
+                }}
                 onChange={(value) => {
                   setOrderDate(value);
                   setValues((values: any) => {
@@ -300,16 +338,37 @@ export const ActivityModal = ({
                     <IconButton
                       size="small"
                       sx={{ position: "absolute", top: "-10px", left: "-10px" }}
-                      onClick={() => handleRemoveImage(index)}
+                      onClick={() => handleRemoveImage(index, "file")}
                     >
                       <TiDelete className="text-red-700" />
                     </IconButton>
-                    <img src={image.url} alt="" />
+                    <a href={image.url} target="_blank" className="w-10 h-10">
+                      <img src={image.url} />
+                    </a>
                   </div>
                 );
               })}
             </div>
-            <div className="flex justify-between">
+            <PdfInput setPdf={setPdf} />
+            <div className="flex gap-1 w-full">
+              {pdf.map((pdf, index) => {
+                return (
+                  <div className="w-10 h-10 relative" key={index}>
+                    <IconButton
+                      size="small"
+                      sx={{ position: "absolute", top: "-10px", left: "-10px" }}
+                      onClick={() => handleRemoveImage(index, "pdf")}
+                    >
+                      <TiDelete className="text-red-700" />
+                    </IconButton>
+                    <a href={pdf.url} target="_blank" className="w-10 h-10">
+                      <BsFileEarmarkPdf className="text-red-600 text-3xl" />
+                    </a>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="flex flex-row-reverse justify-between">
               <RadioGroup
                 row
                 aria-labelledby="activity-type"

@@ -89,11 +89,7 @@ export const ActivitiesTable = ({
     },
   }));
   const handleRowClick: GridEventListener<"rowClick"> = (params) => {
-    let selectedActivity = response.filter(
-      (activity: any) => activity.activity_id == params.id
-    );
-
-    setModalActivity(selectedActivity);
+    setModalActivity({ response: response, id: params.id });
   };
 
   const columns: GridColDef[] = [
@@ -207,7 +203,7 @@ export const ActivitiesTable = ({
     <div className="w-full flex justify-center flex-1">
       {!loading ? (
         <StripedDataGrid
-          autoHeight
+          autoHeight={!updateActivityModal}
           rows={rows}
           columns={columns}
           pageSize={20}

@@ -1,10 +1,10 @@
 import { useModal } from "common/hooks/useModal";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import QRCode from "react-qr-code";
 import { QRCodeSVG } from "qrcode.react";
 import Barcode from "react-barcode";
 import { Autocomplete, Link, TextField } from "@mui/material";
-
+import { BsFileEarmarkPdf } from "react-icons/bs";
 export const Modal = ({
   setModalActivity,
   modalActivity,
@@ -12,19 +12,56 @@ export const Modal = ({
   setModalActivity: React.Dispatch<React.SetStateAction<any>>;
   modalActivity: any;
 }) => {
-  console.log(modalActivity[0]);
   const mainRef = useRef(null);
   useModal(mainRef, () => setModalActivity(false));
+  const handleEscape = (e: KeyboardEvent) => {
+    if (e.code === "Escape") {
+      setModalActivity(false);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, []);
+  let [current, setCurrent] = useState(0);
+  let [data, setData] = useState(modalActivity.response[current]);
+
+  const handleArrowClick = (e: any) => {
+    if (e.key === "ArrowRight") {
+      console.log(current == modalActivity.response.length - 1);
+
+      current == modalActivity.response.length - 1
+        ? setCurrent(0)
+        : setCurrent((current: number) => (current += 1));
+    } else if (e.key === "ArrowLeft") {
+      current == 0
+        ? setCurrent(modalActivity.response.length - 1)
+        : setCurrent((current: number) => (current -= 1));
+    }
+  };
+
+  useEffect(() => {
+    modalActivity.response.forEach((activity: any, index: number) => {
+      if (activity.activity_id === modalActivity.id) {
+        setCurrent(index);
+      }
+    });
+  }, []);
+  useEffect(() => {
+    setData(modalActivity.response[current]);
+    document.addEventListener("keydown", handleArrowClick);
+    return () => document.removeEventListener("keydown", handleArrowClick);
+  }, [current]);
   return (
     <div className="fixed w-full h-full bg-black bg-opacity-40 top-0 bottom-0 left-0 right-0  z-50 flex items-center justify-center cursor-pointer ">
       <div
         ref={mainRef}
-        className="h-4/5 w-4/5 bg-quan rounded-lg cursor-default flex flex-col items-start justify-start relative p-6 gap-5"
+        className="h-[90%] w-4/5 bg-quan rounded-lg cursor-default flex flex-col items-start justify-start relative p-6 gap-5"
       >
         <div className="flex gap-3 w-full">
           <TextField
             label="العنوان"
-            value={modalActivity[0].title}
+            value={data.title}
             size="small"
             inputProps={{ sx: { color: "blue" } }}
             sx={{
@@ -39,7 +76,7 @@ export const Modal = ({
           />
           <TextField
             label="القسم"
-            value={modalActivity[0].department}
+            value={data.department}
             size="small"
             inputProps={{ sx: { color: "blue" } }}
             sx={{
@@ -55,7 +92,7 @@ export const Modal = ({
         </div>
         <TextField
           label="النوع"
-          value={modalActivity[0].type}
+          value={data.type}
           size="small"
           inputProps={{ sx: { color: "blue" } }}
           sx={{
@@ -74,8 +111,8 @@ export const Modal = ({
           disabled
           sx={{ width: "100%" }}
           id="multiple-limit-tags"
-          options={modalActivity[0].participants}
-          value={modalActivity[0].participants}
+          options={data.participants}
+          value={data.participants}
           getOptionLabel={(option: {
             name: string;
             email: string;
@@ -97,9 +134,10 @@ export const Modal = ({
         <div className="flex gap-3 w-full">
           <TextField
             label="تاريخ الكتاب"
-            value={modalActivity[0].order_date}
+            value={data.order_date}
             size="small"
             inputProps={{ sx: { color: "blue" } }}
+            InputLabelProps={{ shrink: true }}
             sx={{
               width: "100%",
               backgroundColor: "white",
@@ -112,9 +150,10 @@ export const Modal = ({
           />
           <TextField
             label=" التاريخ من"
-            value={modalActivity[0].start_date}
+            value={data.start_date}
             size="small"
             inputProps={{ sx: { color: "blue" } }}
+            InputLabelProps={{ shrink: true }}
             sx={{
               width: "100%",
               backgroundColor: "white",
@@ -127,7 +166,8 @@ export const Modal = ({
           />
           <TextField
             label=" التاريخ االى"
-            value={modalActivity[0].end_date}
+            value={data.end_date}
+            InputLabelProps={{ shrink: true }}
             size="small"
             inputProps={{ sx: { color: "blue" } }}
             sx={{
@@ -142,7 +182,7 @@ export const Modal = ({
           />
         </div>
         <textarea
-          value={modalActivity[0].summary}
+          value={data.summary}
           disabled
           placeholder="نبذة عن النشاط"
           className=" resize-none rounded-[3px] h-20 w-full py-2 px-3 border-[1.8px] border-gray-300 hover:border-black focus:border-none"
@@ -150,7 +190,7 @@ export const Modal = ({
         <div className="flex items-center gap-2">
           <TextField
             label="نوع النشاط"
-            value={modalActivity[0].location}
+            value={data.location}
             size="small"
             inputProps={{ sx: { color: "blue" } }}
             sx={{
@@ -163,15 +203,15 @@ export const Modal = ({
             }}
             disabled
           />
-          {modalActivity[0].link && (
-            <Link href={modalActivity[0].link} target="_blank" underline="none">
+          {data.link && (
+            <Link href={data.link} target="_blank" underline="none">
               الرابط
             </Link>
           )}
         </div>
         <div className="flex gap-2">
-          {modalActivity[0].images &&
-            modalActivity[0].images.map((image: any, i: number) => {
+          {data.images &&
+            data.images.map((image: any, i: number) => {
               return (
                 <a
                   href={`http://localhost:5000/${image.url}`}
@@ -183,10 +223,25 @@ export const Modal = ({
               );
             })}
         </div>
+        <div className="flex gap-2">
+          {data.files &&
+            data.files.map((file: any, i: number) => {
+              return (
+                <a
+                  href={`http://localhost:5000/${file.url}`}
+                  target="_blank"
+                  className=" flex gap-2"
+                >
+                  <BsFileEarmarkPdf className="text-3xl text-red-500" />
+                  <h3 className="w-32 truncate ">{file.name}</h3>
+                </a>
+              );
+            })}
+        </div>
         <div className="absolute bottom-2 left-2 ">
           <Barcode
             font="10px"
-            value={modalActivity[0].barcode_id}
+            value={data.barcode_id}
             height={20}
             background={"transparent"}
             width={1.4}

@@ -27,6 +27,8 @@ import { Modal } from "./modal";
 import { useUpdateActivity } from "../api/updateActivity";
 import { AUTH } from "types";
 import FocusLock from "react-focus-lock";
+import { BsFileEarmarkPdf } from "react-icons/bs";
+import { PdfInput } from "./pdfInput";
 interface PROPS {
   setUpdateActivityModal: React.Dispatch<React.SetStateAction<any>>;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -54,7 +56,7 @@ export const UpdateActivityModal = ({
     {},
     { Authorization: `Bearer ${auth.token}` }
   );
-
+  const [pdf, setPdf] = useState<any[]>([]);
   const [dateFrom, setDateFrom] = React.useState<Dayjs | null>(
     dayjs(activityInfo[0].start_date)
   );
@@ -78,9 +80,10 @@ export const UpdateActivityModal = ({
     summary: activityInfo[0].summary || "",
     participants: activityInfo[0].participants,
     orderDate: activityInfo[0].order_date,
-    orderFrom: activityInfo[0].start_date,
-    orderTo: activityInfo[0].end_date,
+    dateFrom: activityInfo[0].start_date,
+    dateTo: activityInfo[0].end_date,
     deleteImages: false,
+    deleteFiles: false,
   });
 
   const handleChange = (e: any, name: string) => {
@@ -106,6 +109,9 @@ export const UpdateActivityModal = ({
         data.append("images", file.image);
         data.append("privateOptin", file.private);
       });
+      pdf.map((pdf) => {
+        data.append("pdf", pdf.file);
+      });
       await validationFunction(addActivitySchema, values);
       updateActivity(data);
     } catch (err: any) {
@@ -113,13 +119,22 @@ export const UpdateActivityModal = ({
     }
   };
 
-  const handleRemoveImage = (index: number) => {
-    setFiles((state: any) => {
-      let newState = [...state];
-      newState.splice(index, 1);
+  const handleRemoveImage = (index: number, type: string) => {
+    if (type === "file") {
+      setFiles((state: any) => {
+        let newState = [...state];
+        newState.splice(index, 1);
 
-      return newState;
-    });
+        return newState;
+      });
+    } else {
+      setPdf((state: any) => {
+        let newState = [...state];
+        newState.splice(index, 1);
+
+        return newState;
+      });
+    }
   };
   useEffect(() => {
     console.log("jjj", response);
@@ -137,12 +152,22 @@ export const UpdateActivityModal = ({
     }
   }, [response, error]);
 
+  const handleEscape = (e: KeyboardEvent) => {
+    if (e.code === "Escape") {
+      setUpdateActivityModal(false);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, []);
+
   return (
     <FocusLock>
-      <div className="fixed w-full h-full  bg-black bg-opacity-40 top-0 bottom-0 left-0 right-0  z-50 flex items-center justify-center cursor-pointer ">
+      <div className="fixed w-full  bg-black bg-opacity-40 top-0 bottom-0 left-0 right-0  z-50 flex items-center justify-center cursor-pointer ">
         <form
           onSubmit={handleSubmit}
-          className="  max-h-screen overflow-y-scroll p-12 w-full bg-quan rounded-lg cursor-default flex items-center justify-center relative"
+          className="  max-h-screen overflow-y-scroll pt-64 pb-12 w-full bg-quan rounded-lg cursor-default flex items-center justify-center relative"
         >
           <FormControl
             fullWidth
@@ -322,7 +347,7 @@ export const UpdateActivityModal = ({
                     <IconButton
                       size="small"
                       sx={{ position: "absolute", top: "-10px", left: "-10px" }}
-                      onClick={() => handleRemoveImage(index)}
+                      onClick={() => handleRemoveImage(index, "file")}
                     >
                       <TiDelete className="text-red-700" />
                     </IconButton>
@@ -344,7 +369,39 @@ export const UpdateActivityModal = ({
               }
               label="مسح الصور السابقة"
             />
-            <div className="flex justify-between">
+            <PdfInput setPdf={setPdf} />
+            <div className="flex gap-1 w-full">
+              {pdf.map((pdf, index) => {
+                return (
+                  <div className="w-10 h-10 relative" key={index}>
+                    <IconButton
+                      size="small"
+                      sx={{ position: "absolute", top: "-10px", left: "-10px" }}
+                      onClick={() => handleRemoveImage(index, "pdf")}
+                    >
+                      <TiDelete className="text-red-700" />
+                    </IconButton>
+                    <a href={pdf.url} target="_blank" className="w-10 h-10">
+                      <BsFileEarmarkPdf className="text-red-600 text-3xl" />
+                    </a>
+                  </div>
+                );
+              })}
+            </div>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  defaultChecked={false}
+                  onChange={() =>
+                    setValues((state: any) => {
+                      return { ...state, deleteFiles: !state.deleteFiles };
+                    })
+                  }
+                />
+              }
+              label="مسح الملفات السابقة"
+            />
+            <div className="flex flex-row-reverse justify-between">
               <RadioGroup
                 row
                 aria-labelledby="activity-type"
