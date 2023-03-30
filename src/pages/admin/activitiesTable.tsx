@@ -45,7 +45,7 @@ export const ActivitiesTable = ({
     false
   );
 
-  const { response, getActivities, error, loading } = useGetActivities(query, {
+  const { response, getActivities, loading } = useGetActivities(query, {
     Authorization: `Bearer ${auth.token}`,
   });
   console.log("res", response);
@@ -161,7 +161,7 @@ export const ActivitiesTable = ({
             onClick={(e) => {
               e.stopPropagation();
               let selectedActivity = response.filter(
-                (activity: any) => activity.activity_id == params.id
+                (activity: any) => activity.activity_id === params.id
               );
 
               setUpdateActivityModal(selectedActivity);

@@ -12,23 +12,20 @@ import {
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
+import FocusLock from "react-focus-lock";
 import { AiOutlineClose } from "react-icons/ai";
-import { FileInput } from "./fileInput";
+import { BsFileEarmarkPdf } from "react-icons/bs";
 import { TiDelete } from "react-icons/ti";
-import { useAddActivity } from "../api/addActivity";
-import { UsersInput } from "./usersInput";
+import { MoonLoader } from "react-spinners";
+import { AUTH } from "types";
 import { addActivitySchema } from "utils/addActivitySchema";
 import { validationFunction } from "utils/validationFunction";
 import { yupErrorHandler } from "utils/yupErrorHandler";
-import activityModalErrors from "../objects/activityModalErrors";
-import { BeatLoader, MoonLoader } from "react-spinners";
-import { Message } from "common/components/message";
-import { Modal } from "./modal";
 import { useUpdateActivity } from "../api/updateActivity";
-import { AUTH } from "types";
-import FocusLock from "react-focus-lock";
-import { BsFileEarmarkPdf } from "react-icons/bs";
+import activityModalErrors from "../objects/activityModalErrors";
+import { FileInput } from "./fileInput";
 import { PdfInput } from "./pdfInput";
+import { UsersInput } from "./usersInput";
 interface PROPS {
   setUpdateActivityModal: React.Dispatch<React.SetStateAction<any>>;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -381,7 +378,12 @@ export const UpdateActivityModal = ({
                     >
                       <TiDelete className="text-red-700" />
                     </IconButton>
-                    <a href={pdf.url} target="_blank" className="w-10 h-10">
+                    <a
+                      href={pdf.url}
+                      target="_blank"
+                      className="w-10 h-10"
+                      rel="noreferrer"
+                    >
                       <BsFileEarmarkPdf className="text-red-600 text-3xl" />
                     </a>
                   </div>

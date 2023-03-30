@@ -1,9 +1,8 @@
-import { useModal } from "common/hooks/useModal";
-import React, { useEffect, useRef, useState } from "react";
-import QRCode from "react-qr-code";
-import { QRCodeSVG } from "qrcode.react";
-import Barcode from "react-barcode";
 import { Autocomplete, Link, TextField } from "@mui/material";
+import { useModal } from "common/hooks/useModal";
+import html2canvas from "html2canvas";
+import React, { useEffect, useRef, useState } from "react";
+import Barcode from "react-barcode";
 import { BsFileEarmarkPdf } from "react-icons/bs";
 export const Modal = ({
   setModalActivity,
@@ -22,19 +21,19 @@ export const Modal = ({
   useEffect(() => {
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
-  }, []);
+  });
   let [current, setCurrent] = useState(0);
   let [data, setData] = useState(modalActivity.response[current]);
-
+  const downloadRef = useRef<HTMLDivElement>(null);
   const handleArrowClick = (e: any) => {
     if (e.key === "ArrowRight") {
       console.log(current == modalActivity.response.length - 1);
 
-      current == modalActivity.response.length - 1
+      current === modalActivity.response.length - 1
         ? setCurrent(0)
         : setCurrent((current: number) => (current += 1));
     } else if (e.key === "ArrowLeft") {
-      current == 0
+      current === 0
         ? setCurrent(modalActivity.response.length - 1)
         : setCurrent((current: number) => (current -= 1));
     }
@@ -52,6 +51,28 @@ export const Modal = ({
     document.addEventListener("keydown", handleArrowClick);
     return () => document.removeEventListener("keydown", handleArrowClick);
   }, [current]);
+
+  const handleDownloadImage = async () => {
+    const element = downloadRef.current;
+    if (element) {
+      const canvas = await html2canvas(element);
+
+      const data = canvas.toDataURL("image/jpg");
+      const link = document.createElement("a");
+
+      if (typeof link.download === "string") {
+        link.href = data;
+        link.download = "image.jpg";
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        window.open(data);
+      }
+    }
+  };
+
   return (
     <div className="fixed w-full h-full bg-black bg-opacity-40 top-0 bottom-0 left-0 right-0  z-50 flex items-center justify-center cursor-pointer ">
       <div
@@ -204,7 +225,12 @@ export const Modal = ({
             disabled
           />
           {data.link && (
-            <Link href={data.link} target="_blank" underline="none">
+            <Link
+              href={data.link}
+              target="_blank"
+              underline="none"
+              rel="noreferrer"
+            >
               الرابط
             </Link>
           )}
@@ -217,6 +243,7 @@ export const Modal = ({
                   href={`http://localhost:5000/${image.url}`}
                   target="_blank"
                   className="w-10 h-10"
+                  rel="noreferrer"
                 >
                   <img src={`http://localhost:5000/${image.url}`} key={i} />
                 </a>
@@ -231,6 +258,7 @@ export const Modal = ({
                   href={`http://localhost:5000/${file.url}`}
                   target="_blank"
                   className=" flex gap-2"
+                  rel="noreferrer"
                 >
                   <BsFileEarmarkPdf className="text-3xl text-red-500" />
                   <h3 className="w-32 truncate ">{file.name}</h3>
@@ -238,7 +266,11 @@ export const Modal = ({
               );
             })}
         </div>
-        <div className="absolute bottom-2 left-2 ">
+        <div
+          className="absolute bottom-2 left-2 cursor-pointer "
+          ref={downloadRef}
+          onClick={handleDownloadImage}
+        >
           <Barcode
             font="10px"
             value={data.barcode_id}
