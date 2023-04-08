@@ -302,6 +302,7 @@ export const UpdateActivityModal = ({
               select
               onChange={(e) => handleChange(e, "department")}
             >
+              <MenuItem value={"مشترك"}>مشترك </MenuItem>
               <MenuItem value={"علوم الحاسوب"}>علوم الحاسوب</MenuItem>
               <MenuItem value={"الأمن السيبراني"}>الأمن السيبراني</MenuItem>
               <MenuItem value={"الشبكات"}>الشبكات</MenuItem>

@@ -29,15 +29,17 @@ export const PdfInput = ({
         sx={{ backgroundColor: "white", width: "100%" }}
         InputLabelProps={{ shrink: true }}
         size="small"
-        onChange={(e: any) =>
-          setFile((state: any) => {
-            return {
-              ...state,
-              file: e.target.files[0],
-              url: URL.createObjectURL(e.target.files[0]),
-            };
-          })
-        }
+        onChange={(e: any) => {
+          if (e.target.files.length !== 0) {
+            setFile((state: any) => {
+              return {
+                ...state,
+                file: e.target.files[0],
+                url: URL.createObjectURL(e.target.files[0]),
+              };
+            });
+          }
+        }}
       />
 
       <Button onClick={handleAdd} disabled={!file.file} variant="text">

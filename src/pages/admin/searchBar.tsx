@@ -95,6 +95,9 @@ export const SearchBar = ({
             label=" القسم"
             sx={{ backgroundColor: "#F8F4EA", width: "200px" }}
             select
+            SelectProps={{
+              multiple: true,
+            }}
             value={query.department}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setQuery((state: any) => {
@@ -102,7 +105,7 @@ export const SearchBar = ({
               })
             }
           >
-            <MenuItem value={""}>الكل</MenuItem>
+            <MenuItem value={"مشترك"}>مشترك </MenuItem>
             <MenuItem value={"علوم الحاسوب"}>علوم الحاسوب</MenuItem>
             <MenuItem value={"الأمن السيبراني"}>الأمن السيبراني</MenuItem>
             <MenuItem value={"الشبكات"}>الشبكات</MenuItem>

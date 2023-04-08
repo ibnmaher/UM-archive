@@ -132,8 +132,8 @@ export const Modal = ({
           disabled
           sx={{ width: "100%" }}
           id="multiple-limit-tags"
-          options={data.participants}
-          value={data.participants}
+          options={data.participants || []}
+          value={data.participants || []}
           getOptionLabel={(option: {
             name: string;
             email: string;

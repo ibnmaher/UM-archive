@@ -45,7 +45,6 @@ export const ActivityModal = ({
   setRefetch,
   auth,
 }: PROPS) => {
-  console.log("dwdwdww", auth.token);
   const { error, response, addActivity, loading } = useAddActivity(
     {},
     { Authorization: `Bearer ${auth.token}` }
@@ -66,10 +65,10 @@ export const ActivityModal = ({
 
   const [values, setValues] = useState<any>({
     type: "",
-    department: "",
+    department: [],
     link: "",
     barcode: "",
-    location: "نشاط خارجي",
+    location: "نشاط داخلي",
     participants: [],
     dateFrom,
     dateTo,
@@ -88,7 +87,7 @@ export const ActivityModal = ({
     try {
       let data = new FormData();
       Object.keys(values).map((key: string) => {
-        if (key === "participants") {
+        if (key === "participants" || key === "department") {
           data.append(`${key}`, JSON.stringify(values[key]));
         } else {
           data.append(`${key}`, values[key]);
@@ -134,13 +133,14 @@ export const ActivityModal = ({
       setActivityModal(false);
       setRefetch((state: boolean) => !state);
     }
+
     if (error) {
       setOpen(true);
       setMessage("حدث خطأ");
       setSeverity("error");
     }
   }, [response, error]);
-
+  console.log(values);
   const handleEscape = (e: KeyboardEvent) => {
     if (e.code === "Escape") {
       setActivityModal(false);
@@ -296,8 +296,16 @@ export const ActivityModal = ({
               InputProps={{ sx: { backgroundColor: "white" } }}
               size="small"
               select
-              onChange={(e) => handleChange(e, "department")}
+              SelectProps={{
+                multiple: true,
+              }}
+              onChange={(e: any) =>
+                setValues((values: any) => {
+                  return { ...values, department: e.target.value };
+                })
+              }
             >
+              <MenuItem value={"مشترك"}>مشترك </MenuItem>
               <MenuItem value={"علوم الحاسوب"}>علوم الحاسوب</MenuItem>
               <MenuItem value={"الأمن السيبراني"}>الأمن السيبراني</MenuItem>
               <MenuItem value={"الشبكات"}>الشبكات</MenuItem>
@@ -373,18 +381,18 @@ export const ActivityModal = ({
                 row
                 aria-labelledby="activity-type"
                 name="row-radio-buttons-group"
-                defaultValue="نشاط خارجي"
+                defaultValue="نشاط داخلي"
                 onChange={(e) => handleChange(e, "location")}
               >
-                <FormControlLabel
-                  value="نشاط خارجي"
-                  control={<Radio />}
-                  label="نشاط خارجي"
-                />
                 <FormControlLabel
                   value="نشاط داخلي"
                   control={<Radio />}
                   label="نشاط داخلي"
+                />
+                <FormControlLabel
+                  value="نشاط خارجي"
+                  control={<Radio />}
+                  label="نشاط خارجي"
                 />
               </RadioGroup>
               <TextField

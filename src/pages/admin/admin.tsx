@@ -23,7 +23,7 @@ export const Admin = ({ auth }: any) => {
   const [refetch, setRefetch] = useState<boolean>(false);
   const [query, setQuery] = useState<QUERY>({
     string: "",
-    department: "",
+    department: [],
     dateFrom: null,
     dateTo: null,
   });

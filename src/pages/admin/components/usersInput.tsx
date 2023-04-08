@@ -26,7 +26,7 @@ export const UsersInput = ({
   React.useEffect(() => {
     getNames();
   }, [name]);
-  console.log(response);
+
   return (
     <>
       <Autocomplete
