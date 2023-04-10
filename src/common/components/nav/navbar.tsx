@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { setAuth } from "common/context/slices/authSlice";
 import { AUTH } from "types";
+import col_logo from "common/images/col-logo.png";
+import uni_logo from "common/images/uni-logo.png";
 export const Navbar = ({ auth }: { auth: AUTH }) => {
   console.log(auth);
   const dispatch = useDispatch();
@@ -58,6 +60,10 @@ export const Navbar = ({ auth }: { auth: AUTH }) => {
           </NavLink>
         )}
       </ul>
+      <div className="flex gap-2 justify-center items-center w-full absolute -z-10 left-0 right-0">
+        <img src={col_logo} className="h-20"></img>
+        <img src={uni_logo} className="h-[72px]"></img>
+      </div>
       <h1 className="text-white text-xl">{auth?.name}</h1>
     </div>
   );

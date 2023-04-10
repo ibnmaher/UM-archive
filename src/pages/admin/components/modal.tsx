@@ -1,9 +1,10 @@
-import { Autocomplete, Link, TextField } from "@mui/material";
+import { Autocomplete, Button, Link, TextField } from "@mui/material";
 import { useModal } from "common/hooks/useModal";
 import html2canvas from "html2canvas";
 import React, { useEffect, useRef, useState } from "react";
 import Barcode from "react-barcode";
 import { BsFileEarmarkPdf } from "react-icons/bs";
+import { BsFillCaretRightFill } from "react-icons/bs";
 export const Modal = ({
   setModalActivity,
   modalActivity,
@@ -27,8 +28,6 @@ export const Modal = ({
   const downloadRef = useRef<HTMLDivElement>(null);
   const handleArrowClick = (e: any) => {
     if (e.key === "ArrowRight") {
-      console.log(current == modalActivity.response.length - 1);
-
       current === modalActivity.response.length - 1
         ? setCurrent(0)
         : setCurrent((current: number) => (current += 1));
@@ -281,6 +280,28 @@ export const Modal = ({
             background={"transparent"}
             width={1.4}
           />{" "}
+        </div>
+        <div className="absolute bottom-6 right-6 flex gap-2 ">
+          <Button
+            variant="contained"
+            onClick={() => {
+              current === modalActivity.response.length - 1
+                ? setCurrent(0)
+                : setCurrent((current: number) => (current += 1));
+            }}
+          >
+            <BsFillCaretRightFill />
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              current === 0
+                ? setCurrent(modalActivity.response.length - 1)
+                : setCurrent((current: number) => (current -= 1));
+            }}
+          >
+            <BsFillCaretRightFill className="rotate-180" />
+          </Button>
         </div>
       </div>
     </div>
