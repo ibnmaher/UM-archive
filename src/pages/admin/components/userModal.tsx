@@ -31,7 +31,7 @@ export const UserModal = ({
 }) => {
   const [dateFrom, setDateFrom] = React.useState<Dayjs | null>(dayjs());
   const [dateTo, setDateTo] = React.useState<Dayjs | null>(dayjs());
-  const [values, setValues] = useState<any>({ type: "مستخدم" });
+  const [values, setValues] = useState<any>({ type: "user" });
   const [open, setOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const { response, addUser, loading, error } = useAddUser(
@@ -106,7 +106,7 @@ export const UserModal = ({
     if (response?.status === 201) {
       setOpen(true);
       setValues((state: any) => {
-        return { supervisor: false, department: state.department };
+        return { type: "user", department: state.department };
       });
       formRef?.current?.reset();
       setRefetch((state: boolean) => !state);
@@ -194,7 +194,7 @@ export const UserModal = ({
 
             <RadioGroup
               aria-labelledby="demo-radio-buttons-group-label"
-              defaultValue="مستخدم"
+              value={values.type}
               name="radio-buttons-group"
               row
               onChange={(e: any) =>
@@ -204,6 +204,7 @@ export const UserModal = ({
               }
             >
               <FormControlLabel
+                defaultChecked
                 value="user"
                 control={<Radio />}
                 label="مستخدم"

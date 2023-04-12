@@ -37,6 +37,10 @@ export const Signup = () => {
       error: false,
       message: "",
     },
+    code: {
+      error: false,
+      message: "",
+    },
     confirmPassword: {
       error: false,
       message: "",
@@ -51,6 +55,10 @@ export const Signup = () => {
       e.preventDefault();
       setErrors({
         email: {
+          error: false,
+          message: "",
+        },
+        code: {
           error: false,
           message: "",
         },
@@ -107,6 +115,18 @@ export const Signup = () => {
           }}
         />
         <TextField
+          id="code"
+          label="رمز التحقق"
+          variant="outlined"
+          className="  w-full"
+          error={errors.code.error}
+          helperText={errors.code.message}
+          InputProps={{ sx: { backgroundColor: "white" } }}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            handleChange(e, "code");
+          }}
+        />
+        <TextField
           id="password"
           label="الرمز السري"
           variant="outlined"
@@ -135,7 +155,10 @@ export const Signup = () => {
         <Button variant="contained" className="mx-auto" type="submit">
           تسجيل دخول
         </Button>
-        <Link to="/login">امتلك حساب!</Link>
+        <div className="flex justify-between w-full">
+          <Link to="/login">امتلك حساب!</Link>
+          <Link to="/resend-code">اعادة إرسال رمز التحقق</Link>
+        </div>
       </form>
       <Message
         open={open}
