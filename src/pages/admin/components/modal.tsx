@@ -281,7 +281,7 @@ export const Modal = ({
             width={1.4}
           />{" "}
         </div>
-        <div className="absolute bottom-6 right-6 flex gap-2 ">
+        <div className="absolute bottom-32 left-4 flex gap-2 ">
           <Button
             variant="contained"
             onClick={() => {

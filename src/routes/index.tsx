@@ -1,6 +1,7 @@
 import { Admin } from "pages/admin/admin";
 import { Home } from "pages/home/home";
 import { Login } from "pages/login/login";
+import { ResendCode } from "pages/login/sub/resendCode";
 import { Reset } from "pages/login/sub/reset";
 import { ResetPassword } from "pages/login/sub/resetPassword";
 import { Profile } from "pages/profile/profile";
@@ -53,6 +54,14 @@ export const Index = ({ auth }: { auth: AUTH }) => {
         element={
           <UnProtecetedRoute auth={auth}>
             <ResetPassword />
+          </UnProtecetedRoute>
+        }
+      />
+      <Route
+        path="/resend-code"
+        element={
+          <UnProtecetedRoute auth={auth}>
+            <ResendCode />
           </UnProtecetedRoute>
         }
       />

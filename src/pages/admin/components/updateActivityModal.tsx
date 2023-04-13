@@ -70,7 +70,7 @@ export const UpdateActivityModal = ({
     id: activityInfo[0].id,
     title: activityInfo[0].title || "",
     type: activityInfo[0].type || "",
-    department: activityInfo[0].department || "",
+    department: activityInfo[0].department || [],
     link: activityInfo[0].link || "",
     barcode: activityInfo[0].barcode_id || "",
     location: activityInfo[0].location || "نشاط خارجي",
@@ -82,7 +82,7 @@ export const UpdateActivityModal = ({
     deleteImages: false,
     deleteFiles: false,
   });
-
+  console.log(activityInfo[0].department);
   const handleChange = (e: any, name: string) => {
     setValues((values: any) => {
       return { ...values, [name]: e.target.value };
@@ -90,12 +90,13 @@ export const UpdateActivityModal = ({
   };
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
+    console.log("here");
     e.preventDefault();
     setErrors(activityModalErrors);
     try {
       let data = new FormData();
       Object.keys(values).map((key: string) => {
-        if (key === "participants") {
+        if (key === "participants" || key === "department") {
           data.append(`${key}`, JSON.stringify(values[key]));
         } else {
           data.append(`${key}`, values[key]);
@@ -300,7 +301,14 @@ export const UpdateActivityModal = ({
               InputProps={{ sx: { backgroundColor: "white" } }}
               size="small"
               select
-              onChange={(e) => handleChange(e, "department")}
+              SelectProps={{
+                multiple: true,
+              }}
+              onChange={(e: any) =>
+                setValues((values: any) => {
+                  return { ...values, department: e.target.value };
+                })
+              }
             >
               <MenuItem value={"مشترك"}>مشترك </MenuItem>
               <MenuItem value={"علوم الحاسوب"}>علوم الحاسوب</MenuItem>

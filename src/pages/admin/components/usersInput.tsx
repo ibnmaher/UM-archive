@@ -43,7 +43,7 @@ export const UsersInput = ({
         getOptionLabel={(option: { name: string; email: string; id: number }) =>
           `${option.name} (${option.email})`
         }
-        value={values.participants}
+        value={values.participants || []}
         isOptionEqualToValue={(option: any, value: any) =>
           option.id === value.id
         }
