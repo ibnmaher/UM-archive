@@ -155,7 +155,7 @@ export const ActivityModal = ({
       <div className="fixed w-full h-full  bg-black bg-opacity-40 top-0 bottom-0 left-0 right-0  z-50 flex items-center justify-center cursor-pointer ">
         <form
           onSubmit={handleSubmit}
-          className="  max-h-screen overflow-y-scroll p-12 w-full bg-quan rounded-lg cursor-default flex items-center justify-center relative"
+          className="  max-h-screen overflow-y-scroll pt-80 p-12 w-full bg-quan rounded-lg cursor-default flex items-center justify-center relative"
         >
           <FormControl
             fullWidth

@@ -9,6 +9,10 @@ export const PdfInput = ({
   const [file, setFile] = React.useState<any>({ file: "", url: "" });
 
   const handleAdd = () => {
+    if (file.file.size > 400000) {
+      alert("(4MB) حجم الملف اكبر من المسموح");
+      return;
+    }
     setPdf((state: any) => {
       return [...state, file];
     });

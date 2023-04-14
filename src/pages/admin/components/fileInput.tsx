@@ -13,6 +13,10 @@ export const FileInput = ({
   });
 
   const handleAdd = () => {
+    if (file.image.size > 400000) {
+      alert("(4MB) حجم الملف اكبر من المسموح");
+      return;
+    }
     setFiles((state: any) => {
       return [...state, file];
     });
