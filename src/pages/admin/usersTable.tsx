@@ -14,6 +14,10 @@ import { useGetUsers } from "./api/getUsers";
 import { UpdateUserModal } from "./components/updateUserModal";
 import { AUTH, QUERY } from "types";
 import { MoonLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
+import { createPortal } from "react-dom";
+import { UserActivityTable } from "./userActivityTable";
+
 interface PROPS {
   query: QUERY;
   auth: AUTH;
@@ -35,11 +39,12 @@ export const UsersTable = ({
   setSeverity,
   setOpen,
 }: PROPS) => {
-  const [modal, setModal] = useState<boolean>(false);
   const [updateUserModal, setUpdateUserModal] = useState<any>(false);
+  const [portal, setPortal] = useState<any>(false);
   const [deleteModal, setDeleteModal] = useState<boolean | string | number>(
     false
   );
+  const mainContainer: any = document.getElementById("root");
 
   const { response, getUsers, error, loading } = useGetUsers(query, {
     Authorization: `Bearer ${auth.token}`,
@@ -87,8 +92,9 @@ export const UsersTable = ({
       },
     },
   }));
+
   const handleRowClick: GridEventListener<"rowClick"> = (params) => {
-    setModal(true);
+    setPortal(params.id);
   };
 
   const columns: GridColDef[] = [
@@ -167,10 +173,10 @@ export const UsersTable = ({
   ];
 
   return (
-    <div className="w-full flex items-center justify-center flex-1">
+    <div className="w-full flex justify-center flex-1">
       {!loading ? (
         <StripedDataGrid
-          autoHeight
+          autoHeight={!portal}
           rows={response || []}
           columns={columns}
           pageSize={20}
@@ -224,6 +230,19 @@ export const UsersTable = ({
           auth={auth}
           setUpdateUserModal={setUpdateUserModal}
           userInfo={updateUserModal}
+        />
+      )}
+      {portal && (
+        <UserActivityTable
+          query={query}
+          auth={auth}
+          refetch={refetch}
+          setRefetch={setRefetch}
+          setOpen={setOpen}
+          setMessage={setMessage}
+          setSeverity={setSeverity}
+          userId={portal}
+          setPortal={setPortal}
         />
       )}
     </div>

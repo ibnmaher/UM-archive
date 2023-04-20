@@ -4,6 +4,7 @@ import {
   GridEventListener,
   gridClasses,
 } from "@mui/x-data-grid";
+import { AiOutlineClose } from "react-icons/ai";
 import { alpha, styled } from "@mui/material/styles";
 import { useState } from "react";
 import { Button, Chip } from "@mui/material";
@@ -17,9 +18,8 @@ import { DeleteModal } from "./components/deleteModal";
 import { UpdateActivityModal } from "./components/updateActivityModal";
 import { AUTH, QUERY } from "types";
 import { MoonLoader } from "react-spinners";
-import { Route, Routes } from "react-router-dom";
-import { ProtectedRoute } from "utils/protectedRoute";
-import { UserActivityTable } from "./userActivityTable";
+import { useGetUserActivites } from "./api/getUserActivities";
+import { useParams } from "react-router-dom";
 interface PROPS {
   query: QUERY;
   auth: AUTH;
@@ -27,12 +27,14 @@ interface PROPS {
   setRefetch: React.Dispatch<React.SetStateAction<boolean>>;
 
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setPortal: React.Dispatch<React.SetStateAction<boolean>>;
   setMessage: React.Dispatch<React.SetStateAction<string>>;
   setSeverity: React.Dispatch<
     React.SetStateAction<"success" | "info" | "warning" | "error">
   >;
+  userId?: string;
 }
-export const ActivitiesTable = ({
+export const UserActivityTable = ({
   query,
   auth,
   refetch,
@@ -40,6 +42,8 @@ export const ActivitiesTable = ({
   setMessage,
   setOpen,
   setSeverity,
+  setPortal,
+  userId,
 }: PROPS) => {
   const [modalActivity, setModalActivity] = useState<any>(false);
   const [updateActivityModal, setUpdateActivityModal] = useState<any>(false);
@@ -48,10 +52,23 @@ export const ActivitiesTable = ({
     false
   );
 
-  const { response, getActivities, loading } = useGetActivities(query, {
-    Authorization: `Bearer ${auth.token}`,
-  });
-  console.log("res", response);
+  const { response, getUserActivities, loading, error } = useGetUserActivites(
+    { ...query, userId: userId },
+    {
+      Authorization: `Bearer ${auth.token}`,
+    }
+  );
+
+  const handleEscape = (e: KeyboardEvent) => {
+    if (e.code === "Escape") {
+      setPortal(false);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, []);
+
   const ODD_OPACITY = 0.2;
   const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
     [`& .${gridClasses.row}.even`]: {
@@ -205,77 +222,94 @@ export const ActivitiesTable = ({
 
   const rows = response || [];
   useEffect(() => {
-    getActivities();
+    getUserActivities();
   }, [query, refetch]);
 
   return (
-    <div className="w-full flex gap-4 flex-col justify-center items-center flex-1">
-      {!loading ? (
-        <>
-          <StripedDataGrid
-            autoHeight={!updateActivityModal}
-            rows={rows}
-            columns={columns || []}
-            pageSize={20}
-            checkboxSelection={false}
-            onRowClick={handleRowClick}
-            rowsPerPageOptions={[20]}
-            getRowClassName={(params) =>
-              params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-            }
-            sx={{
-              backgroundColor: "white",
-              width: "100%",
-              "& .MuiDataGrid-columnHeaders": {
-                backgroundColor: "#ECE8DD",
-                fontWeight: "heavy ",
-                "& .odd": { backgroundColor: "red" },
-              },
-            }}
-            initialState={{
-              columns: {
-                columnVisibilityModel: {
-                  editButton: auth.type === "admin" ? true : false,
-                  deleteButton: auth.type === "admin" ? true : false,
+    <div className="fixed bg-black bg-opacity-50 flex justify-center items-center top-0 right-0 left-0 bottom-0 z-50 p-4 overflow-hidden">
+      <div className="w-full max-h-[90vh] flex gap-4 flex-col justify-center items-center flex-1 ">
+        {!loading ? (
+          <>
+            <StripedDataGrid
+              autoHeight
+              rows={rows}
+              columns={columns || []}
+              pageSize={7}
+              checkboxSelection={false}
+              onRowClick={handleRowClick}
+              rowsPerPageOptions={[7]}
+              getRowClassName={(params) =>
+                params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+              }
+              sx={{
+                backgroundColor: "white",
+                marginTop: "100px",
+                width: "100%",
+
+                "& .MuiDataGrid-columnHeaders": {
+                  backgroundColor: "#ECE8DD",
+                  fontWeight: "heavy ",
+                  "& .odd": { backgroundColor: "red" },
                 },
-              },
-            }}
+              }}
+              initialState={{
+                columns: {
+                  columnVisibilityModel: {
+                    editButton: auth.type === "admin" ? true : false,
+                    deleteButton: auth.type === "admin" ? true : false,
+                  },
+                },
+              }}
+            />
+          </>
+        ) : (
+          <MoonLoader color="blue" size={50} className="my-auto" />
+        )}
+        {modalActivity && (
+          <Modal
+            modalActivity={modalActivity}
+            setModalActivity={setModalActivity}
           />
-        </>
-      ) : (
-        <MoonLoader color="blue" size={50} className="my-auto" />
-      )}
-      {modalActivity && (
-        <Modal
-          modalActivity={modalActivity}
-          setModalActivity={setModalActivity}
-        />
-      )}
-      {deleteModal && (
-        <DeleteModal
-          refetch={refetch}
-          setRefetch={setRefetch}
-          auth={auth}
-          deleteModal={deleteModal}
-          setDeleteModal={setDeleteModal}
-          setMessage={setMessage}
-          setOpen={setOpen}
-          setSeverity={setSeverity}
-          text="هل تريد مسح النشاط؟"
-        />
-      )}
-      {updateActivityModal && (
-        <UpdateActivityModal
-          setUpdateActivityModal={setUpdateActivityModal}
-          activityInfo={updateActivityModal}
-          setRefetch={setRefetch}
-          setOpen={setOpen}
-          refetch={refetch}
-          setMessage={setMessage}
-          setSeverity={setSeverity}
-          auth={auth}
-        />
-      )}
+        )}
+        {deleteModal && (
+          <DeleteModal
+            refetch={refetch}
+            setRefetch={setRefetch}
+            auth={auth}
+            deleteModal={deleteModal}
+            setDeleteModal={setDeleteModal}
+            setMessage={setMessage}
+            setOpen={setOpen}
+            setSeverity={setSeverity}
+            text="هل تريد مسح النشاط؟"
+          />
+        )}
+        {updateActivityModal && (
+          <UpdateActivityModal
+            setUpdateActivityModal={setUpdateActivityModal}
+            activityInfo={updateActivityModal}
+            setRefetch={setRefetch}
+            setOpen={setOpen}
+            refetch={refetch}
+            setMessage={setMessage}
+            setSeverity={setSeverity}
+            auth={auth}
+          />
+        )}
+      </div>
+      <Button
+        color="error"
+        sx={{
+          position: "absolute",
+          backgroundColor: "white",
+          boxShadow: 1,
+          ":hover": { backgroundColor: "whitesmoke" },
+        }}
+        className="top-24 right-4"
+        onClick={() => setPortal(false)}
+      >
+        <AiOutlineClose />
+      </Button>
     </div>
   );
 };

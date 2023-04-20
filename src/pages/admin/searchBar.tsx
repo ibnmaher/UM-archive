@@ -88,7 +88,7 @@ export const SearchBar = ({
             الجامعة وخدمة المجتمع
           </MenuItem>
         </TextField>
-        {auth.type === "admin" && (
+        {(auth.type === "admin" || auth.type === "deen") && (
           <TextField
             size="small"
             id="department"

@@ -152,284 +152,281 @@ export const ActivityModal = ({
   }, []);
   return (
     <FocusLock>
-      <div className="fixed w-full h-full  bg-black bg-opacity-40 top-0 bottom-0 left-0 right-0  z-50 flex items-center justify-center cursor-pointer ">
-        <form
-          onSubmit={handleSubmit}
-          className="  max-h-screen overflow-y-scroll pt-80 p-12 w-full bg-quan rounded-lg cursor-default flex items-center justify-center relative"
+      <form
+        onSubmit={handleSubmit}
+        className=" w-full h-screen pb-10 overflow-y-auto pt-64 bg-quan rounded-lg cursor-default flex items-center justify-center fixed top-0 bottom-0 left-0 right-0 z-50"
+      >
+        <FormControl
+          fullWidth
+          sx={{
+            width: "60%",
+            display: "flex",
+
+            flexDirection: "column",
+
+            gap: "16px",
+          }}
         >
-          <FormControl
-            fullWidth
-            sx={{
-              width: "60%",
-              display: "flex",
-
-              flexDirection: "column",
-              height: "100%",
-              gap: "16px",
-              marginTop: "100px",
-            }}
+          <TextField
+            size="small"
+            id="type"
+            value={values.type}
+            error={errors.type.error}
+            helperText={errors.type.message}
+            label="نوع النشاط"
+            InputProps={{ sx: { backgroundColor: "white" } }}
+            select
+            onChange={(e) => handleChange(e, "type")}
           >
-            <TextField
-              size="small"
-              id="type"
-              value={values.type}
-              error={errors.type.error}
-              helperText={errors.type.message}
-              label="نوع النشاط"
-              InputProps={{ sx: { backgroundColor: "white" } }}
-              select
-              onChange={(e) => handleChange(e, "type")}
-            >
-              <MenuItem value="مناقشات طلبة الدراسات العليا">
-                مناقشات طلبة الدراسات العليا
-              </MenuItem>
-              <MenuItem value="المحاضرات (السيمينارات)">
-                المحاضرات (السيمينارات)
-              </MenuItem>
-              <MenuItem value="الاجتماعات واللقاءات">
-                الاجتماعات واللقاءات
-              </MenuItem>
-              <MenuItem value="الدورات التدريبية">الدورات التدريبية</MenuItem>
-              <MenuItem value="الحلقات الدراسية">الحلقات الدراسية</MenuItem>
-              <MenuItem value="ورش العمل">ورش العمل</MenuItem>
-              <MenuItem value="فعاليات التكريم">فعاليات التكريم</MenuItem>
-              <MenuItem value="الندوات العلمية">الندوات العلمية</MenuItem>
-              <MenuItem value="النشاطات اللاصفية">النشاطات اللاصفية</MenuItem>
-              <MenuItem value="الجامعة وخدمة المجتمع">
-                الجامعة وخدمة المجتمع
-              </MenuItem>
-            </TextField>
-            <TextField
-              label="العنوان"
-              id="title"
-              InputProps={{ sx: { backgroundColor: "white" } }}
-              size="small"
-              value={values.title}
-              error={errors.title.error}
-              helperText={errors.title.message}
-              onChange={(e) => handleChange(e, "title")}
-            />
-            <div className="flex items-center w-full justify-center gap-4">
-              <MobileDatePicker
-                label="تاريخ الامر"
-                inputFormat="MM/DD/YYYY"
-                value={orderDate}
-                disableFuture
-                InputProps={{
-                  sx: {
-                    backgroundColor: "white",
-                    ".MuiFormHelperText-root": { color: "red" },
-                  },
-                }}
-                onChange={(value) => {
-                  setOrderDate(value);
-                  setValues((values: any) => {
-                    return {
-                      ...values,
-                      orderDate: dayjs(value).format("YYYY/MM/DD"),
-                    };
-                  });
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    sx={{ width: "100%" }}
-                    size="small"
-                    error={errors.orderDate.error}
-                    helperText={errors.orderDate.message}
-                    {...params}
-                  />
-                )}
-              />
-              <MobileDatePicker
-                label="التاريخ من"
-                inputFormat="MM/DD/YYYY"
-                value={dateFrom}
-                disableFuture
-                onChange={(value) => {
-                  setDateFrom(value);
-                  setValues((values: any) => {
-                    return {
-                      ...values,
-                      dateFrom: dayjs(value).format("YYYY/MM/DD"),
-                    };
-                  });
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    sx={{ backgroundColor: "white", width: "100%" }}
-                    size="small"
-                    {...params}
-                  />
-                )}
-              />
-              <MobileDatePicker
-                label="التاريخ الى"
-                inputFormat="MM/DD/YYYY"
-                value={dateTo}
-                disableFuture
-                minDate={dateFrom ? dateFrom : dayjs()}
-                onChange={(value) => {
-                  setDateTo(value);
-                  setValues((values: any) => {
-                    return {
-                      ...values,
-                      dateTo: dayjs(value).format("YYYY/MM/DD"),
-                    };
-                  });
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    sx={{ backgroundColor: "white", width: "100%" }}
-                    size="small"
-                    {...params}
-                  />
-                )}
-              />
-            </div>
-
-            <TextField
-              label="القسم"
-              id="department"
-              value={values.department}
-              error={errors.department.error}
-              helperText={errors.department.message}
-              InputProps={{ sx: { backgroundColor: "white" } }}
-              size="small"
-              select
-              SelectProps={{
-                multiple: true,
+            <MenuItem value="مناقشات طلبة الدراسات العليا">
+              مناقشات طلبة الدراسات العليا
+            </MenuItem>
+            <MenuItem value="المحاضرات (السيمينارات)">
+              المحاضرات (السيمينارات)
+            </MenuItem>
+            <MenuItem value="الاجتماعات واللقاءات">
+              الاجتماعات واللقاءات
+            </MenuItem>
+            <MenuItem value="الدورات التدريبية">الدورات التدريبية</MenuItem>
+            <MenuItem value="الحلقات الدراسية">الحلقات الدراسية</MenuItem>
+            <MenuItem value="ورش العمل">ورش العمل</MenuItem>
+            <MenuItem value="فعاليات التكريم">فعاليات التكريم</MenuItem>
+            <MenuItem value="الندوات العلمية">الندوات العلمية</MenuItem>
+            <MenuItem value="النشاطات اللاصفية">النشاطات اللاصفية</MenuItem>
+            <MenuItem value="الجامعة وخدمة المجتمع">
+              الجامعة وخدمة المجتمع
+            </MenuItem>
+          </TextField>
+          <TextField
+            label="العنوان"
+            id="title"
+            InputProps={{ sx: { backgroundColor: "white" } }}
+            size="small"
+            value={values.title}
+            error={errors.title.error}
+            helperText={errors.title.message}
+            onChange={(e) => handleChange(e, "title")}
+          />
+          <div className="flex items-center w-full justify-center gap-4">
+            <MobileDatePicker
+              label="تاريخ الامر"
+              inputFormat="MM/DD/YYYY"
+              value={orderDate}
+              disableFuture
+              InputProps={{
+                sx: {
+                  backgroundColor: "white",
+                  ".MuiFormHelperText-root": { color: "red" },
+                },
               }}
-              onChange={(e: any) =>
+              onChange={(value) => {
+                setOrderDate(value);
                 setValues((values: any) => {
-                  return { ...values, department: e.target.value };
-                })
-              }
-            >
-              <MenuItem value={"مشترك"}>مشترك </MenuItem>
-              <MenuItem value={"علوم الحاسوب"}>علوم الحاسوب</MenuItem>
-              <MenuItem value={"الأمن السيبراني"}>الأمن السيبراني</MenuItem>
-              <MenuItem value={"الشبكات"}>الشبكات</MenuItem>
-              <MenuItem value={"البرمجيات"}>البرمجيات</MenuItem>
-              <MenuItem value={"الرياضيات"}>الرياضيات</MenuItem>
-              <MenuItem value={"الإحصاء والمعلوماتية"}>
-                الإحصاء والمعلوماتية
-              </MenuItem>
-              <MenuItem value={"بحوث العمليات والتقنيات الذكائية"}>
-                بحوث العمليات والتقنيات الذكائية
-              </MenuItem>
-            </TextField>
-            <UsersInput
-              values={values}
-              setValues={setValues}
-              errors={errors}
-              auth={auth}
+                  return {
+                    ...values,
+                    orderDate: dayjs(value).format("YYYY/MM/DD"),
+                  };
+                });
+              }}
+              renderInput={(params) => (
+                <TextField
+                  sx={{ width: "100%" }}
+                  size="small"
+                  error={errors.orderDate.error}
+                  helperText={errors.orderDate.message}
+                  {...params}
+                />
+              )}
             />
-            <textarea
-              onChange={(e) => handleChange(e, "summary")}
-              placeholder="نبذة عن النشاط"
-              className=" resize-none rounded-[3px] h-20 w-full py-2 px-3 border-[1.8px] border-gray-300 hover:border-black focus:border-none"
+            <MobileDatePicker
+              label="التاريخ من"
+              inputFormat="MM/DD/YYYY"
+              value={dateFrom}
+              disableFuture
+              onChange={(value) => {
+                setDateFrom(value);
+                setValues((values: any) => {
+                  return {
+                    ...values,
+                    dateFrom: dayjs(value).format("YYYY/MM/DD"),
+                  };
+                });
+              }}
+              renderInput={(params) => (
+                <TextField
+                  sx={{ backgroundColor: "white", width: "100%" }}
+                  size="small"
+                  {...params}
+                />
+              )}
             />
-            <TextField
-              label="الروابط "
-              id="link"
-              value={values.link}
-              InputProps={{ sx: { backgroundColor: "white" } }}
-              size="small"
-              onChange={(e) => handleChange(e, "link")}
+            <MobileDatePicker
+              label="التاريخ الى"
+              inputFormat="MM/DD/YYYY"
+              value={dateTo}
+              disableFuture
+              minDate={dateFrom ? dateFrom : dayjs()}
+              onChange={(value) => {
+                setDateTo(value);
+                setValues((values: any) => {
+                  return {
+                    ...values,
+                    dateTo: dayjs(value).format("YYYY/MM/DD"),
+                  };
+                });
+              }}
+              renderInput={(params) => (
+                <TextField
+                  sx={{ backgroundColor: "white", width: "100%" }}
+                  size="small"
+                  {...params}
+                />
+              )}
             />
+          </div>
 
-            <FileInput setFiles={setFiles} />
-            <div className="flex gap-1 w-full">
-              {files.map((image, index) => {
-                return (
-                  <div className="w-10 h-10 relative" key={index}>
-                    <IconButton
-                      size="small"
-                      sx={{ position: "absolute", top: "-10px", left: "-10px" }}
-                      onClick={() => handleRemoveImage(index, "file")}
-                    >
-                      <TiDelete className="text-red-700" />
-                    </IconButton>
-                    <a href={image.url} target="_blank" className="w-10 h-10">
-                      <img src={image.url} />
-                    </a>
-                  </div>
-                );
-              })}
-            </div>
-            <PdfInput setPdf={setPdf} />
-            <div className="flex gap-1 w-full">
-              {pdf.map((pdf, index) => {
-                return (
-                  <div className="w-10 h-10 relative" key={index}>
-                    <IconButton
-                      size="small"
-                      sx={{ position: "absolute", top: "-10px", left: "-10px" }}
-                      onClick={() => handleRemoveImage(index, "pdf")}
-                    >
-                      <TiDelete className="text-red-700" />
-                    </IconButton>
-                    <a href={pdf.url} target="_blank" className="w-10 h-10">
-                      <BsFileEarmarkPdf className="text-red-600 text-3xl" />
-                    </a>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="flex flex-row-reverse justify-between">
-              <RadioGroup
-                row
-                aria-labelledby="activity-type"
-                name="row-radio-buttons-group"
-                defaultValue="نشاط داخلي"
-                onChange={(e) => handleChange(e, "location")}
-              >
-                <FormControlLabel
-                  value="نشاط داخلي"
-                  control={<Radio />}
-                  label="نشاط داخلي"
-                />
-                <FormControlLabel
-                  value="نشاط خارجي"
-                  control={<Radio />}
-                  label="نشاط خارجي"
-                />
-              </RadioGroup>
-              <TextField
-                label="الرمز الشريطي"
-                id="barcode"
-                sx={{ backgroundColor: "white", width: "50%" }}
-                size="small"
-                value={values.barcode}
-                onChange={(e) => handleChange(e, "barcode")}
-              />
-            </div>
-            {loading ? (
-              <MoonLoader color="blue" size={30} className="mx-auto" />
-            ) : (
-              <Button
-                variant="contained"
-                sx={{ width: "16rem", marginX: "auto", fontSize: "16px" }}
-                type="submit"
-              >
-                رفـــــع
-              </Button>
-            )}
-          </FormControl>
-          <Button
-            color="error"
-            sx={{
-              position: "absolute",
-              backgroundColor: "white",
-              boxShadow: 1,
+          <TextField
+            label="القسم"
+            id="department"
+            value={values.department}
+            error={errors.department.error}
+            helperText={errors.department.message}
+            InputProps={{ sx: { backgroundColor: "white" } }}
+            size="small"
+            select
+            SelectProps={{
+              multiple: true,
             }}
-            className="top-4 right-4"
-            onClick={() => setActivityModal(false)}
+            onChange={(e: any) =>
+              setValues((values: any) => {
+                return { ...values, department: e.target.value };
+              })
+            }
           >
-            <AiOutlineClose />
-          </Button>
-        </form>
-      </div>
+            <MenuItem value={"مشترك"}>مشترك </MenuItem>
+            <MenuItem value={"علوم الحاسوب"}>علوم الحاسوب</MenuItem>
+            <MenuItem value={"الأمن السيبراني"}>الأمن السيبراني</MenuItem>
+            <MenuItem value={"الشبكات"}>الشبكات</MenuItem>
+            <MenuItem value={"البرمجيات"}>البرمجيات</MenuItem>
+            <MenuItem value={"الرياضيات"}>الرياضيات</MenuItem>
+            <MenuItem value={"الإحصاء والمعلوماتية"}>
+              الإحصاء والمعلوماتية
+            </MenuItem>
+            <MenuItem value={"بحوث العمليات والتقنيات الذكائية"}>
+              بحوث العمليات والتقنيات الذكائية
+            </MenuItem>
+          </TextField>
+          <UsersInput
+            values={values}
+            setValues={setValues}
+            errors={errors}
+            auth={auth}
+          />
+          <textarea
+            onChange={(e) => handleChange(e, "summary")}
+            placeholder="نبذة عن النشاط"
+            className=" resize-none rounded-[3px] h-20 w-full py-2 px-3 border-[1.8px] border-gray-300 hover:border-black focus:border-none"
+          />
+          <TextField
+            label="الروابط "
+            id="link"
+            value={values.link}
+            InputProps={{ sx: { backgroundColor: "white" } }}
+            size="small"
+            onChange={(e) => handleChange(e, "link")}
+          />
+
+          <FileInput setFiles={setFiles} />
+          <div className="flex gap-1 w-full">
+            {files.map((image, index) => {
+              return (
+                <div className="w-10 h-10 relative" key={index}>
+                  <IconButton
+                    size="small"
+                    sx={{ position: "absolute", top: "-10px", left: "-10px" }}
+                    onClick={() => handleRemoveImage(index, "file")}
+                  >
+                    <TiDelete className="text-red-700" />
+                  </IconButton>
+                  <a href={image.url} target="_blank" className="w-10 h-10">
+                    <img src={image.url} />
+                  </a>
+                </div>
+              );
+            })}
+          </div>
+          <PdfInput setPdf={setPdf} />
+          <div className="flex gap-1 w-full">
+            {pdf.map((pdf, index) => {
+              return (
+                <div className="w-10 h-10 relative" key={index}>
+                  <IconButton
+                    size="small"
+                    sx={{ position: "absolute", top: "-10px", left: "-10px" }}
+                    onClick={() => handleRemoveImage(index, "pdf")}
+                  >
+                    <TiDelete className="text-red-700" />
+                  </IconButton>
+                  <a href={pdf.url} target="_blank" className="w-10 h-10">
+                    <BsFileEarmarkPdf className="text-red-600 text-3xl" />
+                  </a>
+                </div>
+              );
+            })}
+          </div>
+          <div className="flex flex-row-reverse justify-between">
+            <RadioGroup
+              row
+              aria-labelledby="activity-type"
+              name="row-radio-buttons-group"
+              defaultValue="نشاط داخلي"
+              onChange={(e) => handleChange(e, "location")}
+            >
+              <FormControlLabel
+                value="نشاط داخلي"
+                control={<Radio />}
+                label="نشاط داخلي"
+              />
+              <FormControlLabel
+                value="نشاط خارجي"
+                control={<Radio />}
+                label="نشاط خارجي"
+              />
+            </RadioGroup>
+            <TextField
+              label="الرمز الشريطي"
+              id="barcode"
+              sx={{ backgroundColor: "white", width: "50%" }}
+              size="small"
+              value={values.barcode}
+              onChange={(e) => handleChange(e, "barcode")}
+            />
+          </div>
+          {loading ? (
+            <MoonLoader color="blue" size={30} className="mx-auto" />
+          ) : (
+            <Button
+              variant="contained"
+              sx={{ width: "16rem", marginX: "auto", fontSize: "16px" }}
+              type="submit"
+            >
+              رفـــــع
+            </Button>
+          )}
+        </FormControl>
+        <Button
+          color="error"
+          sx={{
+            position: "absolute",
+            backgroundColor: "white",
+            boxShadow: 1,
+          }}
+          className="top-4 right-4"
+          onClick={() => setActivityModal(false)}
+        >
+          <AiOutlineClose />
+        </Button>
+      </form>
     </FocusLock>
   );
 };
