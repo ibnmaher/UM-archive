@@ -65,9 +65,12 @@ export const UserActivityTable = ({
     }
   };
   useEffect(() => {
-    document.addEventListener("keydown", handleEscape);
+    document.removeEventListener("keydown", handleEscape);
+    if (!modalActivity) {
+      document.addEventListener("keydown", handleEscape);
+    }
     return () => document.removeEventListener("keydown", handleEscape);
-  }, []);
+  }, [modalActivity]);
 
   const ODD_OPACITY = 0.2;
   const StripedDataGrid = styled(DataGrid)(({ theme }) => ({

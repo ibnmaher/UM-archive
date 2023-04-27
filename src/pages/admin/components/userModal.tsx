@@ -151,6 +151,7 @@ export const UserModal = ({
               helperText={errors.department.message}
               onChange={(e) => handleChange(e, "department")}
             >
+              <MenuItem value={"عام"}>عام</MenuItem>
               <MenuItem value={"علوم الحاسوب"}>علوم الحاسوب</MenuItem>
               <MenuItem value={"الأمن السيبراني"}>الأمن السيبراني</MenuItem>
               <MenuItem value={"الشبكات"}>الشبكات</MenuItem>

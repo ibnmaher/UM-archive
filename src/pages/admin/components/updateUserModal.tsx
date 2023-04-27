@@ -170,6 +170,7 @@ export const UpdateUserModal = ({
               onChange={(e) => handleChange(e, "department")}
               value={values.department}
             >
+              <MenuItem value={"عام"}>عام</MenuItem>
               <MenuItem value={"علوم الحاسوب"}>علوم الحاسوب</MenuItem>
               <MenuItem value={"الأمن السيبراني"}>الأمن السيبراني</MenuItem>
               <MenuItem value={"الشبكات"}>الشبكات</MenuItem>

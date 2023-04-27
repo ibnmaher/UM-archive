@@ -21,6 +21,7 @@ interface PARAMS {
 interface VALUES {
   subject: string;
   email: string;
+  name: string;
   file_name: string;
   image_name: string;
   file: any;
@@ -38,6 +39,7 @@ export const ContactModal = ({
   const [values, setValues] = useState<VALUES>({
     subject: "",
     email: auth.email,
+    name: auth.name,
     file: "",
     image: "",
     file_name: "",
