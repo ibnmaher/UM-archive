@@ -213,7 +213,7 @@ export const UserModal = ({
               <FormControlLabel
                 value="supervisor"
                 control={<Radio />}
-                label="مشرف"
+                label="رئيس قسم"
               />
               <FormControlLabel
                 value="deen"

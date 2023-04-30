@@ -143,6 +143,7 @@ export const ContactModal = ({
           sx={{ width: "100%", height: "80px" }}
           InputProps={{ sx: { backgroundColor: "white", height: "80px" } }}
           size="small"
+          multiline={true}
           error={errors.subject.error}
           helperText={errors.subject.message}
           onChange={(e) => handleChange(e, "subject")}

@@ -61,8 +61,8 @@ export const Navbar = ({ auth }: { auth: AUTH }) => {
         )}
       </ul>
       <div className="flex gap-2 justify-center items-center w-full absolute -z-10 left-0 right-0">
-        <img src={col_logo} className="h-20"></img>
-        <img src={uni_logo} className="h-[72px]"></img>
+        <img src={col_logo} className="h-[68px]"></img>
+        <img src={uni_logo} className="h-[68px]"></img>
       </div>
       <h1 className="text-white text-xl">{auth?.name}</h1>
     </div>
