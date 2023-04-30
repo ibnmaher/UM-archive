@@ -44,7 +44,6 @@ export const SearchBar = () => {
           label="التاريخ من"
           inputFormat="MM/DD/YYYY"
           value={dateFrom}
-          disableFuture
           onChange={(value) => handleChange(value, setDateFrom)}
           renderInput={(params) => (
             <TextField
@@ -58,7 +57,6 @@ export const SearchBar = () => {
           label="التاريخ الى"
           inputFormat="MM/DD/YYYY"
           value={dateTo}
-          disableFuture
           minDate={dateFrom ? dateFrom : dayjs()}
           onChange={(value) => handleChange(value, setDateTo)}
           renderInput={(params) => (

@@ -224,7 +224,6 @@ export const UpdateActivityModal = ({
                 label="تاريخ الامر"
                 inputFormat="MM/DD/YYYY"
                 value={orderDate}
-                disableFuture
                 InputProps={{ sx: { backgroundColor: "white" } }}
                 onChange={(value) => {
                   setOrderDate(value);
@@ -249,7 +248,6 @@ export const UpdateActivityModal = ({
                 label="التاريخ من"
                 inputFormat="MM/DD/YYYY"
                 value={dateFrom}
-                disableFuture
                 onChange={(value) => {
                   setDateFrom(value);
                   setValues((values: any) => {
@@ -271,7 +269,6 @@ export const UpdateActivityModal = ({
                 label="التاريخ الى"
                 inputFormat="MM/DD/YYYY"
                 value={dateTo}
-                disableFuture
                 minDate={dateFrom ? dateFrom : dayjs()}
                 onChange={(value) => {
                   setDateTo(value);

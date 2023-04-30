@@ -142,7 +142,6 @@ export const SearchBar = ({
                 };
               });
             }}
-            disableFuture
             onChange={(value: string | null) =>
               setQuery((state: any) => {
                 return {
@@ -176,7 +175,6 @@ export const SearchBar = ({
               });
             }}
             value={query.dateTo}
-            disableFuture
             minDate={query.dateFrom ? query.dateFrom : dayjs()}
             onChange={(value: string | null | number) =>
               setQuery((state: any) => {
