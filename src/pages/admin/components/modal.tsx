@@ -5,6 +5,8 @@ import React, { useEffect, useRef, useState } from "react";
 import Barcode from "react-barcode";
 import { BsFileEarmarkPdf } from "react-icons/bs";
 import { BsFillCaretRightFill } from "react-icons/bs";
+import { Buffer } from "buffer";
+import utf8 from "utf8";
 export const Modal = ({
   setModalActivity,
   modalActivity,
@@ -263,7 +265,7 @@ export const Modal = ({
                   rel="noreferrer"
                 >
                   <BsFileEarmarkPdf className="text-3xl text-red-500" />
-                  <h3 className="w-32 truncate ">{file.name}</h3>
+                  <h3 className="w-32 truncate ">{utf8.decode(file.name)}</h3>
                 </a>
               );
             })}

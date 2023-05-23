@@ -190,23 +190,51 @@ export const UpdateActivityModal = ({
               select
               onChange={(e) => handleChange(e, "type")}
             >
-              <MenuItem value="مناقشات طلبة الدراسات العليا">
-                مناقشات طلبة الدراسات العليا
+              <MenuItem value="مناقشة طلبة الدراسات الأولية أو العليا">
+                مناقشة طلبة الدراسات الأولية أو العليا
               </MenuItem>
-              <MenuItem value="المحاضرات (السيمينارات)">
-                المحاضرات (السيمينارات)
+              <MenuItem value="تكليف بالتدريس في الدراسات الأولية أو العليا">
+                تكليف بالتدريس في الدراسات الأولية أو العليا
               </MenuItem>
-              <MenuItem value="الاجتماعات واللقاءات">
-                الاجتماعات واللقاءات
+              <MenuItem value="الاشراف على طلبة الدراسات الأولية أو العليا">
+                الاشراف على طلبة الدراسات الأولية أو العليا
+              </MenuItem>
+              <MenuItem value="حضور المحافل العلمية (مؤتمرات ــ ندوات ــ ورش عمل أو سيمنارات ـ فعاليات تكريم)">
+                حضور المحافل العلمية (مؤتمرات ــ ندوات ــ ورش عمل أو سيمنارات ـ
+                فعاليات تكريم)
               </MenuItem>
               <MenuItem value="الدورات التدريبية">الدورات التدريبية</MenuItem>
-              <MenuItem value="الحلقات الدراسية">الحلقات الدراسية</MenuItem>
-              <MenuItem value="ورش العمل">ورش العمل</MenuItem>
-              <MenuItem value="فعاليات التكريم">فعاليات التكريم</MenuItem>
-              <MenuItem value="الندوات العلمية">الندوات العلمية</MenuItem>
-              <MenuItem value="النشاطات اللاصفية">النشاطات اللاصفية</MenuItem>
-              <MenuItem value="الجامعة وخدمة المجتمع">
-                الجامعة وخدمة المجتمع
+              <MenuItem value="المشاركة بدورات التعليم المستمر ــ بصفة مشترك">
+                المشاركة بدورات التعليم المستمر ــ بصفة مشترك
+              </MenuItem>
+              <MenuItem value="إلقاء محاضرات ــ سيمينارات">
+                إلقاء محاضرات ــ سيمينارات
+              </MenuItem>
+              <MenuItem value="العضوية في اللجان الدائمة">
+                العضوية في اللجان الدائمة
+              </MenuItem>
+              <MenuItem value="العضوية في اللجان المؤقتة">
+                العضوية في اللجان المؤقتة
+              </MenuItem>
+              <MenuItem value="التعاون مع مؤسسات الدولة الأخرى">
+                التعاون مع مؤسسات الدولة الأخرى
+              </MenuItem>
+              <MenuItem value="التعاون مع المؤسسات الخاصة (خدمة المجتمع)">
+                التعاون مع المؤسسات الخاصة (خدمة المجتمع)
+              </MenuItem>
+              <MenuItem value="المشاركة في حملات التشجير">
+                المشاركة في حملات التشجير
+              </MenuItem>
+              <MenuItem value="إقامة معارض فنية واعمال يدوية">
+                إقامة معارض فنية واعمال يدوية{" "}
+              </MenuItem>
+              <MenuItem value=" زيارات دور الدولة للمسنين والايتام وتقديم المساعدات لهم">
+                زيارات دور الدولة للمسنين والايتام وتقديم المساعدات
+              </MenuItem>
+              <MenuItem value="النشاطات الخيرية">النشاطات الخيرية</MenuItem>
+              <MenuItem value="الاشراف على النشاطات الطلابية (المسابقات ــ المخيمات الكشفية ــ الرحلات العلمية)">
+                الاشراف على النشاطات الطلابية (المسابقات ــ المخيمات الكشفية ــ
+                الرحلات العلمية)
               </MenuItem>
             </TextField>
             <TextField
@@ -370,7 +398,7 @@ export const UpdateActivityModal = ({
                   }
                 />
               }
-              label="مسح الصور السابقة"
+              label="حذف الصور السابقة"
             />
             <PdfInput setPdf={setPdf} />
             <div className="flex gap-1 w-full">
@@ -407,7 +435,7 @@ export const UpdateActivityModal = ({
                   }
                 />
               }
-              label="مسح الملفات السابقة"
+              label="حذف الملفات السابقة"
             />
             <div className="flex flex-row-reverse justify-between">
               <RadioGroup
@@ -418,14 +446,14 @@ export const UpdateActivityModal = ({
                 onChange={(e) => handleChange(e, "location")}
               >
                 <FormControlLabel
-                  value="نشاط خارجي"
-                  control={<Radio />}
-                  label="نشاط خارجي"
-                />
-                <FormControlLabel
                   value="نشاط داخلي"
                   control={<Radio />}
                   label="نشاط داخلي"
+                />
+                <FormControlLabel
+                  value="نشاط خارجي"
+                  control={<Radio />}
+                  label="نشاط خارجي"
                 />
               </RadioGroup>
               <TextField
@@ -446,7 +474,7 @@ export const UpdateActivityModal = ({
                 sx={{ width: "16rem", marginX: "auto", fontSize: "16px" }}
                 type="submit"
               >
-                رفـــــع
+                تعديل
               </Button>
             )}
           </FormControl>

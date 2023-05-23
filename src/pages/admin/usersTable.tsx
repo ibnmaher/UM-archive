@@ -217,7 +217,7 @@ export const UsersTable = ({
           setMessage={setMessage}
           setOpen={setOpen}
           setSeverity={setSeverity}
-          text="هل تريد مسح المستخدم؟"
+          text="هل تريد حذف المستخدم؟"
           user
         />
       )}

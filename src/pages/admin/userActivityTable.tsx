@@ -284,7 +284,7 @@ export const UserActivityTable = ({
             setMessage={setMessage}
             setOpen={setOpen}
             setSeverity={setSeverity}
-            text="هل تريد مسح النشاط؟"
+            text="هل تريد حذف النشاط؟"
           />
         )}
         {updateActivityModal && (

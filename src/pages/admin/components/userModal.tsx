@@ -216,7 +216,7 @@ export const UserModal = ({
                 label="رئيس قسم"
               />
               <FormControlLabel
-                value="deen"
+                value="dean"
                 control={
                   <Radio
                     sx={{

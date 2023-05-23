@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "نظام ارشفة المنتسبين",
+  "name": "نظام ارشفة نشاطات منتسبي كلية علوم الحاسوب والرياضيات",
   "icons": [
     {
       "src": "favicon.ico",

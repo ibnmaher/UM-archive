@@ -236,7 +236,7 @@ export const UpdateUserModal = ({
                 label="رئيس قسم"
               />
               <FormControlLabel
-                value="deen"
+                value="dean"
                 control={
                   <Radio
                     sx={{
@@ -256,7 +256,7 @@ export const UpdateUserModal = ({
                 sx={{ width: "16rem", marginX: "auto", fontSize: "16px" }}
                 type="submit"
               >
-                اضافة
+                تعديل
               </Button>
             ) : (
               <MoonLoader color="blue" size={30} className="mx-auto" />

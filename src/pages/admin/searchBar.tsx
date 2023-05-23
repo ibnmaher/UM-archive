@@ -57,38 +57,42 @@ export const SearchBar = ({
 
       <div className="flex items-center justify-center gap-4">
         {" "}
-        <TextField
-          size="small"
-          id="type"
-          label=" النوع"
-          sx={{ backgroundColor: "#F8F4EA", width: "200px" }}
-          select
-          value={query.type}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setQuery((state: any) => {
-              return { ...state, type: e.target.value };
-            })
-          }
-        >
-          <MenuItem value={""}>الكل</MenuItem>
-          <MenuItem value="مناقشات طلبة الدراسات العليا">
-            مناقشات طلبة الدراسات العليا
-          </MenuItem>
-          <MenuItem value="المحاضرات (السيمينارات)">
-            المحاضرات (السيمينارات)
-          </MenuItem>
-          <MenuItem value="الاجتماعات واللقاءات">الاجتماعات واللقاءات</MenuItem>
-          <MenuItem value="الدورات التدريبية">الدورات التدريبية</MenuItem>
-          <MenuItem value="الحلقات الدراسية">الحلقات الدراسية</MenuItem>
-          <MenuItem value="ورش العمل">ورش العمل</MenuItem>
-          <MenuItem value="فعاليات التكريم">فعاليات التكريم</MenuItem>
-          <MenuItem value="الندوات العلمية">الندوات العلمية</MenuItem>
-          <MenuItem value="النشاطات اللاصفية">النشاطات اللاصفية</MenuItem>
-          <MenuItem value="الجامعة وخدمة المجتمع">
-            الجامعة وخدمة المجتمع
-          </MenuItem>
-        </TextField>
-        {(auth.type === "admin" || auth.type === "deen") && (
+        {action !== "users" && (
+          <TextField
+            size="small"
+            id="type"
+            label=" النوع"
+            sx={{ backgroundColor: "#F8F4EA", width: "200px" }}
+            select
+            value={query.type}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setQuery((state: any) => {
+                return { ...state, type: e.target.value };
+              })
+            }
+          >
+            <MenuItem value={""}>الكل</MenuItem>
+            <MenuItem value="مناقشات طلبة الدراسات العليا">
+              مناقشات طلبة الدراسات العليا
+            </MenuItem>
+            <MenuItem value="المحاضرات (السيمينارات)">
+              المحاضرات (السيمينارات)
+            </MenuItem>
+            <MenuItem value="الاجتماعات واللقاءات">
+              الاجتماعات واللقاءات
+            </MenuItem>
+            <MenuItem value="الدورات التدريبية">الدورات التدريبية</MenuItem>
+            <MenuItem value="الحلقات الدراسية">الحلقات الدراسية</MenuItem>
+            <MenuItem value="ورش العمل">ورش العمل</MenuItem>
+            <MenuItem value="فعاليات التكريم">فعاليات التكريم</MenuItem>
+            <MenuItem value="الندوات العلمية">الندوات العلمية</MenuItem>
+            <MenuItem value="النشاطات اللاصفية">النشاطات اللاصفية</MenuItem>
+            <MenuItem value="الجامعة وخدمة المجتمع">
+              الجامعة وخدمة المجتمع
+            </MenuItem>
+          </TextField>
+        )}
+        {(auth.type === "admin" || auth.type === "dean") && (
           <TextField
             size="small"
             id="department"

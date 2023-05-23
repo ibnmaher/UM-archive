@@ -13,7 +13,7 @@ export const FileInput = ({
   });
 
   const handleAdd = () => {
-    if (file.image.size > 400000) {
+    if (file.image.size > 4000000) {
       alert("(4MB) حجم الملف اكبر من المسموح");
       return;
     }
