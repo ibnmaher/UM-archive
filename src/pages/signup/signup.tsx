@@ -10,6 +10,7 @@ import { Message } from "common/components/message";
 import { useSignup } from "./api/useSignup";
 import { useDispatch } from "react-redux";
 import { setAuth } from "common/context/slices/authSlice";
+import { BsFileEarmarkPdf } from "react-icons/bs";
 
 export const Signup = () => {
   const dispatch = useDispatch();
@@ -94,7 +95,7 @@ export const Signup = () => {
     }
   }, [response]);
   return (
-    <div className="w-full h-screen flex items-center justify-center">
+    <div className="w-full h-screen flex gap-20 items-center justify-center">
       <form
         onSubmit={(e) => handleSubmit(e, values)}
         className="w-1/2 lg:w-1/3 h-full flex flex-col gap-5 justify-center items-start"
@@ -166,6 +167,14 @@ export const Signup = () => {
         severity={error ? "error" : "info"}
         message={error ? error.data.message : "قم بانشاء رمز دخول"}
       />
+      <a
+        href={`${process.env.REACT_APP_URL}files/instructions.pdf`}
+        target="_blank"
+        className=" text-2xl flex gap-2"
+      >
+        ملف تعريفي للتسجيل والدخول الى النظام
+        <BsFileEarmarkPdf className="text-3xl text-red-500" />
+      </a>
     </div>
   );
 };

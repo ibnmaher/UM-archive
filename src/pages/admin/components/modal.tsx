@@ -265,7 +265,7 @@ export const Modal = ({
                   rel="noreferrer"
                 >
                   <BsFileEarmarkPdf className="text-3xl text-red-500" />
-                  <h3 className="w-32 truncate ">{utf8.decode(file.name)}</h3>
+                  <h3 className="w-32 truncate ">{file.name}</h3>
                 </a>
               );
             })}

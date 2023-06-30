@@ -80,7 +80,8 @@ export const Admin = ({ auth }: any) => {
         )}
 
         {auth.type !== "admin" && (
-          <div className="absolute left-3 top-0">
+          <div className="absolute left-3 top-0 flex gap-2 items-center">
+            <p>التواصل مع الدعم</p>
             <IconButton onClick={() => setContactModal(true)}>
               <TfiEmail />
             </IconButton>

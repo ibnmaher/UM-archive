@@ -81,6 +81,7 @@ export const UpdateActivityModal = ({
     dateTo: activityInfo[0].end_date,
     deleteImages: false,
     deleteFiles: false,
+    sendNotification: false,
   });
   console.log(activityInfo[0].department);
   const handleChange = (e: any, name: string) => {
@@ -210,6 +211,7 @@ export const UpdateActivityModal = ({
               <MenuItem value="إلقاء محاضرات ــ سيمينارات">
                 إلقاء محاضرات ــ سيمينارات
               </MenuItem>
+              <MenuItem value="نشر بحث">نشر بحث</MenuItem>
               <MenuItem value="العضوية في اللجان الدائمة">
                 العضوية في اللجان الدائمة
               </MenuItem>
@@ -339,8 +341,9 @@ export const UpdateActivityModal = ({
               <MenuItem value={"علوم الحاسوب"}>علوم الحاسوب</MenuItem>
               <MenuItem value={"الأمن السيبراني"}>الأمن السيبراني</MenuItem>
               <MenuItem value={"الشبكات"}>الشبكات</MenuItem>
-              <MenuItem value={"البرمجيات"}>البرمجيات</MenuItem>
+              <MenuItem value={"هندسة البرمجيات"}>هندسة البرمجيات</MenuItem>
               <MenuItem value={"الرياضيات"}>الرياضيات</MenuItem>
+              <MenuItem value={"العمادة"}>العمادة</MenuItem>
               <MenuItem value={"الإحصاء والمعلوماتية"}>
                 الإحصاء والمعلوماتية
               </MenuItem>
@@ -465,6 +468,22 @@ export const UpdateActivityModal = ({
                 size="small"
               />
             </div>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  defaultChecked={false}
+                  onChange={() =>
+                    setValues((state: any) => {
+                      return {
+                        ...state,
+                        sendNotification: !state.sendNotification,
+                      };
+                    })
+                  }
+                />
+              }
+              label="ارسال اشعار بتعديل النشاط"
+            />
             {loading ? (
               <MoonLoader color="blue" size={30} className="mx-auto" />
             ) : (

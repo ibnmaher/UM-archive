@@ -174,8 +174,9 @@ export const UpdateUserModal = ({
               <MenuItem value={"علوم الحاسوب"}>علوم الحاسوب</MenuItem>
               <MenuItem value={"الأمن السيبراني"}>الأمن السيبراني</MenuItem>
               <MenuItem value={"الشبكات"}>الشبكات</MenuItem>
-              <MenuItem value={"البرمجيات"}>البرمجيات</MenuItem>
+              <MenuItem value={"هندسة البرمجيات"}>هندسة البرمجيات</MenuItem>
               <MenuItem value={"الرياضيات"}>الرياضيات</MenuItem>
+              <MenuItem value={"العمادة"}>العمادة</MenuItem>
               <MenuItem value={"الإحصاء والمعلوماتية"}>
                 الإحصاء والمعلوماتية
               </MenuItem>

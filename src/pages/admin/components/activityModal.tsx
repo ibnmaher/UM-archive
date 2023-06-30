@@ -198,6 +198,7 @@ export const ActivityModal = ({
             <MenuItem value="إلقاء محاضرات ــ سيمينارات">
               إلقاء محاضرات ــ سيمينارات
             </MenuItem>
+            <MenuItem value="نشر بحث">نشر بحث</MenuItem>
             <MenuItem value="العضوية في اللجان الدائمة">
               العضوية في اللجان الدائمة
             </MenuItem>
@@ -332,7 +333,7 @@ export const ActivityModal = ({
             <MenuItem value={"علوم الحاسوب"}>علوم الحاسوب</MenuItem>
             <MenuItem value={"الأمن السيبراني"}>الأمن السيبراني</MenuItem>
             <MenuItem value={"الشبكات"}>الشبكات</MenuItem>
-            <MenuItem value={"البرمجيات"}>البرمجيات</MenuItem>
+            <MenuItem value={"هندسة البرمجيات"}>هندسة البرمجيات</MenuItem>
             <MenuItem value={"الرياضيات"}>الرياضيات</MenuItem>
             <MenuItem value={"الإحصاء والمعلوماتية"}>
               الإحصاء والمعلوماتية

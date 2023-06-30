@@ -8,6 +8,7 @@ import { loginSchema } from "utils/loginSchema";
 import { validationFunction } from "utils/validationFunction";
 import { yupErrorHandler } from "utils/yupErrorHandler";
 import { useLogin } from "./api/useLogin";
+import { BsFileEarmarkPdf } from "react-icons/bs";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -86,11 +87,11 @@ export const Login = () => {
     }
   }, [response]);
   return (
-    <div className="w-full h-screen flex items-center justify-center">
+    <div className="w-full flex-col gap-24 h-screen flex items-center justify-center">
       <form
         action="submit"
         onSubmit={(e: React.SyntheticEvent) => handleSubmit(e, values)}
-        className="w-1/2 lg:w-1/3 h-full flex flex-col gap-5 justify-center items-start"
+        className="w-1/2 lg:w-1/3 flex flex-col gap-5 justify-center items-start"
       >
         <h1 className="text-2xl text-blue-500 ml-20 ">تسجيل دخول</h1>
 
@@ -135,6 +136,14 @@ export const Login = () => {
           <Link to="/signup">تسجيل للمرة الاولى؟</Link>
         </div>
       </form>
+      <a
+        href={`${process.env.REACT_APP_URL}files/instructions.pdf`}
+        target="_blank"
+        className=" text-2xl flex gap-2"
+      >
+        ملف تعريفي للتسجيل والدخول الى النظام
+        <BsFileEarmarkPdf className="text-3xl text-red-500" />
+      </a>
     </div>
   );
 };
