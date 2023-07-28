@@ -143,7 +143,7 @@ export const Modal = ({
           renderInput={(params) => (
             <TextField
               {...params}
-              sx={{ width: "100%" }}
+              sx={{ width: "100%", maxHeight: "140px", overflowY: "auto" }}
               InputProps={{
                 ...params.InputProps,
                 sx: { backgroundColor: "white" },

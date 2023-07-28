@@ -9,6 +9,7 @@ import {
   TextField,
 } from "@mui/material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
@@ -25,6 +26,7 @@ import { UsersInput } from "./usersInput";
 import FocusLock from "react-focus-lock";
 import { PdfInput } from "./pdfInput";
 import { BsFileEarmarkPdf } from "react-icons/bs";
+import { Message } from "common/components/message";
 interface PROPS {
   setActivityModal: React.Dispatch<React.SetStateAction<boolean>>;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -62,7 +64,7 @@ export const ActivityModal = ({
   const [files, setFiles] = useState<any[]>([]);
   const [pdf, setPdf] = useState<any[]>([]);
   const [errors, setErrors] = useState(activityModalErrors);
-
+  console.log(dateFrom);
   const [values, setValues] = useState<any>({
     type: "",
     department: [],
@@ -140,7 +142,7 @@ export const ActivityModal = ({
       setSeverity("error");
     }
   }, [response, error]);
-  console.log(values);
+
   const handleEscape = (e: KeyboardEvent) => {
     if (e.code === "Escape") {
       setActivityModal(false);
@@ -237,9 +239,9 @@ export const ActivityModal = ({
             onChange={(e) => handleChange(e, "title")}
           />
           <div className="flex items-center w-full justify-center gap-4">
-            <MobileDatePicker
+            <DatePicker
               label="تاريخ الامر"
-              inputFormat="MM/DD/YYYY"
+              inputFormat="DD/MM/YYYY"
               value={orderDate}
               InputProps={{
                 sx: {
@@ -266,16 +268,18 @@ export const ActivityModal = ({
                 />
               )}
             />
-            <MobileDatePicker
+            <DatePicker
               label="التاريخ من"
-              inputFormat="MM/DD/YYYY"
+              inputFormat="DD/MM/YYYY"
               value={dateFrom}
               onChange={(value) => {
                 setDateFrom(value);
+                setDateTo(value)
                 setValues((values: any) => {
                   return {
                     ...values,
                     dateFrom: dayjs(value).format("YYYY/MM/DD"),
+                    dateTo: dayjs(value).format("YYYY/MM/DD"),
                   };
                 });
               }}
@@ -287,9 +291,9 @@ export const ActivityModal = ({
                 />
               )}
             />
-            <MobileDatePicker
+            <DatePicker
               label="التاريخ الى"
-              inputFormat="MM/DD/YYYY"
+              inputFormat="DD/MM/YYYY"
               value={dateTo}
               minDate={dateFrom ? dateFrom : dayjs()}
               onChange={(value) => {
@@ -453,6 +457,7 @@ export const ActivityModal = ({
           <AiOutlineClose />
         </Button>
       </form>
+    
     </FocusLock>
   );
 };

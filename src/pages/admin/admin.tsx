@@ -104,6 +104,7 @@ export const Admin = ({ auth }: any) => {
           query={query}
           auth={auth}
           refetch={refetch}
+          setQuery={setQuery}
           setRefetch={setRefetch}
           setOpen={setOpen}
           setMessage={setMessage}

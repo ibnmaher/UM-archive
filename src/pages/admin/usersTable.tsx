@@ -2,11 +2,15 @@ import {
   DataGrid,
   GridColDef,
   GridEventListener,
+  GridPagination,
   gridClasses,
+  gridPageCountSelector,
+  useGridApiContext,
+  useGridSelector,
 } from "@mui/x-data-grid";
 import { alpha, styled } from "@mui/material/styles";
 import { useState, useEffect } from "react";
-import { Button } from "@mui/material";
+import { Button, TablePaginationProps } from "@mui/material";
 import { FiEdit } from "react-icons/fi";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { DeleteModal } from "./components/deleteModal";
@@ -17,12 +21,13 @@ import { MoonLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { UserActivityTable } from "./userActivityTable";
-
+import MuiPagination from "@mui/material/Pagination";
 interface PROPS {
   query: QUERY;
   auth: AUTH;
   refetch: boolean;
   setRefetch: React.Dispatch<React.SetStateAction<boolean>>;
+  setQuery: React.Dispatch<React.SetStateAction<any>>;
 
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setMessage: React.Dispatch<React.SetStateAction<string>>;
@@ -38,9 +43,11 @@ export const UsersTable = ({
   setRefetch,
   setSeverity,
   setOpen,
+  setQuery,
 }: PROPS) => {
   const [updateUserModal, setUpdateUserModal] = useState<any>(false);
   const [portal, setPortal] = useState<any>(false);
+  const [name, setName] = useState<string>();
   const [deleteModal, setDeleteModal] = useState<boolean | string | number>(
     false
   );
@@ -52,7 +59,7 @@ export const UsersTable = ({
   useEffect(() => {
     getUsers();
   }, [query, refetch]);
-  console.log(response);
+
   const ODD_OPACITY = 0.2;
   const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
     [`& .${gridClasses.row}.even`]: {
@@ -95,8 +102,13 @@ export const UsersTable = ({
 
   const handleRowClick: GridEventListener<"rowClick"> = (params) => {
     setPortal(params.id);
+    setName(params.row.name);
   };
-
+  let currentPage;
+  useEffect(() => {
+    currentPage = localStorage.getItem("userPage");
+  }, []);
+  const [page, setPage] = useState(parseInt(currentPage || "0"));
   const columns: GridColDef[] = [
     { field: "name", headerName: "الاسم", width: 300 },
     {
@@ -171,7 +183,30 @@ export const UsersTable = ({
       },
     },
   ];
+  function Pagination({
+    page,
+    onPageChange,
+    className,
+  }: Pick<TablePaginationProps, "page" | "onPageChange" | "className">) {
+    const apiRef = useGridApiContext();
+    const pageCount = useGridSelector(apiRef, gridPageCountSelector);
 
+    return (
+      <MuiPagination
+        color="primary"
+        className={className}
+        count={pageCount}
+        page={page + 1}
+        onChange={(event, newPage) => {
+          onPageChange(event as any, newPage - 1);
+        }}
+      />
+    );
+  }
+
+  function CustomPagination(props: any) {
+    return <GridPagination ActionsComponent={Pagination} {...props} />;
+  }
   return (
     <div className="w-full flex justify-center flex-1">
       {!loading ? (
@@ -186,6 +221,12 @@ export const UsersTable = ({
           getRowClassName={(params) =>
             params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
           }
+          components={{ Pagination: CustomPagination }}
+          page={page}
+          onPageChange={(page) => {
+            localStorage.setItem("userPage", page.toString());
+            setPage(page);
+          }}
           initialState={{
             columns: {
               columnVisibilityModel: {
@@ -236,6 +277,7 @@ export const UsersTable = ({
         <UserActivityTable
           query={query}
           auth={auth}
+          setQuery={setQuery}
           refetch={refetch}
           setRefetch={setRefetch}
           setOpen={setOpen}
@@ -243,6 +285,7 @@ export const UsersTable = ({
           setSeverity={setSeverity}
           userId={portal}
           setPortal={setPortal}
+          name={name}
         />
       )}
     </div>

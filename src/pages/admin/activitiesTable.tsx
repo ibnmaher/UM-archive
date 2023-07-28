@@ -2,11 +2,15 @@ import {
   DataGrid,
   GridColDef,
   GridEventListener,
+  GridPagination,
   gridClasses,
+  gridPageCountSelector,
+  useGridApiContext,
+  useGridSelector,
 } from "@mui/x-data-grid";
 import { alpha, styled } from "@mui/material/styles";
 import { useState } from "react";
-import { Button, Chip } from "@mui/material";
+import { Button, Chip, TablePaginationProps, TextField } from "@mui/material";
 import { FiEdit } from "react-icons/fi";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { useEffect } from "react";
@@ -17,6 +21,7 @@ import { DeleteModal } from "./components/deleteModal";
 import { UpdateActivityModal } from "./components/updateActivityModal";
 import { AUTH, QUERY } from "types";
 import { MoonLoader } from "react-spinners";
+import MuiPagination from "@mui/material/Pagination";
 import { Route, Routes } from "react-router-dom";
 import { ProtectedRoute } from "utils/protectedRoute";
 import { UserActivityTable } from "./userActivityTable";
@@ -47,11 +52,11 @@ export const ActivitiesTable = ({
   const [deleteModal, setDeleteModal] = useState<boolean | string | number>(
     false
   );
-
+  console.log(query);
   const { response, getActivities, loading } = useGetActivities(query, {
     Authorization: `Bearer ${auth.token}`,
   });
-  console.log("res", response);
+
   const ODD_OPACITY = 0.2;
   const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
     [`& .${gridClasses.row}.even`]: {
@@ -94,7 +99,8 @@ export const ActivitiesTable = ({
   const handleRowClick: GridEventListener<"rowClick"> = (params) => {
     setModalActivity({ response: response, id: params.id });
   };
-
+  const currentPage = localStorage.getItem("activityPage");
+  const [page, setPage] = useState<number>(parseInt(currentPage || "0"));
   const columns: GridColDef[] = [
     {
       field: "barcode_id",
@@ -104,13 +110,24 @@ export const ActivitiesTable = ({
       align: "center",
       renderCell: (params: any) => {
         return (
-          <Barcode
-            height={20}
-            background={"transparent"}
-            fontSize={11}
-            width={1.5}
-            value={params.row.barcode_id}
-          />
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+
+              navigator.clipboard.writeText(params.row.barcode_id);
+              setOpen(true);
+              setSeverity("info");
+              setMessage("تم نسخ الرمز");
+            }}
+          >
+            <Barcode
+              height={20}
+              background={"transparent"}
+              fontSize={11}
+              width={1.5}
+              value={params.row.barcode_id}
+            />
+          </div>
         );
       },
     },
@@ -119,12 +136,14 @@ export const ActivitiesTable = ({
       headerName: "العنوان",
 
       minWidth: 200,
+      flex: 1,
     },
     {
       field: "type",
       headerName: "النوع",
 
       minWidth: 200,
+      flex: 1,
     },
     {
       field: "start_date",
@@ -143,6 +162,7 @@ export const ActivitiesTable = ({
       headerName: "القسم",
       headerAlign: "center",
       align: "center",
+      flex: 1,
     },
     {
       field: "participants_count",
@@ -203,6 +223,31 @@ export const ActivitiesTable = ({
     },
   ];
 
+  function Pagination({
+    page,
+    onPageChange,
+    className,
+  }: Pick<TablePaginationProps, "page" | "onPageChange" | "className">) {
+    const apiRef = useGridApiContext();
+    const pageCount = useGridSelector(apiRef, gridPageCountSelector);
+
+    return (
+      <MuiPagination
+        color="primary"
+        className={className}
+        count={pageCount}
+        page={page + 1}
+        onChange={(event, newPage) => {
+          onPageChange(event as any, newPage - 1);
+        }}
+      />
+    );
+  }
+
+  function CustomPagination(props: any) {
+    return <GridPagination ActionsComponent={Pagination} {...props} />;
+  }
+
   const rows = response || [];
   useEffect(() => {
     getActivities();
@@ -217,9 +262,19 @@ export const ActivitiesTable = ({
             rows={rows}
             columns={columns || []}
             pageSize={20}
+            page={page}
             checkboxSelection={false}
+            pagination={true}
+            components={{
+              Pagination: CustomPagination,
+            }}
+            paginationMode="client"
             onRowClick={handleRowClick}
             rowsPerPageOptions={[20]}
+            onPageChange={(page) => {
+              setPage(page);
+              localStorage.setItem("activityPage", page.toString());
+            }}
             getRowClassName={(params) =>
               params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
             }

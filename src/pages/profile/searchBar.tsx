@@ -11,9 +11,7 @@ export const SearchBar = () => {
   let handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNameString(e.target.value);
   };
-  const handleSearch = () => {
-    console.log(nameString);
-  };
+  const handleSearch = () => {};
   const [dateFrom, setDateFrom] = React.useState<Dayjs | null>(dayjs());
   const [dateTo, setDateTo] = React.useState<Dayjs | null>(dayjs());
 
@@ -42,7 +40,7 @@ export const SearchBar = () => {
       <div className="flex items-center justify-center gap-4">
         <MobileDatePicker
           label="التاريخ من"
-          inputFormat="MM/DD/YYYY"
+          inputFormat="DD/MM/YYYY"
           value={dateFrom}
           onChange={(value) => handleChange(value, setDateFrom)}
           renderInput={(params) => (
@@ -55,7 +53,7 @@ export const SearchBar = () => {
         />
         <MobileDatePicker
           label="التاريخ الى"
-          inputFormat="MM/DD/YYYY"
+          inputFormat="DD/MM/YYYY"
           value={dateTo}
           minDate={dateFrom ? dateFrom : dayjs()}
           onChange={(value) => handleChange(value, setDateTo)}

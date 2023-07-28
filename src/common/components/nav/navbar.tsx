@@ -7,7 +7,6 @@ import { AUTH } from "types";
 import col_logo from "common/images/col-logo.png";
 import uni_logo from "common/images/uni-logo.png";
 export const Navbar = ({ auth }: { auth: AUTH }) => {
-  console.log(auth);
   const dispatch = useDispatch();
   let activeLinkStyle = {
     color: "white",

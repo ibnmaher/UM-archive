@@ -34,9 +34,6 @@ export const SearchBar = ({
       return { ...state, string: e.target.value };
     });
   };
-  const handleSearch = () => {
-    console.log(query);
-  };
 
   return (
     <Paper
@@ -50,7 +47,7 @@ export const SearchBar = ({
           placeholder="بحث"
           onChange={handleNameChange}
         ></InputBase>
-        <IconButton onClick={handleSearch} size="small">
+        <IconButton size="small">
           <GoSearch />
         </IconButton>
       </div>
@@ -159,7 +156,7 @@ export const SearchBar = ({
         <div className="flex items-center justify-center gap-4">
           <MobileDatePicker
             label="التاريخ من"
-            inputFormat="MM/DD/YYYY"
+            inputFormat="DD/MM/YYYY"
             value={query.dateFrom}
             componentsProps={{
               actionBar: {
@@ -194,7 +191,7 @@ export const SearchBar = ({
           />
           <MobileDatePicker
             label="التاريخ الى"
-            inputFormat="MM/DD/YYYY"
+            inputFormat="DD/MM/YYYY"
             componentsProps={{
               actionBar: {
                 actions: ["clear", "accept"],

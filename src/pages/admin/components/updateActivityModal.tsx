@@ -10,6 +10,8 @@ import {
   TextField,
 } from "@mui/material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+
 import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
 import FocusLock from "react-focus-lock";
@@ -83,7 +85,7 @@ export const UpdateActivityModal = ({
     deleteFiles: false,
     sendNotification: false,
   });
-  console.log(activityInfo[0].department);
+
   const handleChange = (e: any, name: string) => {
     setValues((values: any) => {
       return { ...values, [name]: e.target.value };
@@ -91,7 +93,6 @@ export const UpdateActivityModal = ({
   };
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
-    console.log("here");
     e.preventDefault();
     setErrors(activityModalErrors);
     try {
@@ -136,7 +137,6 @@ export const UpdateActivityModal = ({
     }
   };
   useEffect(() => {
-    console.log("jjj", response);
     if (response?.status) {
       setOpen(true);
       setMessage("تم تعديل النشاط");
@@ -250,9 +250,9 @@ export const UpdateActivityModal = ({
               onChange={(e) => handleChange(e, "title")}
             />
             <div className="flex items-center w-full justify-center gap-4">
-              <MobileDatePicker
+              <DatePicker
                 label="تاريخ الامر"
-                inputFormat="MM/DD/YYYY"
+                inputFormat="DD/MM/YYYY"
                 value={orderDate}
                 InputProps={{ sx: { backgroundColor: "white" } }}
                 onChange={(value) => {
@@ -274,9 +274,9 @@ export const UpdateActivityModal = ({
                   />
                 )}
               />
-              <MobileDatePicker
+              <DatePicker
                 label="التاريخ من"
-                inputFormat="MM/DD/YYYY"
+                inputFormat="DD/MM/YYYY"
                 value={dateFrom}
                 onChange={(value) => {
                   setDateFrom(value);
@@ -295,9 +295,9 @@ export const UpdateActivityModal = ({
                   />
                 )}
               />
-              <MobileDatePicker
+              <DatePicker
                 label="التاريخ الى"
-                inputFormat="MM/DD/YYYY"
+                inputFormat="DD/MM/YYYY"
                 value={dateTo}
                 minDate={dateFrom ? dateFrom : dayjs()}
                 onChange={(value) => {

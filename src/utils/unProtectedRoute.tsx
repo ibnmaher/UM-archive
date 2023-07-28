@@ -10,7 +10,7 @@ export const UnProtecetedRoute = ({
   auth: AUTH;
 }) => {
   let location = useLocation();
-  console.log("auth", auth);
+
   if (auth) {
     return <Navigate to="/" state={{ from: location }} replace />;
   }

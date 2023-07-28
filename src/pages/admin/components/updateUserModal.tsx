@@ -104,7 +104,6 @@ export const UpdateUserModal = ({
       await validationFunction(addUserSchema, values);
       await updateUser(values);
     } catch (err: any) {
-      console.log(err);
       yupErrorHandler(err.inner, setErrors);
     }
   };
