@@ -288,7 +288,15 @@ export const UserActivityTable = ({
                       };
                     })
                   }
-                  renderInput={(params) => <></>}
+                  renderInput={(params) => (
+                    <>
+                      <TextField
+                        sx={{ backgroundColor: "#F8F4EA", width: "120px" }}
+                        size="small"
+                        {...params}
+                      />
+                    </>
+                  )}
                 />
                 <DatePicker
                   label="التاريخ الى"
