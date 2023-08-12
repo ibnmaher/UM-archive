@@ -261,7 +261,7 @@ export const ActivitiesTable = ({
             autoHeight={!updateActivityModal}
             rows={rows}
             columns={columns || []}
-            pageSize={20}
+            pageSize={10}
             page={page}
             checkboxSelection={false}
             pagination={true}
@@ -270,7 +270,7 @@ export const ActivitiesTable = ({
             }}
             paginationMode="client"
             onRowClick={handleRowClick}
-            rowsPerPageOptions={[20]}
+            rowsPerPageOptions={[10]}
             onPageChange={(page) => {
               setPage(page);
               localStorage.setItem("activityPage", page.toString());

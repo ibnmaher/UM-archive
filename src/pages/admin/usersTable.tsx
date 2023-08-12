@@ -214,10 +214,10 @@ export const UsersTable = ({
           autoHeight={!portal}
           rows={response || []}
           columns={columns}
-          pageSize={20}
+          pageSize={10}
           checkboxSelection={false}
           onRowClick={handleRowClick}
-          rowsPerPageOptions={[20]}
+          rowsPerPageOptions={[10]}
           getRowClassName={(params) =>
             params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
           }

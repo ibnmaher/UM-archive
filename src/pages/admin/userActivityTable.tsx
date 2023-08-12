@@ -246,137 +246,140 @@ export const UserActivityTable = ({
   return (
     <div className="fixed bg-black bg-opacity-50 flex justify-center items-center top-0 right-0 left-0 bottom-0 z-50 p-4 overflow-hidden">
       <div className="w-full max-h-[90vh] flex gap-4 flex-col justify-center items-center flex-1 ">
-        {!loading ? (
-          <div className="flex flex-col w-full ">
-            <div className="flex w-full items-center justify-between bg-stone-100 rounded-t-md h-20 px-6">
-              <Button
-                color="error"
-                sx={{
-                  backgroundColor: "white",
-                  boxShadow: 1,
-                  ":hover": { backgroundColor: "whitesmoke" },
+        <div className="flex flex-col w-full ">
+          <div className="flex w-full items-center justify-between bg-stone-100 rounded-t-md h-20 px-6">
+            <Button
+              color="error"
+              sx={{
+                backgroundColor: "white",
+                boxShadow: 1,
+                ":hover": { backgroundColor: "whitesmoke" },
+              }}
+              onClick={() => setPortal(false)}
+            >
+              <AiOutlineClose />
+            </Button>
+            <div className="flex items-center justify-center gap-4">
+              <DatePicker
+                label="التاريخ من"
+                inputFormat="DD/MM/YYYY"
+                value={query.dateFrom}
+                componentsProps={{
+                  actionBar: {
+                    actions: ["clear", "accept"],
+                  },
                 }}
-                onClick={() => setPortal(false)}
-              >
-                <AiOutlineClose />
-              </Button>
-              <div className="flex items-center justify-center gap-4">
-                <DatePicker
-                  label="التاريخ من"
-                  inputFormat="DD/MM/YYYY"
-                  value={query.dateFrom}
-                  componentsProps={{
-                    actionBar: {
-                      actions: ["clear", "accept"],
-                    },
-                  }}
-                  onAccept={(newDate) => {
-                    setQuery((state: any) => {
-                      return {
-                        ...state,
-                        dateFrom: newDate
-                          ? dayjs(newDate).format("YYYY/MM/DD")
-                          : null,
-                      };
-                    });
-                  }}
-                  onChange={(value: string | null) =>
-                    setQuery((state: any) => {
-                      return {
-                        ...state,
-                        dateFrom: dayjs(value).format("YYYY/MM/DD"),
-                      };
-                    })
-                  }
-                  renderInput={(params) => (
-                    <>
-                      <TextField
-                        sx={{ backgroundColor: "#F8F4EA", width: "120px" }}
-                        size="small"
-                        {...params}
-                      />
-                    </>
-                  )}
-                />
-                <DatePicker
-                  label="التاريخ الى"
-                  inputFormat="DD/MM/YYYY"
-                  componentsProps={{
-                    actionBar: {
-                      actions: ["clear", "accept"],
-                    },
-                  }}
-                  onAccept={(newDate) => {
-                    setQuery((state: any) => {
-                      return {
-                        ...state,
-                        dateTo: newDate
-                          ? dayjs(newDate).format("YYYY/MM/DD")
-                          : null,
-                      };
-                    });
-                  }}
-                  value={query.dateTo}
-                  minDate={query.dateFrom ? query.dateFrom : dayjs()}
-                  onChange={(value: string | null | number) =>
-                    setQuery((state: any) => {
-                      return {
-                        ...state,
-                        dateTo: dayjs(value).format("YYYY/MM/DD"),
-                      };
-                    })
-                  }
-                  renderInput={(params) => (
+                onAccept={(newDate) => {
+                  setQuery((state: any) => {
+                    return {
+                      ...state,
+                      dateFrom: newDate
+                        ? dayjs(newDate).format("YYYY/MM/DD")
+                        : null,
+                    };
+                  });
+                }}
+                onChange={(value: string | null) =>
+                  setQuery((state: any) => {
+                    return {
+                      ...state,
+                      dateFrom: dayjs(value).format("YYYY/MM/DD"),
+                    };
+                  })
+                }
+                renderInput={(params) => (
+                  <>
                     <TextField
-                      sx={{ backgroundColor: "#F8F4EA", width: "120px" }}
+                      sx={{ backgroundColor: "#F8F4EA", width: "240px" }}
                       size="small"
                       {...params}
                     />
-                  )}
-                />
-              </div>
-              <h1 className="text-2xl font-bold">{name}</h1>
-            </div>
-            <StripedDataGrid
-              autoHeight
-              rows={rows}
-              columns={columns || []}
-              pageSize={7}
-              checkboxSelection={false}
-              onRowClick={handleRowClick}
-              rowsPerPageOptions={[7]}
-              page={page}
-              onPageChange={(page) => {
-                localStorage.setItem("userActivityPage", page.toString());
-                setPage(page);
-              }}
-              getRowClassName={(params) =>
-                params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-              }
-              sx={{
-                backgroundColor: "white",
-                // marginTop: "100px",
-                width: "100%",
-
-                "& .MuiDataGrid-columnHeaders": {
-                  backgroundColor: "#ECE8DD",
-                  fontWeight: "heavy ",
-                  "& .odd": { backgroundColor: "red" },
-                },
-              }}
-              initialState={{
-                columns: {
-                  columnVisibilityModel: {
-                    editButton: auth.type === "admin" ? true : false,
-                    deleteButton: auth.type === "admin" ? true : false,
+                  </>
+                )}
+              />
+              <DatePicker
+                label="التاريخ الى"
+                inputFormat="DD/MM/YYYY"
+                componentsProps={{
+                  actionBar: {
+                    actions: ["clear", "accept"],
                   },
-                },
-              }}
-            />
+                }}
+                onAccept={(newDate) => {
+                  setQuery((state: any) => {
+                    return {
+                      ...state,
+                      dateTo: newDate
+                        ? dayjs(newDate).format("YYYY/MM/DD")
+                        : null,
+                    };
+                  });
+                }}
+                value={query.dateTo}
+                minDate={query.dateFrom ? query.dateFrom : dayjs()}
+                onChange={(value: string | null | number) =>
+                  setQuery((state: any) => {
+                    return {
+                      ...state,
+                      dateTo: dayjs(value).format("YYYY/MM/DD"),
+                    };
+                  })
+                }
+                renderInput={(params) => (
+                  <TextField
+                    sx={{ backgroundColor: "#F8F4EA", width: "240px" }}
+                    size="small"
+                    {...params}
+                  />
+                )}
+              />
+            </div>
+            <h1 className="text-2xl font-bold">{name}</h1>
           </div>
-        ) : (
-          <MoonLoader color="blue" size={50} className="my-auto" />
-        )}
+          <div className="flex items-center justify-center min-h-[20vh] bg-white">
+            {loading ? (
+              <MoonLoader color="blue" size={50} className="my-auto" />
+            ) : (
+              <StripedDataGrid
+                autoHeight
+                rows={rows}
+                columns={columns || []}
+                pageSize={7}
+                checkboxSelection={false}
+                onRowClick={handleRowClick}
+                rowsPerPageOptions={[7]}
+                page={page}
+                onPageChange={(page) => {
+                  localStorage.setItem("userActivityPage", page.toString());
+                  setPage(page);
+                }}
+                getRowClassName={(params) =>
+                  params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+                }
+                sx={{
+                  backgroundColor: "white",
+                  // marginTop: "100px",
+                  width: "100%",
+
+                  "& .MuiDataGrid-columnHeaders": {
+                    backgroundColor: "#ECE8DD",
+                    fontWeight: "heavy ",
+                    "& .odd": { backgroundColor: "red" },
+                  },
+                }}
+                initialState={{
+                  columns: {
+                    columnVisibilityModel: {
+                      editButton: auth.type === "admin" ? true : false,
+                      deleteButton: auth.type === "admin" ? true : false,
+                    },
+                  },
+                }}
+              />
+            )}
+          </div>
+        </div>
+
         {modalActivity && (
           <Modal
             modalActivity={modalActivity}
