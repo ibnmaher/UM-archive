@@ -3,8 +3,6 @@ RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update \
   && apt-get install -y python3
 RUN apt-get install -y curl
-RUN mkdir -p /app
-WORKDIR /app
 RUN curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh
 RUN bash nodesource_setup.sh
 RUN apt-get install -y nodejs
@@ -17,9 +15,9 @@ RUN echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://n
 RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update \
   && apt-get install -y nginx
-COPY  um-archive/package*.json ./
+WORKDIR /usr/app
+COPY ./ /usr/app
 RUN npm install
-COPY um-archive/ .
 ENV REACT_APP_URL http://144.86.228.218:9888/api/
 RUN npm run build
 RUN cp -r build/* /usr/share/nginx/html/
