@@ -9,7 +9,7 @@ import { Message } from "common/components/message";
 import { TfiEmail } from "react-icons/tfi";
 import { FcDataBackup } from "react-icons/fc";
 import download from "downloadjs";
-
+import fileDownload from "js-file-download";
 import dayjs, { Dayjs } from "dayjs";
 import { QUERY } from "types";
 import { ContactModal } from "./components/contactModal";
@@ -39,7 +39,7 @@ export const Admin = ({ auth }: any) => {
     { Authorization: `Bearer ${auth.token}` }
   );
   const downloadFile = async () => {
-    download(response, "backup.sql", "text/plain");
+    fileDownload(response, "dump.sql");
   };
   useEffect(() => {
     if (response) {
