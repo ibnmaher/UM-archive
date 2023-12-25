@@ -129,7 +129,7 @@ export const Signup = () => {
         />
         <TextField
           id="password"
-          label="الرمز السري"
+          label="كلمة المرور"
           variant="outlined"
           type="password"
           className="  w-full"
@@ -142,7 +142,7 @@ export const Signup = () => {
         />
         <TextField
           id="confirPassword"
-          label=" تأكيد الرمز السري"
+          label=" تأكيد كلمة المرور"
           variant="outlined"
           type="password"
           className="  w-full"

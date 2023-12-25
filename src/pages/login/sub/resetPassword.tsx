@@ -76,7 +76,7 @@ export const ResetPassword = () => {
     >
       <TextField
         id="password"
-        label="الرمز السري"
+        label="كلمة المرور"
         variant="outlined"
         type="password"
         className="  w-1/2"
@@ -89,7 +89,7 @@ export const ResetPassword = () => {
       />
       <TextField
         id="confirPassword"
-        label=" تأكيد الرمز السري"
+        label=" تأكيد كلمة المرور"
         variant="outlined"
         type="password"
         className="  w-1/2"

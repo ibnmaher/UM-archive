@@ -111,7 +111,7 @@ export const Login = () => {
         />
         <TextField
           id="password"
-          label="الرمز السري"
+          label="كلمة المرور"
           variant="outlined"
           type="password"
           className=" w-full"
@@ -132,7 +132,7 @@ export const Login = () => {
         )}
 
         <div className="w-full flex items-center justify-between">
-          <Link to="/reset">هل نسيت الرمز؟</Link>
+          <Link to="/reset">هل نسيت كلمة المرور ؟</Link>
           <Link to="/signup">تسجيل للمرة الاولى؟</Link>
         </div>
       </form>

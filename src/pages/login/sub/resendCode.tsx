@@ -68,7 +68,7 @@ export const ResendCode = () => {
         {loading && <MoonLoader size={30} color="blue" />}
 
         <div className="w-full flex items-center justify-between">
-          <Link to="/login">رجوع</Link>
+          <Link to="/signup">رجوع</Link>
         </div>
       </form>
       <Message
